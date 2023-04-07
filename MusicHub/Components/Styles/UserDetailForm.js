@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     },
     createAccount1:{
         textAlign: "center",
-        backgroundColor: "#86BAF5",
+        backgroundColor: "#5FACFA",
         padding: 15,
         borderRadius: 10,
         fontSize: 20,

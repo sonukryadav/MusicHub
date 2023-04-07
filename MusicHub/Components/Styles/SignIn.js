@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
         borderRadius: 25,
         fontWeight: 600,
         textAlign: "center",
-        backgroundColor: "#86BAF5",
+        backgroundColor: "#5FACFA",
         color: "#0D0D0D",
         elevation: 10,
     },
