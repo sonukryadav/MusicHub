@@ -43,21 +43,21 @@ const NativeStack1 = () => {
 					options={() => ({ headerShown: true, headerTitle: "Sign up with email & password" })}
     			/>
     			<NStack.Screen
-				name="userdetailform"
-				component={UserDetailForm}
-				options={() => ({ headerShown: true, headerTitle: "User Detail Form" })}
-			/>
-			<NStack.Screen
-				name="home"
-				component={Home}
-				options={() => ({ headerShown: true, headerTitle: "Home" })}
-			/>
+     				name="userdetailform"
+     				component={UserDetailForm}
+     				options={() => ({ headerShown: true, headerTitle: "User Detail Form" })}
+			    />
+    			<NStack.Screen
+    				name="home"
+    				component={Home}
+    				options={() => ({ headerShown: true, headerTitle: "Home" })}
+    			/>
 
-			<NStack.Screen
-				name="signinforcreate"
-				component={SignInForCreate}
-				options={() => ({ headerShown: true, headerTitle: "New user Sign in" })}
-			/>
+    			<NStack.Screen
+    				name="signinforcreate"
+    				component={SignInForCreate}
+    				options={() => ({ headerShown: true, headerTitle: "New user Sign in" })}
+    			/>
 
 			</NStack.Navigator>
 		);
