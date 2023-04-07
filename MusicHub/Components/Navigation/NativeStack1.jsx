@@ -9,7 +9,7 @@ import {
 	UserDetailForm,
 	Home,
 	SignInForCreate,
-} from "../Screens";
+} from "../Screens1";
 
 
 const NStack = createNativeStackNavigator();
