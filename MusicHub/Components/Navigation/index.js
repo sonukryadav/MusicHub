@@ -1,0 +1,1 @@
+export { default as NativeStack1 } from "./NativeStack1";
