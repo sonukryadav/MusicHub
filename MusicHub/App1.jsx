@@ -7,7 +7,7 @@ const App1 = () => {
 	const [initializing, setInitializing] = useState(true);
 	const [user, setUser] = useState(null);
 
-	console.log(user);
+	// console.log(user);
 
 	function onAuthStateChanged(user) {
 		setUser(user);

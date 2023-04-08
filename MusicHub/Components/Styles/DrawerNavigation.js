@@ -3,7 +3,7 @@ import { StyleSheet } from "react-native";
 const lightTheme = StyleSheet.create({
     drawerContScroll: {
         backgroundColor: "white",
-        marginTop : -3,
+        marginTop : -4,
     },
     view1: {
         flex: 1,

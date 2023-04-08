@@ -23,6 +23,8 @@
     "@react-navigation/native-stack": "^6.9.12",
     "@reduxjs/toolkit": "^1.9.3",
     "date-and-time": "^2.4.3",
+    "expo-av": "^13.2.1",
+    "expo-file-system": "^15.2.2",
     "react": "18.2.0",
     "react-native": "0.71.6",
     "react-native-country-codes-picker": "^2.3.0",

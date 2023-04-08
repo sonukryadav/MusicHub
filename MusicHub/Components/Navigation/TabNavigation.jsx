@@ -1,6 +1,6 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { Account } from "../Screens2";
+import { Account, Home } from "../Screens2";
 
 
 const Tab = createBottomTabNavigator();
@@ -30,7 +30,7 @@ const TabNavigation = () => {
       })
       }
     >
-      <Tab.Screen name="Home" component={Account} />
+      <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="My Network" component={Account} />
       <Tab.Screen name="Post" component={Account} />
       <Tab.Screen name="Notifications" component={Account} />

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, Switch } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity, Switch, Alert } from "react-native";
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from "@react-navigation/drawer";
 import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons"
 import AntDesign from "react-native-vector-icons/AntDesign";
@@ -13,7 +13,8 @@ import { useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from "react-redux";
 import { toggle1 } from "../ReduxKit/ThemeSlice";
 import { AsyncSet, AsyncGet, AsyncDelete } from "../AsyncStorage/AsyncStorage";
-import { lightTheme, darkTheme} from "../Styles/DrawerNavigation";
+import { lightTheme, darkTheme } from "../Styles/DrawerNavigation";
+import auth from '@react-native-firebase/auth';
 
 
 const Drawer = createDrawerNavigator();
@@ -96,6 +97,23 @@ function CustomDrawerContent(props) {
             <View style={{ borderBottomWidth: 1, borderColor: "grey", opacity: 0.5, marginVertical: 10 }}></View>
             <DItem IconG={Entypo} IconN={"add-user"} labelT={"Invite Friends"} navigateTo={"inviteFriends"} />
             <DItem IconG={AntDesign} IconN={"questioncircle"} labelT={"TalkTime Features"} navigateTo={"talktimeFeatures"} />
+            <DrawerItem
+                icon={({ focused, color, size }) => (
+                    <MaterialCommunityIcons color={"grey"} size={size} name={"logout"} />
+                )}
+                label={() => <Text style={styles.drawerText}>{"Logout"}</Text>}
+                onPress={() => {
+                    try {
+                        auth()
+                            .signOut()
+                            .then(() => Alert.alert('User signed out successfully!'));
+                    } catch (error) {
+                        Alert.alert("Something went wrong!");
+                        console.log(error);
+                    }
+                }}
+            />
+
         </DrawerContentScrollView>
     );
 }

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 export default function Home() {
     const dataX = useSelector((state) => state.createUserFirebaseAtSignInSlice);
     const dispatch = useDispatch();
-  console.log(dataX);
+  // console.log(dataX);
   return (
     <View>
       <Text>Home</Text>
