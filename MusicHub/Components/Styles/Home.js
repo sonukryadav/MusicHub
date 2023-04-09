@@ -25,24 +25,25 @@ const styles = StyleSheet.create({
         borderRadius:15,
     },
     v3: {
-        flex:1,
+        flex:0.97,
         flexDirection: "row",
         alignItems: "center",
     },
     v4: {
     },
     v5: {
-        marginLeft:15
+        marginLeft: 15,
+        width: "80%",
     },
     v6: {
-        flex:0,
+        flex:0.03,
         alignItems: "center",
-        padding:8
+        padding: 8,
     },
     t1: {
         fontSize:14,
         fontWeight: 700,
-        color:"black",
+        color: "black",
     },
     t2: {
         fontSize: 12,
