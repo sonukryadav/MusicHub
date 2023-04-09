@@ -1,10 +1,12 @@
-import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, PermissionsAndroid, Platform, Image, FlatList} from 'react-native';
+import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, PermissionsAndroid, Platform, Image, FlatList } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import styles from '../Styles/Home';
 import RNFS from 'react-native-fs';
+import Fontisto from "react-native-vector-icons/Fontisto";
+import { Loading1 } from '../Views';
 
 export default function Home() {
-    const [folders, setFolders] = useState([]);
+    const [files, setFiles] = useState([]);
 
     useEffect(() => {
         requestStoragePermission();
@@ -59,14 +61,18 @@ export default function Home() {
     };
 
 
-
-
-
-
     const getFiles = async () => {
         const rootDirectory = RNFS.ExternalStorageDirectoryPath;
         const audioFiles = await searchForAudioFiles(rootDirectory);
-        setFolders(audioFiles);
+        setFiles(audioFiles);
+    }
+
+    if (files.length === 0) {
+        return (
+            <View style={styles.loadV1}>
+                <Loading1 />
+            </View>
+        );
     }
 
 
@@ -74,12 +80,29 @@ export default function Home() {
         <SafeAreaView style={styles.sav}>
                 <View style={styles.v1}>
                     <FlatList
-                        data={folders}
+                        data={files}
                         renderItem={({item , index}) => {
                             return (
-                                <TouchableOpacity onPress={()=>console.log(item)}>
-                                    <Text style={styles.t1}>{item.name}</Text>
-                                </TouchableOpacity>);
+                                <View style={styles.v2}>
+                                    <TouchableOpacity>
+                                        <View style={styles.v3}>
+                                            <View style={styles.v4}>
+                                                <Fontisto name={"applemusic"} size={60} color={"black"} />
+                                            </View>
+                                            <View style={styles.v5}>
+                                                <Text style={styles.t1}>{item.name}</Text>
+                                                <Text style={styles.t2}>{"Artist name"}</Text>
+                                                <Text style={styles.t3}>{"2:15"}</Text>
+                                            </View>
+                                        </View>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity>
+                                        <View style={styles.v6}>
+                                            <Fontisto name={"more-v-a"} size={18} color={"black"} />
+                                        </View>
+                                    </TouchableOpacity>
+                                </View>
+                            );
                         }}
                     />
                 </View>
