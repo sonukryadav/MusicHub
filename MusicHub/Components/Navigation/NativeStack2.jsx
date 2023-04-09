@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NewGroup, Calls, PeopleNearby, SavedMessages, Settings, InviteFriends, TalktimeFeatures, Contacts, Account, Camera, Search } from "../Screens2"
 import { DrawerNavigation } from '../Navigation';
@@ -9,6 +9,12 @@ const Stack = createNativeStackNavigator();
 
 const NativeStack2 = () => {
     const { theme } = useSelector((state) => state.theme);
+
+    // useEffect(() => {
+    //     (() => {
+    //     })();
+    // })
+
     return (
         <>
             <Stack.Navigator

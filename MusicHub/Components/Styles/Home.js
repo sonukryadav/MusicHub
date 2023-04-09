@@ -12,6 +12,16 @@ const styles = StyleSheet.create({
     },
     t1: {
         color:"red",
+    },
+    t2: {
+        fontSize: 18,
+        color: "green",
+        padding: 20,
+        backgroundColor:"orange"
+    },
+    img1: {
+        width: 100,
+        height:100,
     }
 });
 

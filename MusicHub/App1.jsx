@@ -8,11 +8,11 @@ const App1 = () => {
 	const [user, setUser] = useState(null);
 
 	// console.log(user);
-
 	function onAuthStateChanged(user) {
 		setUser(user);
 		if (initializing) setInitializing(false);
 	}
+
 	useEffect(() => {
 		const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
 		return subscriber; // unsubscribe on unmount
