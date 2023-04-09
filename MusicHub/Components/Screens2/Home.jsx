@@ -1,70 +1,26 @@
-import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, PermissionsAndroid, Platform, Image, FlatList } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, PermissionsAndroid, Platform, Image, FlatList, Animated, TouchableWithoutFeedback } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
 import styles from '../Styles/Home';
 import RNFS from 'react-native-fs';
 import Fontisto from "react-native-vector-icons/Fontisto";
-import { Loading1} from '../Views';
+import { Loading1 } from '../Views';
+import { requestStoragePermission, searchAllAudioFiles } from "../HelperFunctions";
 
 export default function Home() {
     const [files, setFiles] = useState([]);
 
     useEffect(() => {
-        requestStoragePermission();
+        requestStoragePermission(grantedPerms, deniedPerms);
     }, []);
 
-    const requestStoragePermission = async () => {
-        try {
-            const granted = await PermissionsAndroid.request(
-                PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-                {
-                    title: 'MusicHub Storage Permission',
-                    message:
-                        'MusicHub App needs access to your storage ' +
-                        'so you can listen songs.',
-                    buttonNeutral: 'Ask Me Later',
-                    buttonNegative: 'Cancel',
-                    buttonPositive: 'OK',
-                },
-            );
-            if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-                getFiles();
-            } else {
-                console.log('storage permission denied');
-            }
-        } catch (err) {
-            console.warn(err);
-        }
-    };
 
-    const searchForAudioFiles = async (dirPath) => {
-        try {
-            const files = await RNFS.readDir(dirPath);
-            const audioFiles = files.filter((file) => {
-                return file.isFile() && (
-                    file.name.endsWith('.mp3') ||
-                    file.name.endsWith('.m4a') ||
-                    file.name.endsWith('.wav') ||
-                    file.name.endsWith('.ogg')
-                    // add more audio file extensions here
-                );
-            });
-            const directories = files.filter((file) => file.isDirectory());
-            for (const directory of directories) {
-                const audioFilesInDirectory = await searchForAudioFiles(directory.path);
-                audioFiles.push(...audioFilesInDirectory);
-            }
-            return audioFiles;
-        } catch (error) {
-            console.log(error);
-            return [];
-        }
-    };
-
-
-    const getFiles = async () => {
-        const rootDirectory = RNFS.ExternalStorageDirectoryPath;
-        const audioFiles = await searchForAudioFiles(rootDirectory);
+    const grantedPerms = async () => {
+        const audioFiles = await searchAllAudioFiles(RNFS.ExternalStorageDirectoryPath);
         setFiles(audioFiles);
+    }
+
+    const deniedPerms = async() => {
+        Alert.alert("Permission denied");
     }
 
     if (files.length === 0) {
@@ -109,10 +65,80 @@ export default function Home() {
                             );
                         }}
                     />
+            </View>
+            <SlideUpView buttonText="Show Slide Up" slideHeight={200}>
+                <View style={{ padding: 20 }}>
+                    <Text style={{color:"red", fontSize:25, textAlign:"center"}}>This is the sliding view content.</Text>
                 </View>
+            </SlideUpView>
         </SafeAreaView>
     );
 }
 
-//----------react-native-fs-----------
-//----------react-native-fs-----------
+
+const SlideUpView = ({ buttonText, slideHeight, children }) => {
+    const [visible, setVisible] = useState(false);
+    const slideAnimation = useRef(new Animated.Value(0)).current;
+
+    const toggleVisible = () => {
+        setVisible(!visible);
+    };
+
+    const slideUp = () => {
+        Animated.timing(slideAnimation, {
+            toValue: slideHeight,
+            duration: 300,
+            useNativeDriver: true,
+        }).start();
+    };
+
+    const slideDown = () => {
+        Animated.timing(slideAnimation, {
+            toValue: 0,
+            duration: 300,
+            useNativeDriver: true,
+        }).start(() => setVisible(false));
+    };
+
+    return (
+        <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0 }}>
+            <TouchableWithoutFeedback onPress={toggleVisible}>
+                <View
+                    style={{
+                        backgroundColor: 'blue',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        height: 50,
+                    }}
+                >
+                    <Text style={{ color: 'white' }}>{buttonText}</Text>
+                </View>
+            </TouchableWithoutFeedback>
+            {visible && (
+                <TouchableWithoutFeedback onPress={toggleVisible}>
+                    <View
+                        style={{
+                            position: 'absolute',
+                            bottom: 50,
+                            left: 0,
+                            right: 0,
+                            height: slideHeight,
+                            backgroundColor: 'white',
+                            borderTopWidth: 1,
+                            borderColor: 'gray',
+                        }}
+                    >
+                        <Animated.View
+                            style={{
+                                transform: [{ translateY: slideAnimation }],
+                                height: slideHeight,
+                            }}
+                        >
+                            {children}
+                        </Animated.View>
+                    </View>
+                </TouchableWithoutFeedback>
+            )}
+        </View>
+    );
+};

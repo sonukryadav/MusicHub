@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
         margin: 8,
         backgroundColor: "#EBEBEB",
         padding: 5,
-        borderRadius:15,
+        borderRadius: 15,
     },
     v3: {
         flex:0.97,
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
         color: "#474240",
     },
     img1: {
-    }
+    },
 });
 
 export default styles;

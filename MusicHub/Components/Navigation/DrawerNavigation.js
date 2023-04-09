@@ -144,9 +144,13 @@ const DrawerNavigation = ({ navigation }) => {
                     headerTitle: "MusicHub",
                     headerRight: () => (
                         <TouchableOpacity onPress={() => navigation.navigate("search")}>
-                            <FontAwesome5 name="search" size={25} color={On ? "black" : "white"} marginRight={10} />
+                            <FontAwesome5 name="search" size={22} color={On ? "black" : "white"} marginRight={15} />
                         </TouchableOpacity>
-                    )
+                    ),
+                    headerStyle: {
+                        elevation: 20,
+                        shadowColor: "black",
+                    }
                 }} />
             </Drawer.Navigator>
         </>
