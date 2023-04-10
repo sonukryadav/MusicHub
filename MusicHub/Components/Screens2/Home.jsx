@@ -1,81 +1,75 @@
-import { Alert, View, Text, SafeAreaView, TouchableOpacity, FlatList } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import { View, Text, SafeAreaView, Image, Animated, Alert, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect, useRef } from 'react';
 import styles from '../Styles/Home';
-import RNFS from 'react-native-fs';
-import Fontisto from "react-native-vector-icons/Fontisto";
-import { Loading1, SlideUpView } from '../Views';
-import { requestStoragePermission, searchAllAudioFiles } from "../HelperFunctions";
+import RollingText from "react-native-rolling-text";
+import Slider from '@react-native-community/slider';
+import Ionicons from "react-native-vector-icons/Ionicons";
+import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 
 export default function Home() {
-    const [files, setFiles] = useState([]);
-    const [visible, setVisible] = useState(false);
 
-    useEffect(() => {
-        requestStoragePermission(grantedPerms, deniedPerms);
-    }, []);
-
-
-    const grantedPerms = async () => {
-        const audioFiles = await searchAllAudioFiles(RNFS.ExternalStorageDirectoryPath);
-        setFiles(audioFiles);
+    const fun = () => {
+        Alert.alert("Icon");
     }
-
-    const deniedPerms = async() => {
-        Alert.alert("Permission denied");
-    }
-
-    if (files.length === 0) {
-        return (
-            <View style={styles.loadV1}>
-                <Loading1 text={"Hold on, retrieving audio files..."} />
-            </View>
-        );
-    }
-
-    const showSlideUp = () => {
-        setVisible((pre) => !pre);
-    }
-
-
     return (
-        <SafeAreaView style={styles.sav}>
+        <SafeAreaView style={styles.sav1}>
             <View style={styles.v1}>
-                    <FlatList
-                        data={files}
-                        renderItem={({item , index}) => {
-                            return (
-                                <View style={styles.v2}>
-                                    <View>
-                                        <TouchableOpacity>
-                                            <View style={styles.v3}>
-                                                <View style={styles.v4}>
-                                                    <Fontisto name={"applemusic"} size={60} color={"black"} />
-                                                </View>
-                                                <View style={styles.v5}>
-                                                        <Text style={styles.t1}>{item.name.length > 35 ? item.name.substring(0, 35) + "..." : item.name}</Text>
-                                                    <Text style={styles.t2}>{"Artist name"}</Text>
-                                                    <Text style={styles.t3}>{"2:15"}</Text>
-                                                </View>
-                                            </View>
-                                        </TouchableOpacity>
-                                    </View>
-                                    <View>
-                                        <TouchableOpacity onPress={()=>showSlideUp(item)}>
-                                            <View style={styles.v6}>
-                                                <Fontisto name={"more-v-a"} size={18} color={"black"} />
-                                            </View>
-                                        </TouchableOpacity>
-                                    </View>
-                                </View>
-                            );
-                        }}
-                    />
-            </View>
-            <SlideUpView visible={visible} setVisible={setVisible} slideHeight={250}>
-                <View style={{ padding: 20 }}>
-                    <Text style={{color:"red", fontSize:15, textAlign:"center"}}>This is the sliding view content.</Text>
+                <View style={styles.v2}>
+                    <View style={styles.v3}>
+                        <View style={styles.v4}>
+                            <Image source={{ uri: "https://static.toiimg.com/photo/98658252/size-133239/98658252.jpg" }} style={styles.img1} />
+                        </View>
+                        <View style={styles.v5}>
+                            <View style={{ width: "100%", overflow: 'hidden' }}>
+                                <RollingText style={styles.t1}>
+                                    {"Enter your Looooooooooo  k khj h d ds"}
+                                </RollingText>
+                            </View>
+                            <Text style={styles.t2}>{"Singer name"}</Text>
+                        </View>
+                        <View style={styles.v6}>
+                            <View style={styles.v7}>
+                                <Slider
+                                    style={styles.slider}
+                                    minimumValue={0}
+                                    maximumValue={100}
+                                    minimumTrackTintColor="black"
+                                    maximumTrackTintColor="#000000"
+                                    thumbTintColor="#135763"
+                                />
+                            </View>
+                            <View style={styles.v8}>
+                                <Text style={styles.time}>{"00.00"}</Text>
+                                <Text style={styles.time}>{"05.30"}</Text>
+                            </View>
+                        </View>
+                        <View style={styles.v9}>
+                            <Icon1 name={"md-shuffle-sharp"} fun={fun} />
+                            <Icon1 name={"md-play-skip-back-circle"} fun={fun} />
+                            <Icon1 name={true ? "md-play-circle" : "md-pause-circle"} fun={fun} />
+                            <Icon1 name={"md-play-skip-forward-circle-sharp"} fun={fun} />
+                            <Icon2 name={true ? "repeat" : "repeat-one"} fun={fun} />
+                        </View>
+                    </View>
                 </View>
-            </SlideUpView>
+            </View>
         </SafeAreaView>
+    );
+}
+
+
+const Icon1 = ({name, fun}) => {
+    return (
+        <TouchableOpacity onPress={fun}>
+            <Ionicons name={name} size={50} color={"black"} />
+        </TouchableOpacity>
+    );
+}
+
+const Icon2 = ({ name, fun }) => {
+    return (
+        <TouchableOpacity onPress={fun}>
+            <MaterialIcons name={name} size={50} color={"black"} />
+        </TouchableOpacity>
     );
 }

@@ -10,4 +10,5 @@ export { default as PeopleNearby} from "./PeopleNearby";
 export { default as SavedMessages} from "./SavedMessages";
 export { default as Search} from "./Search";
 export { default as Settings} from "./Settings";
-export { default as TalktimeFeatures} from "./TalktimeFeatures";
+export { default as TalktimeFeatures } from "./TalktimeFeatures";
+export { default as LocalAudioFiles } from "./LocalAudioFiles";

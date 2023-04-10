@@ -1,6 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { Account, Home } from "../Screens2";
+import Entypo from "react-native-vector-icons/Entypo";
+import { Account, Home, LocalAudioFiles } from "../Screens2";
 
 
 const Tab = createBottomTabNavigator();
@@ -13,14 +14,12 @@ const TabNavigation = () => {
           let iconName;
           if (route.name === 'Home') {
             iconName = focused ? 'home' : 'home-outline';
-          } else if (route.name === 'My Network') {
-            iconName = focused ? 'people-sharp' : 'people-outline';
+          } else if (route.name === 'Offline') {
+            iconName = focused ? 'musical-notes' : 'musical-notes-outline';
           } else if (route.name === 'Post') {
             iconName = focused ? 'md-add-circle-sharp' : 'md-add-circle-outline';
           } else if (route.name === 'Notifications') {
             iconName = focused ? 'ios-notifications-sharp' : 'ios-notifications-outline';
-          } else if (route.name === 'Jobs') {
-            iconName = focused ? 'md-briefcase' : 'md-briefcase-outline';
           }
           return <Ionicons name={iconName} size={size} color={color} />;
         },
@@ -31,10 +30,9 @@ const TabNavigation = () => {
       }
     >
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="My Network" component={Account} />
+      <Tab.Screen name="Offline" component={LocalAudioFiles} />
       <Tab.Screen name="Post" component={Account} />
       <Tab.Screen name="Notifications" component={Account} />
-      <Tab.Screen name="Jobs" component={Account} />
     </Tab.Navigator>
   );
 }
