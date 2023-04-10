@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         borderRadius: 15,
     },
     v3: {
-        flex:0.97,
+        flex:0.94,
         flexDirection: "row",
         alignItems: "center",
     },
@@ -33,10 +33,10 @@ const styles = StyleSheet.create({
     },
     v5: {
         marginLeft: 15,
-        width: "80%",
+        width:"82%",
     },
     v6: {
-        flex:0.03,
+        flex:0.06,
         alignItems: "center",
         padding: 8,
     },

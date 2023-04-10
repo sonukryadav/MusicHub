@@ -1,13 +1,14 @@
-import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, PermissionsAndroid, Platform, Image, FlatList, Animated, TouchableWithoutFeedback } from 'react-native';
-import React, { useEffect, useState, useRef } from 'react';
+import { Alert, View, Text, SafeAreaView, TouchableOpacity, FlatList } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import styles from '../Styles/Home';
 import RNFS from 'react-native-fs';
 import Fontisto from "react-native-vector-icons/Fontisto";
-import { Loading1 } from '../Views';
+import { Loading1, SlideUpView } from '../Views';
 import { requestStoragePermission, searchAllAudioFiles } from "../HelperFunctions";
 
 export default function Home() {
     const [files, setFiles] = useState([]);
+    const [visible, setVisible] = useState(false);
 
     useEffect(() => {
         requestStoragePermission(grantedPerms, deniedPerms);
@@ -26,9 +27,13 @@ export default function Home() {
     if (files.length === 0) {
         return (
             <View style={styles.loadV1}>
-                <Loading1 />
+                <Loading1 text={"Hold on, retrieving audio files..."} />
             </View>
         );
+    }
+
+    const showSlideUp = () => {
+        setVisible((pre) => !pre);
     }
 
 
@@ -47,7 +52,7 @@ export default function Home() {
                                                     <Fontisto name={"applemusic"} size={60} color={"black"} />
                                                 </View>
                                                 <View style={styles.v5}>
-                                                    <Text style={styles.t1}>{item.name.length > 40 ? item.name.substring(0, 40) +"..." : item.name}</Text>
+                                                        <Text style={styles.t1}>{item.name.length > 35 ? item.name.substring(0, 35) + "..." : item.name}</Text>
                                                     <Text style={styles.t2}>{"Artist name"}</Text>
                                                     <Text style={styles.t3}>{"2:15"}</Text>
                                                 </View>
@@ -55,7 +60,7 @@ export default function Home() {
                                         </TouchableOpacity>
                                     </View>
                                     <View>
-                                        <TouchableOpacity>
+                                        <TouchableOpacity onPress={()=>showSlideUp(item)}>
                                             <View style={styles.v6}>
                                                 <Fontisto name={"more-v-a"} size={18} color={"black"} />
                                             </View>
@@ -66,79 +71,11 @@ export default function Home() {
                         }}
                     />
             </View>
-            <SlideUpView buttonText="Show Slide Up" slideHeight={200}>
+            <SlideUpView visible={visible} setVisible={setVisible} slideHeight={250}>
                 <View style={{ padding: 20 }}>
-                    <Text style={{color:"red", fontSize:25, textAlign:"center"}}>This is the sliding view content.</Text>
+                    <Text style={{color:"red", fontSize:15, textAlign:"center"}}>This is the sliding view content.</Text>
                 </View>
             </SlideUpView>
         </SafeAreaView>
     );
 }
-
-
-const SlideUpView = ({ buttonText, slideHeight, children }) => {
-    const [visible, setVisible] = useState(false);
-    const slideAnimation = useRef(new Animated.Value(0)).current;
-
-    const toggleVisible = () => {
-        setVisible(!visible);
-    };
-
-    const slideUp = () => {
-        Animated.timing(slideAnimation, {
-            toValue: slideHeight,
-            duration: 300,
-            useNativeDriver: true,
-        }).start();
-    };
-
-    const slideDown = () => {
-        Animated.timing(slideAnimation, {
-            toValue: 0,
-            duration: 300,
-            useNativeDriver: true,
-        }).start(() => setVisible(false));
-    };
-
-    return (
-        <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0 }}>
-            <TouchableWithoutFeedback onPress={toggleVisible}>
-                <View
-                    style={{
-                        backgroundColor: 'blue',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        height: 50,
-                    }}
-                >
-                    <Text style={{ color: 'white' }}>{buttonText}</Text>
-                </View>
-            </TouchableWithoutFeedback>
-            {visible && (
-                <TouchableWithoutFeedback onPress={toggleVisible}>
-                    <View
-                        style={{
-                            position: 'absolute',
-                            bottom: 50,
-                            left: 0,
-                            right: 0,
-                            height: slideHeight,
-                            backgroundColor: 'white',
-                            borderTopWidth: 1,
-                            borderColor: 'gray',
-                        }}
-                    >
-                        <Animated.View
-                            style={{
-                                transform: [{ translateY: slideAnimation }],
-                                height: slideHeight,
-                            }}
-                        >
-                            {children}
-                        </Animated.View>
-                    </View>
-                </TouchableWithoutFeedback>
-            )}
-        </View>
-    );
-};
