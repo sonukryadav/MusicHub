@@ -3,22 +3,22 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
     sav1: {
         flex: 1,
-        borderWidth: 2,
-        borderColor:"red",
+        // borderWidth: 2,
+        // borderColor:"red",
     },
     v1: {
         flex: 1,
-        borderWidth: 2,
-        borderColor:"green",
+        // borderWidth: 2,
+        // borderColor:"green",
     },
     v2: {
         flex: 1,
-        borderWidth: 2,
+        // borderWidth: 2,
     },
     v3: {
     flex: 1,
-        borderWidth: 2,
-        borderBottomColor: "teal",
+        // borderWidth: 2,
+        // borderBottomColor: "teal",
         justifyContent: "center",
         alignItems: "center",
     },

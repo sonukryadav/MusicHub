@@ -6,7 +6,6 @@ import Fontisto from "react-native-vector-icons/Fontisto";
 import { Loading1, SlideUpView } from '../Views';
 import { requestStoragePermission, searchAllAudioFiles } from "../HelperFunctions";
 
-
 export default function LocalAudioFiles() {
     const [files, setFiles] = useState([]);
     const [visible, setVisible] = useState(false);
@@ -46,9 +45,9 @@ export default function LocalAudioFiles() {
                     renderItem={({ item, index }) => {
                         return (
                             <View style={styles.v2}>
-                                <View>
+                                <View style={styles.v3}>
                                     <TouchableOpacity>
-                                        <View style={styles.v3}>
+                                        <View style={styles.v3i}>
                                             <View style={styles.v4}>
                                                 <Fontisto name={"applemusic"} size={60} color={"black"} />
                                             </View>
@@ -60,9 +59,9 @@ export default function LocalAudioFiles() {
                                         </View>
                                     </TouchableOpacity>
                                 </View>
-                                <View>
+                                <View style={styles.v6}>
                                     <TouchableOpacity onPress={() => showSlideUp(item)}>
-                                        <View style={styles.v6}>
+                                        <View>
                                             <Fontisto name={"more-v-a"} size={18} color={"black"} />
                                         </View>
                                     </TouchableOpacity>

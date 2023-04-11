@@ -26,6 +26,8 @@ const styles = StyleSheet.create({
     },
     v3: {
         flex: 0.94,
+    },
+    v3i: {
         flexDirection: "row",
         alignItems: "center",
     },
@@ -33,7 +35,6 @@ const styles = StyleSheet.create({
     },
     v5: {
         marginLeft: 15,
-        width: "82%",
     },
     v6: {
         flex: 0.06,
