@@ -39,7 +39,9 @@ const styles = StyleSheet.create({
     v6: {
         flex: 0.06,
         alignItems: "center",
-        padding: 8,
+    },
+    v6i: {
+        padding: 10,
     },
     t1: {
         fontSize: 14,

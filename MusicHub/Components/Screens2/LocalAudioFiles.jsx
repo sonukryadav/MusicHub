@@ -61,7 +61,7 @@ export default function LocalAudioFiles() {
                                 </View>
                                 <View style={styles.v6}>
                                     <TouchableOpacity onPress={() => showSlideUp(item)}>
-                                        <View>
+                                        <View style={styles.v6i}>
                                             <Fontisto name={"more-v-a"} size={18} color={"black"} />
                                         </View>
                                     </TouchableOpacity>
@@ -69,6 +69,7 @@ export default function LocalAudioFiles() {
                             </View>
                         );
                     }}
+                    keyExtractor={(item, index)=> index.toString()}
                 />
             </View>
             <SlideUpView visible={visible} setVisible={setVisible} slideHeight={250}>

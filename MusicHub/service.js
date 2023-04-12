@@ -1,5 +1,6 @@
 import TrackPlayer from 'react-native-track-player';
+import { PlaybackService } from "./Components/HelperFunctions/PlaybackService";
 
 module.exports = async function () {
-    await TrackPlayer.setupPlayer();
+    TrackPlayer.registerPlaybackService(() => PlaybackService);
 }
