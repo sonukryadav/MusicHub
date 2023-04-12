@@ -12,38 +12,34 @@ import { requestStoragePermission, searchAllAudioFiles } from "../HelperFunction
 
 
 
-const screenWidth = Dimensions.get("window").width;
+const { width, height } = Dimensions.get("window");
 
-// const setUpPlayer1 = async (array) => {
-//     try {
-//         await TrackPlayer.setupPlayer();
-//         await TrackPlayer.add(array);
-//     } catch (error) {
-//         console.log(error);
-//     }
-// }
-
-// const togglePlayBack = async (playbackState) => {
-//     const currentTrack = await TrackPlayer.getCurrentTrack();
-//     if (currentTrack !== null) {
-//         if (playbackState == State.Paused) {
-//             await TrackPlayer.play();
-//         } else {
-//             await TrackPlayer.pause();
-//         }
-//     }
-//     console.log("toggle");
-// }
-
-
-
+const setUpPlayer = async (array) => {
+    try {
+        await TrackPlayer.setupPlayer();
+        await TrackPlayer.updateOptions({
+            // Media controls capabilities
+            capabilities: [
+                Capability.Play,
+                Capability.Pause,
+                Capability.SkipToNext,
+                Capability.SkipToPrevious,
+                Capability.Stop,
+            ],
+            // Capabilities that will show up when the notification is in the compact form on Android
+            compactCapabilities: [Capability.Play, Capability.Pause],
+        });
+        await TrackPlayer.add(array);
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 export default function Home() {
     const [files, setFiles] = useState([]);
     const [songIndex, setSongIndex] = useState(0);
     const playBackState = usePlaybackState();
-    const [currentSong, setCurrentSong] = useState(0)
-
+    const progress = useProgress();
 
     const ar = [
         {
@@ -56,12 +52,12 @@ export default function Home() {
         },
         {
             id: 2,
-            url: 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba-online-audio-converter.com_-1.wav',
+            url: 'https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg',
             title: 'Ice Age2',
             artist: 'deadmau2',
             title: 'song2 slj akjd sldj komds o ads asldjpk kjdsfkjdsjfoksdj koasodj',
             artwork: "https://i.ytimg.com/vi/GLGuLXKT9Ng/maxresdefault.jpg",
-            duration: 411
+            duration: 500
         },
         {
             id: 3,
@@ -69,7 +65,7 @@ export default function Home() {
             title: 'song3 sdf adslk  jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj',
             artist: 'deadmau3',
             artwork: "https://static.toiimg.com/thumb/msid-96416857,width-1280,resizemode-4/96416857.jpg",
-            duration: 411
+            duration: 514
         },
         {
             id: 4,
@@ -77,7 +73,7 @@ export default function Home() {
             title: 'song2 slj akjd sldj komds o ads asldjpk kjdsfkjdsjfoksdj koasodj',
             artist: 'deadmau4',
             artwork: "https://i.ytimg.com/vi/GLGuLXKT9Ng/maxresdefault.jpg",
-            duration: 411
+            duration: 333
         },
 
     ]
@@ -85,10 +81,23 @@ export default function Home() {
     const scrollX = useRef(new Animated.Value(0)).current;
     const songSlider = useRef(null);
 
+
+    // useTrackPlayerEvents([Event.PlaybackTrackChanged], async event=>{
+    //     if (event.type === Event.PlaybackTrackChanged && event.nextTrack !== null) {
+    //         const track = await TrackPlayer.getTrack(event.nextTrack);
+    //         const { title, artwork, artist } = track;
+    //     }
+    // })
+
+    const skipTo = async(trackId) => {
+        await TrackPlayer.skip(trackId);
+    }
+
     useEffect(() => {
-        // setUpPlayer1(ar);
+        setUpPlayer(ar);
         scrollX.addListener(({ value }) => {
-            const index = Math.round(value / screenWidth)
+            const index = Math.round(value / width);
+            skipTo(index);
             setSongIndex(index);
         });
     },[]);
@@ -128,38 +137,44 @@ export default function Home() {
     }
 
     console.log(playBackState);
-    const iconSize = 45;
+
+
+    const iconSize = 50;
     const iconColor = "black";
 
 
-    const prev = () => {
-        // if (currentSong > 0) {
-        //     setSongIndex(pre => pre - 1);
-        // }
-        // console.log("prev");
+    const prev = async (playBackState) => {
         songSlider.current.scrollToOffset({
-            offset: (songIndex - 1) * width,
+            offset: (songIndex - 1) * width * 0.9,
         });
     }
 
-    const next = () => {
+    const next = async (playBackState) => {
         songSlider.current.scrollToOffset({
-            offset: (songIndex + 1) * width,
+            offset: (songIndex + 1) * width * 0.9,
         });
-        // if (ar.length -1 > currentSong) {
-        //     setSongIndex(pre => pre + 1);
-        // }
-        // console.log("next");
     }
 
-    const playPause = () => {
+    console.log(playBackState);
+
+    const playPause = async(playBackState) => {
+        const currentTrack = await TrackPlayer.getCurrentTrack();
+        if (currentTrack !== null) {
+        if (playBackState === State.Paused || playBackState ===  State.Ready) {
+                await TrackPlayer.play();
+            } else {
+                await TrackPlayer.pause();
+            }
+        }
     }
 
-    const shuffle = () => {
+    const shuffle = async (playBackState) => {
     }
 
-    const repeat = () => {
+    const repeat = async (playBackState) => {
     }
+
+    console.log(progress);
 
     return (
         <SafeAreaView style={styles.sav1}>
@@ -169,6 +184,7 @@ export default function Home() {
                         <View style={styles.v3}>
                             <View style={styles.flatListView}>
                                 <Animated.FlatList
+                                    ref={songSlider}
                                     data={ar}
                                     horizontal
                                     renderItem={({ item }) => (singleSong(item))}
@@ -202,34 +218,34 @@ export default function Home() {
                                 <View style={styles.v7}>
                                     <Slider
                                         style={styles.slider}
-                                        // value={10}
+                                        value={progress.position}
                                         minimumValue={0}
-                                        maximumValue={100}
+                                        maximumValue={progress.duration}
                                         minimumTrackTintColor="black"
                                         maximumTrackTintColor="#000000"
                                         thumbTintColor="#135763"
-                                        onSlidingComplete={() => { }}
+                                        onSlidingComplete={async(value) => await TrackPlayer.seekTo(value)}
                                     />
                                 </View>
                                 <View style={styles.v8}>
-                                    <Text style={styles.time}>{"00:00"}</Text>
-                                    <Text style={styles.time}>{"05:30"}</Text>
+                                    <Text style={styles.time}>{new Date(progress.position*1000).toLocaleTimeString().substring(3)}</Text>
+                                    <Text style={styles.time}>{new Date((progress.duration - progress.position) * 1000).toLocaleTimeString().substring(3)}</Text>
                                 </View>
                             </View>
                             <View style={styles.v9}>
-                                <TouchableOpacity onPress={() => shuffle()}>
+                                <TouchableOpacity onPress={() => shuffle(playBackState)}>
                                     <Ionicons name={"md-shuffle-sharp"} size={iconSize} color={iconColor} />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => prev()}>
+                                <TouchableOpacity onPress={() => prev(playBackState)}>
                                     <Ionicons name={"md-play-skip-back-circle"} size={iconSize} color={iconColor} />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => playPause()}>
-                                    <Ionicons name={playBackState === State.Playing ? "md-pause-circle" : "md-play-circle"} size={iconSize} color={iconColor} />
+                                <TouchableOpacity onPress={() => playPause(playBackState)}>
+                                    <Ionicons name={playBackState === State.Paused || playBackState === State.Ready? "md-play-circle" : "md-pause-circle"} size={iconSize} color={iconColor} />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => next()}>
+                                <TouchableOpacity onPress={() => next(playBackState)}>
                                     <Ionicons name={"md-play-skip-forward-circle-sharp"} size={iconSize} color={iconColor} />
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => repeat()}>
+                                <TouchableOpacity onPress={() => repeat(playBackState)}>
                                     <Ionicons name={true ? "repeat" : "repeat-one"} size={iconSize} color={iconColor} />
                                 </TouchableOpacity>
                             </View>
