@@ -8,6 +8,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import RNFS from 'react-native-fs';
 import { Loading1 } from '../Views';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { requestStoragePermission, searchAllAudioFiles } from "../HelperFunctions";
 
 
@@ -40,6 +41,8 @@ export default function Home() {
     const [songIndex, setSongIndex] = useState(0);
     const playBackState = usePlaybackState();
     const progress = useProgress();
+    const prevNextTractStateRef = useRef("ready");
+    const [repeatMode, setRepeatMode] = useState("repeat-off");
 
     const ar = [
         {
@@ -81,14 +84,6 @@ export default function Home() {
     const scrollX = useRef(new Animated.Value(0)).current;
     const songSlider = useRef(null);
 
-
-    // useTrackPlayerEvents([Event.PlaybackTrackChanged], async event=>{
-    //     if (event.type === Event.PlaybackTrackChanged && event.nextTrack !== null) {
-    //         const track = await TrackPlayer.getTrack(event.nextTrack);
-    //         const { title, artwork, artist } = track;
-    //     }
-    // })
-
     const skipTo = async(trackId) => {
         await TrackPlayer.skip(trackId);
     }
@@ -106,10 +101,19 @@ export default function Home() {
         requestStoragePermission(grantedPerms, deniedPerms);
     }, []);
 
+
     const grantedPerms = async () => {
         const audioFiles = await searchAllAudioFiles(RNFS.ExternalStorageDirectoryPath);
         setFiles(audioFiles);
     }
+
+    useTrackPlayerEvents([Event.PlaybackTrackChanged], async event => {
+        if (event.type === Event.PlaybackTrackChanged && event.nextTrack != null) {
+            const track = await TrackPlayer.getTrack(event.nextTrack);
+        }
+        console.log("change");
+    });
+
 
     const deniedPerms = async () => {
         Alert.alert("Permission denied");
@@ -136,8 +140,6 @@ export default function Home() {
         );
     }
 
-    console.log(playBackState);
-
 
     const iconSize = 50;
     const iconColor = "black";
@@ -147,23 +149,41 @@ export default function Home() {
         songSlider.current.scrollToOffset({
             offset: (songIndex - 1) * width * 0.9,
         });
+        setTimeout(async () => {
+            if (prevNextTractStateRef.current == State.Playing) {
+                await TrackPlayer.play();
+            } else if (prevNextTractStateRef.current === State.Paused) {
+                await TrackPlayer.pause();
+            }
+        }, 350);
     }
 
     const next = async (playBackState) => {
         songSlider.current.scrollToOffset({
             offset: (songIndex + 1) * width * 0.9,
         });
+        setTimeout(async () => {
+            if (prevNextTractStateRef.current == State.Playing) {
+                await TrackPlayer.play();
+            } else if (prevNextTractStateRef.current === State.Paused) {
+                await TrackPlayer.pause();
+            }
+        }, 350);
     }
 
-    console.log(playBackState);
+    // console.log("PlayBackState --- " + playBackState);
+    // console.log("prevNextTractStateRef --- " + prevNextTractStateRef.current);
+
 
     const playPause = async(playBackState) => {
-        const currentTrack = await TrackPlayer.getCurrentTrack();
-        if (currentTrack !== null) {
+        const trackIndex = await TrackPlayer.getCurrentTrack();
+        if (trackIndex !== null) {
         if (playBackState === State.Paused || playBackState ===  State.Ready) {
-                await TrackPlayer.play();
+            await TrackPlayer.play();
+            prevNextTractStateRef.current = "playing"
             } else {
-                await TrackPlayer.pause();
+            await TrackPlayer.pause();
+            prevNextTractStateRef.current = "paused"
             }
         }
     }
@@ -171,10 +191,19 @@ export default function Home() {
     const shuffle = async (playBackState) => {
     }
 
-    const repeat = async (playBackState) => {
-    }
 
-    console.log(progress);
+    const repeat = async (playBackState) => {
+        if (repeatMode === "repeat-off") {
+            TrackPlayer.setRepeatMode(RepeatMode.Track);
+            setRepeatMode("repeat-once");
+        } else if (repeatMode === "repeat-once") {
+            TrackPlayer.setRepeatMode(RepeatMode.Queue);
+            setRepeatMode("repeat");
+        } else if (repeatMode === "repeat") {
+            TrackPlayer.setRepeatMode(RepeatMode.Off);
+            setRepeatMode("repeat-off");
+        }
+    }
 
     return (
         <SafeAreaView style={styles.sav1}>
@@ -240,13 +269,13 @@ export default function Home() {
                                     <Ionicons name={"md-play-skip-back-circle"} size={iconSize} color={iconColor} />
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => playPause(playBackState)}>
-                                    <Ionicons name={playBackState === State.Paused || playBackState === State.Ready? "md-play-circle" : "md-pause-circle"} size={iconSize} color={iconColor} />
+                                    <Ionicons name={playBackState === State.Playing || playBackState === State.Buffering ? "md-pause-circle" : "md-play-circle"} size={iconSize} color={iconColor} />
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => next(playBackState)}>
                                     <Ionicons name={"md-play-skip-forward-circle-sharp"} size={iconSize} color={iconColor} />
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => repeat(playBackState)}>
-                                    <Ionicons name={true ? "repeat" : "repeat-one"} size={iconSize} color={iconColor} />
+                                    <MaterialCommunityIcons name={repeatMode} size={iconSize} color={iconColor} />
                                 </TouchableOpacity>
                             </View>
                         </View>
