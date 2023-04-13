@@ -41,7 +41,7 @@ const setUpPlayer = async (array) => {
 }
 
 export default function Home() {
-    const [files, setFiles] = useState([]);;
+    const [files, setFiles] = useState([]);
     const [songIndex, setSongIndex] = useState(0);
     const playBackState = usePlaybackState();
     const progress = useProgress();
@@ -174,6 +174,9 @@ export default function Home() {
             setRepeatMode("repeat-off");
         }
     }
+
+
+    console.log(files[0]);
 
     return (
         <SafeAreaView style={styles.sav1}>
