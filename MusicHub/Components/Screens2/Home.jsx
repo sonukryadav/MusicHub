@@ -107,12 +107,40 @@ export default function Home() {
         setFiles(audioFiles);
     }
 
-    useTrackPlayerEvents([Event.PlaybackTrackChanged], async event => {
-        if (event.type === Event.PlaybackTrackChanged && event.nextTrack != null) {
-            const track = await TrackPlayer.getTrack(event.nextTrack);
-        }
-        console.log("change");
-    });
+    // useTrackPlayerEvents([Event.PlaybackQueueEnded], async event => {
+    //     if (event.type === Event.PlaybackQueueEnded && event.nextTrack != null) {
+    //         const track = await TrackPlayer.getTrack(event.nextTrack);
+    //         songSlider.current.scrollToOffset({
+    //             offset: (songIndex + 1) * width * 0.9,
+    //         });
+    //     }
+    //     console.log("change1");
+    // });
+
+    // useTrackPlayerEvents([Event.PlaybackQueueEnded], async () => {
+    //     const currentTrack = await TrackPlayer.getCurrentTrack();
+    //     if (currentTrack !== null) {
+    //         // const index = ar.findIndex(track => track.id === currentTrack);
+    //         songSlider.current.scrollToOffset({
+    //             offset: (songIndex + 1) * width * 0.9,
+    //         });
+    //         // setSongIndex((index + 1) % ar.length);
+    //         console.log("complete");
+    //     }
+    // });
+
+    // useTrackPlayerEvents([Event.PlaybackTrackChanged], async event => {
+    //     if (event.type === Event.PlaybackTrackChanged && event.nextTrack != null) {
+    //         // const track = await TrackPlayer.getTrack(event.nextTrack);
+    //         if (progress.duration === progress.position) {
+    //             songSlider.current.scrollToOffset({
+    //             offset: (songIndex + 1) * width * 0.9,
+    //             });
+    //             setSongIndex(pre => pre + 1);
+    //         }
+    //     }
+    // });
+
 
 
     const deniedPerms = async () => {
@@ -253,6 +281,7 @@ export default function Home() {
                                         minimumTrackTintColor="black"
                                         maximumTrackTintColor="#000000"
                                         thumbTintColor="#135763"
+                                        tapToSeek={true}
                                         onSlidingComplete={async(value) => await TrackPlayer.seekTo(value)}
                                     />
                                 </View>
