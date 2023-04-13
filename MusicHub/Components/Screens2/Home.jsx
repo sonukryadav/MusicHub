@@ -10,6 +10,10 @@ import { Loading1 } from '../Views';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { requestStoragePermission, searchAllAudioFiles } from "../HelperFunctions";
+import tracklist from "../../tracklist.json";
+
+
+console.log(tracklist);
 
 
 
@@ -37,49 +41,12 @@ const setUpPlayer = async (array) => {
 }
 
 export default function Home() {
-    const [files, setFiles] = useState([]);
+    const [files, setFiles] = useState([]);;
     const [songIndex, setSongIndex] = useState(0);
     const playBackState = usePlaybackState();
     const progress = useProgress();
     const prevNextTractStateRef = useRef("ready");
     const [repeatMode, setRepeatMode] = useState("repeat-off");
-
-    const ar = [
-        {
-            id: 1,
-            url: 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3',
-            title: 'song 1',
-            artist: 'deadmau1',
-            artwork: "https://static.toiimg.com/photo/98658252/size-133239/98658252.jpg",
-            duration: 411
-        },
-        {
-            id: 2,
-            url: 'https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg',
-            title: 'Ice Age2',
-            artist: 'deadmau2',
-            title: 'song2 slj akjd sldj komds o ads asldjpk kjdsfkjdsjfoksdj koasodj',
-            artwork: "https://i.ytimg.com/vi/GLGuLXKT9Ng/maxresdefault.jpg",
-            duration: 500
-        },
-        {
-            id: 3,
-            url: 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3',
-            title: 'song3 sdf adslk  jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj',
-            artist: 'deadmau3',
-            artwork: "https://static.toiimg.com/thumb/msid-96416857,width-1280,resizemode-4/96416857.jpg",
-            duration: 514
-        },
-        {
-            id: 4,
-            url: 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3',
-            title: 'song2 slj akjd sldj komds o ads asldjpk kjdsfkjdsjfoksdj koasodj',
-            artist: 'deadmau4',
-            artwork: "https://i.ytimg.com/vi/GLGuLXKT9Ng/maxresdefault.jpg",
-            duration: 333
-        },
-
-    ]
 
     const scrollX = useRef(new Animated.Value(0)).current;
     const songSlider = useRef(null);
@@ -89,7 +56,7 @@ export default function Home() {
     }
 
     useEffect(() => {
-        setUpPlayer(ar);
+        setUpPlayer(tracklist);
         scrollX.addListener(({ value }) => {
             const index = Math.round(value / width);
             skipTo(index);
@@ -107,41 +74,22 @@ export default function Home() {
         setFiles(audioFiles);
     }
 
-    // useTrackPlayerEvents([Event.PlaybackQueueEnded], async event => {
-    //     if (event.type === Event.PlaybackQueueEnded && event.nextTrack != null) {
-    //         const track = await TrackPlayer.getTrack(event.nextTrack);
-    //         songSlider.current.scrollToOffset({
-    //             offset: (songIndex + 1) * width * 0.9,
-    //         });
-    //     }
-    //     console.log("change1");
-    // });
+    const valuePosition = Math.floor(progress.position);
 
-    // useTrackPlayerEvents([Event.PlaybackQueueEnded], async () => {
-    //     const currentTrack = await TrackPlayer.getCurrentTrack();
-    //     if (currentTrack !== null) {
-    //         // const index = ar.findIndex(track => track.id === currentTrack);
-    //         songSlider.current.scrollToOffset({
-    //             offset: (songIndex + 1) * width * 0.9,
-    //         });
-    //         // setSongIndex((index + 1) % ar.length);
-    //         console.log("complete");
-    //     }
-    // });
-
-    // useTrackPlayerEvents([Event.PlaybackTrackChanged], async event => {
-    //     if (event.type === Event.PlaybackTrackChanged && event.nextTrack != null) {
-    //         // const track = await TrackPlayer.getTrack(event.nextTrack);
-    //         if (progress.duration === progress.position) {
-    //             songSlider.current.scrollToOffset({
-    //             offset: (songIndex + 1) * width * 0.9,
-    //             });
-    //             setSongIndex(pre => pre + 1);
-    //         }
-    //     }
-    // });
-
-
+    useEffect(() => {
+        if ((valuePosition + 1) === Math.floor(progress.duration) && repeatMode !== "repeat-once") {
+            songSlider.current.scrollToOffset({
+                offset: (songIndex + 1) * width * 0.9,
+            });
+            setTimeout(async () => {
+                if (prevNextTractStateRef.current == State.Playing) {
+                    await TrackPlayer.play();
+                } else if (prevNextTractStateRef.current === State.Paused) {
+                    await TrackPlayer.pause();
+                }
+            },500);
+        }
+    });
 
     const deniedPerms = async () => {
         Alert.alert("Permission denied");
@@ -159,7 +107,6 @@ export default function Home() {
         Alert.alert("Icon");
     }
 
-
     const singleSong = (item) => {
         return (
             <View style={styles.v4}>
@@ -168,10 +115,8 @@ export default function Home() {
         );
     }
 
-
     const iconSize = 50;
     const iconColor = "black";
-
 
     const prev = async (playBackState) => {
         songSlider.current.scrollToOffset({
@@ -183,8 +128,9 @@ export default function Home() {
             } else if (prevNextTractStateRef.current === State.Paused) {
                 await TrackPlayer.pause();
             }
-        }, 350);
+        }, 500);
     }
+
 
     const next = async (playBackState) => {
         songSlider.current.scrollToOffset({
@@ -196,12 +142,8 @@ export default function Home() {
             } else if (prevNextTractStateRef.current === State.Paused) {
                 await TrackPlayer.pause();
             }
-        }, 350);
+        }, 500);
     }
-
-    // console.log("PlayBackState --- " + playBackState);
-    // console.log("prevNextTractStateRef --- " + prevNextTractStateRef.current);
-
 
     const playPause = async(playBackState) => {
         const trackIndex = await TrackPlayer.getCurrentTrack();
@@ -242,7 +184,7 @@ export default function Home() {
                             <View style={styles.flatListView}>
                                 <Animated.FlatList
                                     ref={songSlider}
-                                    data={ar}
+                                    data={tracklist}
                                     horizontal
                                     renderItem={({ item }) => (singleSong(item))}
                                     keyExtractor={(item, index) => index.toString()}
@@ -266,10 +208,10 @@ export default function Home() {
                             <View style={styles.v5}>
                                 <View style={{ width: "100%", overflow: 'hidden' }}>
                                     <RollingText style={styles.t1}>
-                                        {ar[songIndex].title}
+                                        {tracklist[songIndex].title}
                                     </RollingText>
                                 </View>
-                                <Text style={styles.t2}>{ar[songIndex].artist}</Text>
+                                <Text style={styles.t2}>{tracklist[songIndex].artist}</Text>
                             </View>
                             <View style={styles.v6}>
                                 <View style={styles.v7}>
