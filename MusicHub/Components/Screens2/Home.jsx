@@ -13,10 +13,6 @@ import { requestStoragePermission, searchAllAudioFiles } from "../HelperFunction
 import tracklist from "../../tracklist.json";
 
 
-console.log(tracklist);
-
-
-
 const { width, height } = Dimensions.get("window");
 
 const setUpPlayer = async (array) => {
@@ -51,7 +47,7 @@ export default function Home() {
     const scrollX = useRef(new Animated.Value(0)).current;
     const songSlider = useRef(null);
 
-    const skipTo = async(trackId) => {
+    const skipTo = async (trackId) => {
         await TrackPlayer.skip(trackId);
     }
 
@@ -62,7 +58,7 @@ export default function Home() {
             skipTo(index);
             setSongIndex(index);
         });
-    },[]);
+    }, []);
 
     useEffect(() => {
         requestStoragePermission(grantedPerms, deniedPerms);
@@ -75,7 +71,6 @@ export default function Home() {
     }
 
     const valuePosition = Math.floor(progress.position);
-
     useEffect(() => {
         if ((valuePosition + 1) === Math.floor(progress.duration) && repeatMode !== "repeat-once") {
             songSlider.current.scrollToOffset({
@@ -87,9 +82,34 @@ export default function Home() {
                 } else if (prevNextTractStateRef.current === State.Paused) {
                     await TrackPlayer.pause();
                 }
-            },500);
+            }, 500);
         }
     });
+
+    let path = files[0]?.path;
+    // RNFS.readFile(path, 'utf8')
+    //     .then(contents => {
+    //         console.log(contents);
+    //     })
+    //     .catch(error => {
+    //         console.log(error.message);
+    //     });
+
+    useEffect(() => {
+        readSingleFile();
+    },[files])
+
+    // console.log(path);
+
+    const readSingleFile = async () => {
+        try {
+            const filePath = '/storage/emulated/0/Download/Hawaon Ne Yeh Kaha.mp3';
+            const fileData = await RNFS.readFile(filePath);
+            console.log(fileData);
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
     const deniedPerms = async () => {
         Alert.alert("Permission denied");
@@ -174,9 +194,6 @@ export default function Home() {
             setRepeatMode("repeat-off");
         }
     }
-
-
-    console.log(files[0]);
 
     return (
         <SafeAreaView style={styles.sav1}>
