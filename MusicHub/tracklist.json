@@ -1,44 +1,44 @@
-    [
-        {
-            "id": 1,
-            "url": "https: //www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3",
-            "title": "song 1",
-            "artist": "deadmau1",
-            "artwork": "https://static.toiimg.com/photo/98658252/size-133239/98658252.jpg",
-            "duration": 411
-        },
-        {
-            "id": 2,
-            "url": "https: //actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg",
-            "title": "Ice Age2",
-            "artist": "deadmau2",
-            "title": "song2 slj akjd sldj komds o ads asldjpk kjdsfkjdsjfoksdj koasodj",
-            "artwork": "https://i.ytimg.com/vi/GLGuLXKT9Ng/maxresdefault.jpg",
-            "duration": 500
-        },
-        {
-            "id": 3,
-            "url": "https: //www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3",
-            "title": "song3 sdf adslk  jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj",
-            "artist": "deadmau3",
-            "artwork": "https://static.toiimg.com/thumb/msid-96416857,width-1280,resizemode-4/96416857.jpg",
-            "duration": 514
-        },
-        {
-            "id": 4,
-            "url": "https: //www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3",
-            "title": "song2 slj akjd sldj komds o ads asldjpk kjdsfkjdsjfoksdj koasodj",
-            "artist": "deadmau4",
-            "artwork": "https://i.ytimg.com/vi/GLGuLXKT9Ng/maxresdefault.jpg",
-            "duration": 333
-        },
-        {
-            "id": 5,
-            "url": "https: //actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg",
-            "title": "Ice Age2",
-            "artist": "deadmau2",
-            "title": "song2 slj akjd sldj komds o ads asldjpk kjdsfkjdsjfoksdj koasodj",
-            "artwork": "https://i.ytimg.com/vi/GLGuLXKT9Ng/maxresdefault.jpg",
-            "duration": 200
-        }
-    ]
+[
+    {
+        "id": 1,
+        "url": "https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3",
+        "title": "song 1",
+        "artist": "deadmau1",
+        "artwork": "https://static.toiimg.com/photo/98658252/size-133239/98658252.jpg",
+        "duration": 411
+    },
+    {
+        "id": 2,
+        "url": "https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg",
+        "title": "Ice Age2",
+        "artist": "deadmau2",
+        "title": "song2 slj akjd sldj komds o ads asldjpk kjdsfkjdsjfoksdj koasodj",
+        "artwork": "https://i.ytimg.com/vi/GLGuLXKT9Ng/maxresdefault.jpg",
+        "duration": 500
+    },
+    {
+        "id": 3,
+        "url": "https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3",
+        "title": "song3 sdf adslk  jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj",
+        "artist": "deadmau3",
+        "artwork": "https://static.toiimg.com/thumb/msid-96416857,width-1280,resizemode-4/96416857.jpg",
+        "duration": 514
+    },
+    {
+        "id": 4,
+        "url": "https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3",
+        "title": "song2 slj akjd sldj komds o ads asldjpk kjdsfkjdsjfoksdj koasodj",
+        "artist": "deadmau4",
+        "artwork": "https://i.ytimg.com/vi/GLGuLXKT9Ng/maxresdefault.jpg",
+        "duration": 333
+    },
+    {
+        "id": 5,
+        "url": "https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg",
+        "title": "Ice Age2",
+        "artist": "deadmau2",
+        "title": "song2 slj akjd sldj komds o ads asldjpk kjdsfkjdsjfoksdj koasodj",
+        "artwork": "https://i.ytimg.com/vi/GLGuLXKT9Ng/maxresdefault.jpg",
+        "duration": 200
+    }
+]

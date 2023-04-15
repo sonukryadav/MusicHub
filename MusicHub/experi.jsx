@@ -1,6 +1,6 @@
 import { View, Text, SafeAreaView, Image, Animated, Alert, TouchableOpacity, FlatList, ScrollView, Dimensions } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
-import TrackPlayer, { Capability, Event, RepeatMode, State, usePlaybackState, useProgress, useTrackPlayerEvents } from 'react-native-track-player';
+import TrackPlayer, { Capability, Event, RepeatMode, State, usePlaybackState, useProgress, useTrackPlayerEvents} from 'react-native-track-player';
 import styles from '../Styles/Home';
 import RollingText from "react-native-rolling-text";
 import Slider from '@react-native-community/slider';
@@ -10,30 +10,49 @@ import { Loading1 } from '../Views';
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { requestStoragePermission, searchAllAudioFiles } from "../HelperFunctions";
-import tracklist from "../../tracklist.json";
+// import tracklist  from "../../tracklist";
+
+const tracklist = [
+    {
+        id: 1,
+        url: 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3',
+        title: 'song 1',
+        artist: 'deadmau1',
+        artwork: "https://static.toiimg.com/photo/98658252/size-133239/98658252.jpg",
+        duration: 411
+    },
+    {
+        id: 2,
+        url: 'https://actions.google.com/sounds/v1/alarms/digital_watch_alarm_long.ogg',
+        title: 'Ice Age2',
+        artist: 'deadmau2',
+        title: 'song2 slj akjd sldj komds o ads asldjpk kjdsfkjdsjfoksdj koasodj',
+        artwork: "https://i.ytimg.com/vi/GLGuLXKT9Ng/maxresdefault.jpg",
+        duration: 500
+    },
+    {
+        id: 3,
+        url: 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3',
+        title: 'song3 sdf adslk  jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj',
+        artist: 'deadmau3',
+        artwork: "https://static.toiimg.com/thumb/msid-96416857,width-1280,resizemode-4/96416857.jpg",
+        duration: 514
+    },
+    {
+        id: 4,
+        url: 'https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3',
+        title: 'song2 slj akjd sldj komds o ads asldjpk kjdsfkjdsjfoksdj koasodj',
+        artist: 'deadmau4',
+        artwork: "https://i.ytimg.com/vi/GLGuLXKT9Ng/maxresdefault.jpg",
+        duration: 333
+    },
+
+]
 
 
 const { width, height } = Dimensions.get("window");
 
-export default function Home() {
-    const [files, setFiles] = useState([]);
-    const [songIndex, setSongIndex] = useState(0);
-    const playBackState = usePlaybackState();
-    const progress = useProgress();
-    const prevNextTractStateRef = useRef("ready");
-    const [repeatMode, setRepeatMode] = useState("repeat-off");
-
-    const scrollX = useRef(new Animated.Value(0)).current;
-    const songSlider = useRef(null);
-
-    const iconSize = 50;
-    const iconColor = "black";
-
-    const skipTo = async (trackId) => {
-        await TrackPlayer.skip(trackId);
-    }
-
-    const setUpPlayer = async () => {
+const setUpPlayer = async (array) => {
     try {
         await TrackPlayer.setupPlayer();
         await TrackPlayer.updateOptions({
@@ -48,24 +67,35 @@ export default function Home() {
             // Capabilities that will show up when the notification is in the compact form on Android
             compactCapabilities: [Capability.Play, Capability.Pause],
         });
-        await TrackPlayer.add(tracklist);
+        await TrackPlayer.add(array);
     } catch (error) {
         console.log(error);
     }
 }
 
-console.log(tracklist.length);
+export default function Home() {
+    const [files, setFiles] = useState([]);
+    const [songIndex, setSongIndex] = useState(0);
+    const playBackState = usePlaybackState();
+    const progress = useProgress();
+    const prevNextTractStateRef = useRef("ready");
+    const [repeatMode, setRepeatMode] = useState("repeat-off");
+
+    const scrollX = useRef(new Animated.Value(0)).current;
+    const songSlider = useRef(null);
+
+    const skipTo = async(trackId) => {
+        await TrackPlayer.skip(trackId);
+    }
 
     useEffect(() => {
-        if (tracklist.length !== 0) {
-            setUpPlayer();
-            scrollX.addListener(({ value }) => {
-                const index = Math.round(value / width);
-                skipTo(index);
-                setSongIndex(index);
-            });
-        }
-    }, []);
+        setUpPlayer(tracklist);
+        scrollX.addListener(({ value }) => {
+            const index = Math.round(value / width);
+            skipTo(index);
+            setSongIndex(index);
+        });
+    },[]);
 
 
     useEffect(() => {
@@ -90,7 +120,7 @@ console.log(tracklist.length);
                 } else if (prevNextTractStateRef.current === State.Paused) {
                     await TrackPlayer.pause();
                 }
-            }, 500);
+            },500);
         }
     });
 
@@ -117,6 +147,9 @@ console.log(tracklist.length);
             </View>
         );
     }
+
+    const iconSize = 50;
+    const iconColor = "black";
 
     const prev = async (playBackState) => {
         songSlider.current.scrollToOffset({
@@ -145,15 +178,15 @@ console.log(tracklist.length);
         }, 500);
     }
 
-    const playPause = async (playBackState) => {
+    const playPause = async(playBackState) => {
         const trackIndex = await TrackPlayer.getCurrentTrack();
         if (trackIndex !== null) {
-            if (playBackState === State.Paused || playBackState === State.Ready) {
-                await TrackPlayer.play();
-                prevNextTractStateRef.current = "playing"
+        if (playBackState === State.Paused || playBackState ===  State.Ready) {
+            await TrackPlayer.play();
+            prevNextTractStateRef.current = "playing"
             } else {
-                await TrackPlayer.pause();
-                prevNextTractStateRef.current = "paused"
+            await TrackPlayer.pause();
+            prevNextTractStateRef.current = "paused"
             }
         }
     }
@@ -196,12 +229,12 @@ console.log(tracklist.length);
                                         [
                                             {
                                                 nativeEvent: {
-                                                    contentOffset: { x: scrollX }
+                                                    contentOffset: {x : scrollX}
                                                 },
                                             },
                                         ],
                                         {
-                                            useNativeDriver: true,
+                                            useNativeDriver:true,
                                         }
                                     )}
                                 />
@@ -225,11 +258,11 @@ console.log(tracklist.length);
                                         maximumTrackTintColor="#000000"
                                         thumbTintColor="#135763"
                                         tapToSeek={true}
-                                        onSlidingComplete={async (value) => await TrackPlayer.seekTo(value)}
+                                        onSlidingComplete={async(value) => await TrackPlayer.seekTo(value)}
                                     />
                                 </View>
                                 <View style={styles.v8}>
-                                    <Text style={styles.time}>{new Date(progress.position * 1000).toLocaleTimeString().substring(3)}</Text>
+                                    <Text style={styles.time}>{new Date(progress.position*1000).toLocaleTimeString().substring(3)}</Text>
                                     <Text style={styles.time}>{new Date((progress.duration - progress.position) * 1000).toLocaleTimeString().substring(3)}</Text>
                                 </View>
                             </View>
