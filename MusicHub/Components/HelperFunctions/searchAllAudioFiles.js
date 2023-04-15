@@ -9,7 +9,6 @@ const searchAllAudioFiles = async (dirPath) => {
                 file.name.endsWith('.m4a') ||
                 file.name.endsWith('.wav') ||
                 file.name.endsWith('.ogg')
-                // add more audio file extensions here
             );
         });
         const directories = files.filter((file) => file.isDirectory());
@@ -23,5 +22,4 @@ const searchAllAudioFiles = async (dirPath) => {
         return [];
     }
 }
-
 export default searchAllAudioFiles;

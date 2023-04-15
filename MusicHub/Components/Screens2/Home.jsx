@@ -7,9 +7,8 @@ import Slider from '@react-native-community/slider';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import RNFS from 'react-native-fs';
 import { Loading1 } from '../Views';
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { requestStoragePermission, searchAllAudioFiles } from "../HelperFunctions";
+import { requestStoragePermission, trackFormattedAudioFiles } from "../HelperFunctions";
 import tracklist from "../../tracklist.json";
 
 
@@ -48,33 +47,35 @@ export default function Home() {
             // Capabilities that will show up when the notification is in the compact form on Android
             compactCapabilities: [Capability.Play, Capability.Pause],
         });
-        await TrackPlayer.add(tracklist);
+        const arr = await trackFormattedAudioFiles();
+        console.log("arr : ", arr[0]);
+        await TrackPlayer.add(arr);
     } catch (error) {
         console.log(error);
     }
 }
 
-console.log(tracklist.length);
 
     useEffect(() => {
-        if (tracklist.length !== 0) {
+        console.log(0);
+        (async () => {
+            console.log(1);
+            await requestStoragePermission(grantedPerms, deniedPerms);
+            console.log(2);
             setUpPlayer();
+            console.log(3);
             scrollX.addListener(({ value }) => {
                 const index = Math.round(value / width);
                 skipTo(index);
                 setSongIndex(index);
             });
-        }
-    }, []);
-
-
-    useEffect(() => {
-        requestStoragePermission(grantedPerms, deniedPerms);
-    }, []);
+        })();
+        console.log(4);
+    },[]);
 
 
     const grantedPerms = async () => {
-        const audioFiles = await searchAllAudioFiles(RNFS.ExternalStorageDirectoryPath);
+        const audioFiles = await trackFormattedAudioFiles();
         setFiles(audioFiles);
     }
 
@@ -185,7 +186,7 @@ console.log(tracklist.length);
                             <View style={styles.flatListView}>
                                 <Animated.FlatList
                                     ref={songSlider}
-                                    data={tracklist}
+                                    data={files}
                                     horizontal
                                     renderItem={({ item }) => (singleSong(item))}
                                     keyExtractor={(item, index) => index.toString()}
@@ -209,10 +210,10 @@ console.log(tracklist.length);
                             <View style={styles.v5}>
                                 <View style={{ width: "100%", overflow: 'hidden' }}>
                                     <RollingText style={styles.t1}>
-                                        {tracklist[songIndex].title}
+                                        {files[songIndex].title}
                                     </RollingText>
                                 </View>
-                                <Text style={styles.t2}>{tracklist[songIndex].artist}</Text>
+                                <Text style={styles.t2}>{files[songIndex].artist}</Text>
                             </View>
                             <View style={styles.v6}>
                                 <View style={styles.v7}>
