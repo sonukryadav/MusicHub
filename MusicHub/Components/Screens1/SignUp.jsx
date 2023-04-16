@@ -2,6 +2,7 @@ import React from 'react';
 import { ScrollView, View, Text, TouchableOpacity, Image, SafeAreaView, Alert } from 'react-native';
 import styles from "../Styles/SignUp";
 import { useNavigation } from "@react-navigation/native";
+import img1 from "../Assets/MusicHub-logo.png";
 
 
 
@@ -21,10 +22,8 @@ const SignUp = () => {
 					<View style={styles.v1}>
 						<View style={styles.v2}>
 							<Image
-								style={styles.image1}
-								source={{
-									uri: "https://firebasestorage.googleapis.com/v0/b/musichub2.appspot.com/o/musicHub%20logo.webp?alt=media&token=ab8614ce-95f6-401f-a605-f2237c57c758",
-								}}
+							style={styles.image1}
+								source={img1}
 							/>
 						</View>
 						<View style={styles.v3}>

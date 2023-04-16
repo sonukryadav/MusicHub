@@ -5,14 +5,14 @@ import styles from '../Styles/Home';
 import RollingText from "react-native-rolling-text";
 import Slider from '@react-native-community/slider';
 import Ionicons from "react-native-vector-icons/Ionicons";
-import RNFS from 'react-native-fs';
 import { Loading1 } from '../Views';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { requestStoragePermission, trackFormattedAudioFiles } from "../HelperFunctions";
 import tracklist from "../../tracklist.json";
+import img1 from "../Assets/MusicHub-logo.png";
 
 
-const { width, height } = Dimensions.get("window");
+const { width } = Dimensions.get("window");
 
 export default function Home() {
     const [files, setFiles] = useState([]);
@@ -48,7 +48,6 @@ export default function Home() {
             compactCapabilities: [Capability.Play, Capability.Pause],
         });
         const arr = await trackFormattedAudioFiles();
-        console.log("arr : ", arr[0]);
         await TrackPlayer.add(arr);
     } catch (error) {
         console.log(error);
@@ -57,20 +56,15 @@ export default function Home() {
 
 
     useEffect(() => {
-        console.log(0);
         (async () => {
-            console.log(1);
             await requestStoragePermission(grantedPerms, deniedPerms);
-            console.log(2);
             setUpPlayer();
-            console.log(3);
             scrollX.addListener(({ value }) => {
                 const index = Math.round(value / width);
                 skipTo(index);
                 setSongIndex(index);
             });
         })();
-        console.log(4);
     },[]);
 
 
@@ -114,7 +108,7 @@ export default function Home() {
     const singleSong = (item) => {
         return (
             <View style={styles.v4}>
-                <Image source={{ uri: item.artwork }} resizeMode='contain' style={styles.img1} />
+                <Image source={img1} resizeMode='contain' style={styles.img1} />
             </View>
         );
     }

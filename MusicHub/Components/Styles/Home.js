@@ -1,6 +1,5 @@
 import { StyleSheet, Dimensions } from "react-native";
 
-
 const { width, height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
@@ -20,8 +19,6 @@ const styles = StyleSheet.create({
     },
     v2: {
         flex: 1,
-        // justifyContent: "center",
-        // alignItems: "center",
     },
     v3: {
         flex: 1,
@@ -48,14 +45,10 @@ const styles = StyleSheet.create({
     v5: {
         marginTop: 20,
         width: "70%",
-        // backgroundColor: "#E3E3E3",
         padding: 10,
         borderRadius: 25,
-        // justifyContent: "center",
-        // alignItems:"center"
     },
     v6: {
-        // backgroundColor:"#005"
         width: "75%",
         alignItems: "center",
         marginTop:15,
@@ -93,7 +86,6 @@ const styles = StyleSheet.create({
     slider: {
         width: "100%",
         height: 20,
-        // backgroundColor:"rgba(255, 255, 255,0.95)"
     },
     time: {
         color: "#363636",

@@ -16,15 +16,13 @@ const styles = StyleSheet.create({
 	},
 	v2: {
 		alignItems: "center",
-		marginTop: 50,
 	},
 	image1: {
-		width: 100,
-		height: 100,
+		width: 320,
+		height: 250,
 	},
 	v3: {
 		alignItems: "center",
-		marginTop: 20,
 	},
 	t1: {
 		fontSize: 25,
