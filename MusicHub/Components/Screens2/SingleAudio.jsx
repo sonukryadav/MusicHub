@@ -9,6 +9,7 @@ import { Loading1 } from '../Views';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { requestStoragePermission, trackFormattedAudioFiles } from "../HelperFunctions";
 import img1 from "../Assets/MusicHub-logo.png";
+import { useSelector } from "react-redux";
 
 // url, title, artist
 const { width } = Dimensions.get("window");
@@ -24,8 +25,10 @@ export default function SingleAudio({route}) {
     const scrollX = useRef(new Animated.Value(0)).current;
     const songSlider = useRef(null);
 
-    const { name, path, index1 } = route.params;
-    console.log(name, path, index1);
+    const { localAudios } = useSelector((state) => state.localAudio);
+
+    const { title, url, index1 } = route.params;
+    console.log(title, url, index1);
 
     const iconSize = 50;
     const iconColor = "black";
@@ -34,31 +37,9 @@ export default function SingleAudio({route}) {
         await TrackPlayer.skip(trackId);
     }
 
-    const setUpPlayer = async () => {
-        try {
-            await TrackPlayer.setupPlayer();
-            TrackPlayer.updateOptions({
-                // Media controls capabilities
-                capabilities: [
-                    Capability.Play,
-                    Capability.Pause,
-                    Capability.SkipToNext,
-                    Capability.SkipToPrevious,
-                    Capability.Stop,
-                ],
-                // Capabilities that will show up when the notification is in the compact form on Android
-                // , Capability.SeekTo, Capability.Like, Capability.Stop, Capability.SeekTo, Capability.SkipToPrevious, Capability.SkipToNext, Capability.SkipToPrevious, Capability.JumpForward
-                compactCapabilities: [Capability.Play, Capability.Pause],
-            });
-            const arr = await trackFormattedAudioFiles();
-            await TrackPlayer.add(arr);
-        } catch (error) {
-            console.log(error);
-        }
-    }
 
     const jumping = async () => {
-        console.log("jumping index1 :---- ", index);
+        console.log("jumping index1 :---- ", index1);
         try {
             if (index1) {
                 console.log("jumping index :---- ", index1);
@@ -73,47 +54,41 @@ export default function SingleAudio({route}) {
         }
     }
 
-    console.log("songIndex : ---------- ",songIndex);
+    console.log("songIndex : ---------- ", songIndex);
+
+    const setAudioFiles = async () => {
+        setFiles(pre=>localAudios);
+    }
 
 
     useEffect(() => {
         (async () => {
-            await requestStoragePermission(grantedPerms, deniedPerms);
-            await setUpPlayer();
+            await setAudioFiles();
             scrollX.addListener(({ value }) => {
                 const index = Math.round(value / width);
-                skipTo(index);
-                setSongIndex(index);
+                skipTo(index1);
+                setSongIndex(index1);
             });
-            jumping();
+            // jumping();
         })();
-    }, []);
+    }, [index1]);
 
+    // const valuePosition = Math.floor(progress.position);
+    // useEffect(() => {
+    //     if ((valuePosition + 1) === Math.floor(progress.duration) && repeatMode !== "repeat-once") {
+    //         songSlider.current.scrollToOffset({
+    //             offset: (songIndex + 1) * width * 0.9,
+    //         });
+    //         setTimeout(async () => {
+    //             if (prevNextTractStateRef.current == State.Playing) {
+    //                 await TrackPlayer.play();
+    //             } else if (prevNextTractStateRef.current === State.Paused) {
+    //                 await TrackPlayer.pause();
+    //             }
+    //         }, 500);
+    //     }
+    // });
 
-    const grantedPerms = async () => {
-        const audioFiles = await trackFormattedAudioFiles();
-        setFiles(audioFiles);
-    }
-
-    const valuePosition = Math.floor(progress.position);
-    useEffect(() => {
-        if ((valuePosition + 1) === Math.floor(progress.duration) && repeatMode !== "repeat-once") {
-            songSlider.current.scrollToOffset({
-                offset: (songIndex + 1) * width * 0.9,
-            });
-            setTimeout(async () => {
-                if (prevNextTractStateRef.current == State.Playing) {
-                    await TrackPlayer.play();
-                } else if (prevNextTractStateRef.current === State.Paused) {
-                    await TrackPlayer.pause();
-                }
-            }, 500);
-        }
-    });
-
-    const deniedPerms = async () => {
-        Alert.alert("Permission denied");
-    }
 
     if (files.length === 0) {
         return (
@@ -153,6 +128,8 @@ export default function SingleAudio({route}) {
         songSlider.current.scrollToOffset({
             offset: (songIndex + 1) * width * 0.9,
         });
+        // skipTo(songIndex + 1);
+        // setSongIndex(pre=>pre+1)
         setTimeout(async () => {
             if (prevNextTractStateRef.current == State.Playing) {
                 await TrackPlayer.play();

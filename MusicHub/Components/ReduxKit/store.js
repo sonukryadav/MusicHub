@@ -3,6 +3,7 @@ import createUserFirebaseAtSignInSlice from "./CreateUserFirebaseAtSignIn";
 import userInputSlice from "./UserInput";
 import themeSlice from "./ThemeSlice";
 import permissionSlice from "./PermissionSlice";
+import localAudioSlice from "./LocalAudioSlice";
 
 
 export const store = configureStore({
@@ -10,7 +11,8 @@ export const store = configureStore({
         createUserFirebaseAtSignInSlice,
         userInput: userInputSlice,
         theme: themeSlice,
-        permission : permissionSlice,
+        permission: permissionSlice,
+        localAudio: localAudioSlice,
 	},
 });
 

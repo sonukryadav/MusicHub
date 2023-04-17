@@ -1,29 +1,21 @@
 import { Alert, View, Text, SafeAreaView, TouchableOpacity, FlatList } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import styles from '../Styles/LocalAudioFiles';
-import RNFS from 'react-native-fs';
 import Fontisto from "react-native-vector-icons/Fontisto";
 import { Loading1, SlideUpView } from '../Views';
-import { requestStoragePermission, searchAllAudioFiles } from "../HelperFunctions";
 import { useNavigation } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 export default function LocalAudioFiles() {
     const [files, setFiles] = useState([]);
     const [visible, setVisible] = useState(false);
     const navigation = useNavigation();
+    const { localAudios } = useSelector((state) => state.localAudio);
 
     useEffect(() => {
-        requestStoragePermission(grantedPerms, deniedPerms);
-    }, []);
+        setFiles(pre => localAudios);
+    }, [files]);
 
-    const grantedPerms = async () => {
-        const audioFiles = await searchAllAudioFiles(RNFS.ExternalStorageDirectoryPath);
-        setFiles(audioFiles);
-    }
-
-    const deniedPerms = async () => {
-        Alert.alert("Permission denied");
-    }
 
     if (files.length === 0) {
         return (
@@ -37,8 +29,10 @@ export default function LocalAudioFiles() {
         setVisible((pre) => !pre);
     }
 
+    console.log(files[0]);
+
     const singleBlock = (item, index) => {
-        navigation.navigate("singleaudio", {name : item.name, path : item.path, index1 : index});
+        navigation.navigate("singleaudio", {title : item.title, url : item.url, index1 : index});
     }
 
     return (
@@ -56,7 +50,7 @@ export default function LocalAudioFiles() {
                                                 <Fontisto name={"applemusic"} size={60} color={"black"} />
                                             </View>
                                             <View style={styles.v5}>
-                                                <Text style={styles.t1}>{item.name.length > 35 ? item.name.substring(0, 35) + "..." : item.name}</Text>
+                                                <Text style={styles.t1}>{item.title.length > 35 ? item.title.substring(0, 35) + "..." : item.title}</Text>
                                                 <Text style={styles.t2}>{"Artist name"}</Text>
                                                 <Text style={styles.t3}>{"2:15"}</Text>
                                             </View>
