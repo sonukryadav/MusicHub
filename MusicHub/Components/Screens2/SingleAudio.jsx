@@ -1,58 +1,36 @@
 import { View, Text, SafeAreaView, Image, Animated, Alert, TouchableOpacity, FlatList, ScrollView, Dimensions } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
-import TrackPlayer, { Capability, Event, RepeatMode, State, usePlaybackState, useProgress, useTrackPlayerEvents } from 'react-native-track-player';
+import TrackPlayer, { Capability, Event, RepeatMode, State, usePlaybackState, useProgress, useTrackPlayerProgress, useTrackPlayerEvents, TrackPlayerEvents } from 'react-native-track-player';
 import styles from '../Styles/SingleAudio';
 import RollingText from "react-native-rolling-text";
 import Slider from '@react-native-community/slider';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { Loading1 } from '../Views';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { requestStoragePermission, trackFormattedAudioFiles } from "../HelperFunctions";
 import img1 from "../Assets/MusicHub-logo.png";
 import { useSelector } from "react-redux";
 
-// url, title, artist
+
 const { width } = Dimensions.get("window");
 
 export default function SingleAudio({route}) {
     const [files, setFiles] = useState([]);
-    const [songIndex, setSongIndex] = useState(0);
+    const [songIndex, setSongIndex] = useState(route.params.index1);
+    const ref = useRef(route.params.index1);
     const playBackState = usePlaybackState();
     const progress = useProgress();
-    const prevNextTractStateRef = useRef("ready");
     const [repeatMode, setRepeatMode] = useState("repeat-off");
-
-    const scrollX = useRef(new Animated.Value(0)).current;
-    const songSlider = useRef(null);
+    const [isPlaying, setIsPlaying] = useState(false);
 
     const { localAudios } = useSelector((state) => state.localAudio);
-
     const { title, url, index1 } = route.params;
+
     console.log(title, url, index1);
 
     const iconSize = 50;
     const iconColor = "black";
 
-    const skipTo = async (trackId) => {
-        await TrackPlayer.skip(trackId);
-    }
 
-
-    const jumping = async () => {
-        console.log("jumping index1 :---- ", index1);
-        try {
-            if (index1) {
-                console.log("jumping index :---- ", index1);
-                setSongIndex(pre => index1);
-                skipTo(index1);
-                songSlider.current.scrollToOffset({
-                    offset: (index1 - 1) * width * 0.9,
-                });
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }
 
     console.log("songIndex : ---------- ", songIndex);
 
@@ -60,35 +38,46 @@ export default function SingleAudio({route}) {
         setFiles(pre=>localAudios);
     }
 
-
     useEffect(() => {
         (async () => {
             await setAudioFiles();
-            scrollX.addListener(({ value }) => {
-                const index = Math.round(value / width);
-                skipTo(index1);
-                setSongIndex(index1);
-            });
-            // jumping();
+            setTimeout(() => {
+                ref.current.scrollToIndex({
+                    animated: true,
+                    index: index1,
+                });
+            }, 700)
         })();
     }, [index1]);
+
+
+    // useEffect(() => {
+    //     const listener = async (data) => {
+    //         const queueEnded = data.type === 'playback-queue-ended';
+    //         if (queueEnded) {
+    //             await TrackPlayer.skipToNext();
+    //             setSongIndex(pre => pre + 1);
+    //         }
+    //     };
+
+    //     TrackPlayer.addEventListener('playback-queue-ended', listener);
+
+    //     return () => {
+    //         TrackPlayer.removeEventListener('playback-queue-ended', listener);
+    //     };
+    // }, []);
+
+
 
     // const valuePosition = Math.floor(progress.position);
     // useEffect(() => {
     //     if ((valuePosition + 1) === Math.floor(progress.duration) && repeatMode !== "repeat-once") {
-    //         songSlider.current.scrollToOffset({
-    //             offset: (songIndex + 1) * width * 0.9,
-    //         });
-    //         setTimeout(async () => {
-    //             if (prevNextTractStateRef.current == State.Playing) {
-    //                 await TrackPlayer.play();
-    //             } else if (prevNextTractStateRef.current === State.Paused) {
-    //                 await TrackPlayer.pause();
-    //             }
-    //         }, 500);
+    //         setSongIndex(pre => pre + 1);
+    //         console.log(valuePosition, Math.floor(progress.duration));
     //     }
     // });
 
+    // console.log(valuePosition, Math.floor(progress.duration));
 
     if (files.length === 0) {
         return (
@@ -110,47 +99,41 @@ export default function SingleAudio({route}) {
         );
     }
 
+    const playPause = async (playBackState) => {
+        if (isPlaying) {
+            await TrackPlayer.pause();
+        } else {
+            await TrackPlayer.play();
+        }
+        setIsPlaying(!isPlaying);
+    }
+
     const prev = async (playBackState) => {
-        songSlider.current.scrollToOffset({
-            offset: (songIndex - 1) * width * 0.9,
-        });
-        setTimeout(async () => {
-            if (prevNextTractStateRef.current == State.Playing) {
-                await TrackPlayer.play();
-            } else if (prevNextTractStateRef.current === State.Paused) {
-                await TrackPlayer.pause();
-            }
-        }, 500);
+        if (songIndex > 0) {
+            setSongIndex(pre => pre - 1);
+            ref.current.scrollToIndex({
+                animated: true,
+                index: songIndex - 1,
+            });
+            await TrackPlayer.skip(songIndex - 1);
+            playPause(playBackState);
+        }
     }
 
 
     const next = async (playBackState) => {
-        songSlider.current.scrollToOffset({
-            offset: (songIndex + 1) * width * 0.9,
-        });
-        // skipTo(songIndex + 1);
-        // setSongIndex(pre=>pre+1)
-        setTimeout(async () => {
-            if (prevNextTractStateRef.current == State.Playing) {
-                await TrackPlayer.play();
-            } else if (prevNextTractStateRef.current === State.Paused) {
-                await TrackPlayer.pause();
-            }
-        }, 500);
-    }
-
-    const playPause = async (playBackState) => {
-        const trackIndex = await TrackPlayer.getCurrentTrack();
-        if (trackIndex !== null) {
-            if (playBackState === State.Paused || playBackState === State.Ready) {
-                await TrackPlayer.play();
-                prevNextTractStateRef.current = "playing"
-            } else {
-                await TrackPlayer.pause();
-                prevNextTractStateRef.current = "paused"
-            }
+        if (files.length-1 > songIndex) {
+            setSongIndex(pre => pre + 1);
+            ref.current.scrollToIndex({
+                animated: true,
+                index: songIndex + 1,
+            });
+            await TrackPlayer.skip(songIndex + 1);
+            playPause(playBackState);
         }
     }
+
+
 
     const shuffle = async (playBackState) => {
     }
@@ -170,6 +153,12 @@ export default function SingleAudio({route}) {
 
     console.log(playBackState);
 
+    const formatTime = (secs) => {
+        const minutes = Math.floor(secs / 60);
+        const seconds = Math.ceil(secs - minutes * 60);
+        return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    };
+
     return (
         <SafeAreaView style={styles.sav1}>
             <ScrollView contentContainerStyle={styles.scv}>
@@ -177,8 +166,9 @@ export default function SingleAudio({route}) {
                     <View style={styles.v2}>
                         <View style={styles.v3}>
                             <View style={styles.flatListView}>
-                                <Animated.FlatList
-                                    ref={songSlider}
+                                <FlatList
+                                    // ref={songSlider}
+                                    ref={ref}
                                     data={files}
                                     horizontal
                                     renderItem={({ item }) => (singleSong(item))}
@@ -186,18 +176,12 @@ export default function SingleAudio({route}) {
                                     pagingEnabled
                                     showsHorizontalScrollIndicator={false}
                                     scrollEventThrottle={16}
-                                    onScroll={Animated.event(
-                                        [
-                                            {
-                                                nativeEvent: {
-                                                    contentOffset: { x: scrollX }
-                                                },
-                                            },
-                                        ],
-                                        {
-                                            useNativeDriver: true,
-                                        }
-                                    )}
+                                    onScroll={async e => {
+                                        const x = e.nativeEvent.contentOffset.x / width;
+                                        setSongIndex(parseInt(x.toFixed(0)));
+                                        await TrackPlayer.skip(parseInt(x.toFixed(0)));
+                                        playPause(playBackState);
+                                    }}
                                 />
                             </View>
                             <View style={styles.v5}>
@@ -219,12 +203,15 @@ export default function SingleAudio({route}) {
                                         maximumTrackTintColor="#000000"
                                         thumbTintColor="#135763"
                                         tapToSeek={true}
-                                        onSlidingComplete={async (value) => await TrackPlayer.seekTo(value)}
+                                        // onSlidingComplete={async (value) => await TrackPlayer.seekTo(value)}
+                                        onValueChange={async value => {
+                                            await TrackPlayer.seekTo(value);
+                                        }}
                                     />
                                 </View>
                                 <View style={styles.v8}>
-                                    <Text style={styles.time}>{new Date(progress.position * 1000).toLocaleTimeString().substring(3)}</Text>
-                                    <Text style={styles.time}>{new Date((progress.duration - progress.position) * 1000).toLocaleTimeString().substring(3)}</Text>
+                                    <Text style={styles.time}>{formatTime(progress.position)}</Text>
+                                    <Text style={styles.time}>{formatTime(progress.duration - progress.position)}</Text>
                                 </View>
                             </View>
                             <View style={styles.v9}>
