@@ -5,15 +5,16 @@ import RNFS from 'react-native-fs';
 import Fontisto from "react-native-vector-icons/Fontisto";
 import { Loading1, SlideUpView } from '../Views';
 import { requestStoragePermission, searchAllAudioFiles } from "../HelperFunctions";
+import { useNavigation } from '@react-navigation/native';
 
 export default function LocalAudioFiles() {
     const [files, setFiles] = useState([]);
     const [visible, setVisible] = useState(false);
+    const navigation = useNavigation();
 
     useEffect(() => {
         requestStoragePermission(grantedPerms, deniedPerms);
     }, []);
-
 
     const grantedPerms = async () => {
         const audioFiles = await searchAllAudioFiles(RNFS.ExternalStorageDirectoryPath);
@@ -36,6 +37,9 @@ export default function LocalAudioFiles() {
         setVisible((pre) => !pre);
     }
 
+    const singleBlock = (item, index) => {
+        navigation.navigate("singleaudio", {name : item.name, path : item.path, index1 : index});
+    }
 
     return (
         <SafeAreaView style={styles.sav}>
@@ -46,7 +50,7 @@ export default function LocalAudioFiles() {
                         return (
                             <View style={styles.v2}>
                                 <View style={styles.v3}>
-                                    <TouchableOpacity>
+                                    <TouchableOpacity onPress={()=>singleBlock(item, index)}>
                                         <View style={styles.v3i}>
                                             <View style={styles.v4}>
                                                 <Fontisto name={"applemusic"} size={60} color={"black"} />

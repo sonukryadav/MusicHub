@@ -10,10 +10,10 @@ import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityI
 import { requestStoragePermission, trackFormattedAudioFiles } from "../HelperFunctions";
 import img1 from "../Assets/MusicHub-logo.png";
 
-// url, title, artist
+
 const { width } = Dimensions.get("window");
 
-export default function SingleAudio({route}) {
+export default function AllPlay() {
     const [files, setFiles] = useState([]);
     const [songIndex, setSongIndex] = useState(0);
     const playBackState = usePlaybackState();
@@ -23,9 +23,6 @@ export default function SingleAudio({route}) {
 
     const scrollX = useRef(new Animated.Value(0)).current;
     const songSlider = useRef(null);
-
-    const { name, path, index1 } = route.params;
-    console.log(name, path, index1);
 
     const iconSize = 50;
     const iconColor = "black";
@@ -37,7 +34,7 @@ export default function SingleAudio({route}) {
     const setUpPlayer = async () => {
         try {
             await TrackPlayer.setupPlayer();
-            TrackPlayer.updateOptions({
+            await TrackPlayer.updateOptions({
                 // Media controls capabilities
                 capabilities: [
                     Capability.Play,
@@ -47,7 +44,6 @@ export default function SingleAudio({route}) {
                     Capability.Stop,
                 ],
                 // Capabilities that will show up when the notification is in the compact form on Android
-                // , Capability.SeekTo, Capability.Like, Capability.Stop, Capability.SeekTo, Capability.SkipToPrevious, Capability.SkipToNext, Capability.SkipToPrevious, Capability.JumpForward
                 compactCapabilities: [Capability.Play, Capability.Pause],
             });
             const arr = await trackFormattedAudioFiles();
@@ -57,35 +53,16 @@ export default function SingleAudio({route}) {
         }
     }
 
-    const jumping = async () => {
-        console.log("jumping index1 :---- ", index);
-        try {
-            if (index1) {
-                console.log("jumping index :---- ", index1);
-                setSongIndex(pre => index1);
-                skipTo(index1);
-                songSlider.current.scrollToOffset({
-                    offset: (index1 - 1) * width * 0.9,
-                });
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    console.log("songIndex : ---------- ",songIndex);
-
 
     useEffect(() => {
         (async () => {
             await requestStoragePermission(grantedPerms, deniedPerms);
-            await setUpPlayer();
+            setUpPlayer();
             scrollX.addListener(({ value }) => {
                 const index = Math.round(value / width);
                 skipTo(index);
                 setSongIndex(index);
             });
-            jumping();
         })();
     }, []);
 

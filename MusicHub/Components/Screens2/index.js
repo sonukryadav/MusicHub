@@ -12,4 +12,5 @@ export { default as Search} from "./Search";
 export { default as Settings} from "./Settings";
 export { default as TalktimeFeatures } from "./TalktimeFeatures";
 export { default as LocalAudioFiles } from "./LocalAudioFiles";
-export { default as SingleAudio} from "./SingleAudio";
+export { default as SingleAudio } from "./SingleAudio";
+export { default as AllPlay } from "./AllPlay"

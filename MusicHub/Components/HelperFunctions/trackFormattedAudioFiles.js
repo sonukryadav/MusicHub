@@ -10,7 +10,7 @@ const trackFormattedAudioFiles = async () => {
         audioFiles.forEach(async(element, index) => {
             newArray.push(
                 {
-                    "id": index + 1,
+                    "id": index,
                     "url": element.path,
                     "title": element.name,
                     "artist": "",

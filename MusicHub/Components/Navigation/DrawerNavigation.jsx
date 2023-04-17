@@ -8,7 +8,7 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import Entypo from "react-native-vector-icons/Entypo";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import { TabNavigation } from "../Navigation";
+import { TabNavigation } from ".";
 import { useNavigation } from '@react-navigation/native';
 import { useSelector, useDispatch } from "react-redux";
 import { toggle1 } from "../ReduxKit/ThemeSlice";

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { NewGroup, Calls, PeopleNearby, SavedMessages, Settings, InviteFriends, TalktimeFeatures, Contacts, Account, Camera, Search } from "../Screens2"
+import { NewGroup, Calls, PeopleNearby, SavedMessages, Settings, InviteFriends, TalktimeFeatures, Contacts, Account, Camera, Search, SingleAudio } from "../Screens2"
 import { DrawerNavigation } from '../Navigation';
 import { useSelector } from "react-redux";
 
@@ -37,6 +37,7 @@ const NativeStack2 = () => {
                 <Stack.Screen name="account" component={Account} options={{ title: 'Profile' }} />
                 <Stack.Screen name="search" component={Search} options={{ title: 'Search' }} />
                 <Stack.Screen name="camera" component={Camera} options={{ title: "Camera" }} />
+                <Stack.Screen name="singleaudio" component={SingleAudio} />
             </Stack.Navigator>
         </>
     )
