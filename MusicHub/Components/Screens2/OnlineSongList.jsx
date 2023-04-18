@@ -9,7 +9,6 @@ export default function OnlineSongList() {
     const navigation = useNavigation();
     const route = useRoute();
     const { songListUrl } = route.params;
-    console.log(songListUrl);
 
     useEffect(() => {
         (() => {

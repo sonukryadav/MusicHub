@@ -14,7 +14,7 @@ export default function LocalAudioFiles() {
 
     useEffect(() => {
         setFiles(pre => localAudios);
-    }, []);
+    }, [localAudios]);
 
 
     if (files.length === 0) {
