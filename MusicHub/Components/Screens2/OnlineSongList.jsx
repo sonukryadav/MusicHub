@@ -1,22 +1,25 @@
-import { View, Text, SafeAreaView, ScrollView, Image, TouchableOpacity, FlatList} from 'react-native'
-import React,{ useEffect, useState } from 'react';
-import styles from '../Styles/OnlineS';
+import { View, Text, FlatList, TouchableOpacity, SafeAreaView, Image } from 'react-native'
+import React, { useState, useEffect } from 'react';
+import styles from '../Styles/OnlineSongList';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { Loading1 } from '../Views';
-import { useNavigation } from '@react-navigation/native';
 
-export default function OnlineS() {
-    const [poster, setPoster] = useState([]);
+export default function OnlineSongList() {
+    const [songs, setSongs] = useState([]);
     const navigation = useNavigation();
+    const route = useRoute();
+    const { songListUrl } = route.params;
+    console.log(songListUrl);
 
     useEffect(() => {
         (() => {
-            fetch(`https://firebasestorage.googleapis.com/v0/b/musichub2.appspot.com/o/MusicHub%2FAllJsonFile%2FmusicPosterCategories.json?alt=media&token=ae3665ea-a3d8-4c02-935f-f435fa15616d`)
-                .then(data => data.json()).then(data1 => setPoster(data1));
+            fetch(`${songListUrl}`)
+                .then(data => data.json()).then(data1 => setSongs(data1));
         })();
     }, []);
 
 
-    if (poster.length === 0) {
+    if (songs.length === 0) {
         return (
             <View style={styles.loadV1}>
                 <Loading1 text={"Fetching data..."} />
@@ -24,29 +27,29 @@ export default function OnlineS() {
         );
     }
 
-    const moveTo = () => {
-        navigation.navigate("onlinesonglist", { songListUrl: "https://firebasestorage.googleapis.com/v0/b/musichub2.appspot.com/o/MusicHub%2FAllJsonFile%2FbollywoodMusic.json?alt=media&token=416bb829-797e-40c9-bcfb-e7908482ecfb"});
-    }
+
+
+    const renderHeader = () => (
+        <>
+            <View style={styles.v1}>
+                <Text style={styles.t1}>{"Bollywood Songs"} </Text>
+            </View>
+        </>
+    );
+
 
     const Cards = ({ item, index }) => {
         return (
             <>
                 <View style={styles.v2}>
-                    <TouchableOpacity onPress={moveTo}>
-                        <Image source={{ uri: `${item.item.posterUrl}` }}  style={styles.posterImage} />
+                    <TouchableOpacity>
+                        <Image source={{ uri: `${item.item.posterUrl}` }} resizeMode='contain' style={styles.posterImage} />
                     </TouchableOpacity>
+                    <Text style={styles.t2}>{item.item.songName}</Text>
                 </View>
             </>
         );
     }
-
-    const renderHeader = () => (
-        <>
-            <View style={styles.v1}>
-                <Text style={styles.t1}>Songs categories </Text>
-            </View>
-        </>
-    );
 
     const renderFooter = () => (
         <>
@@ -58,8 +61,8 @@ export default function OnlineS() {
 
     return (
         <SafeAreaView style={styles.sav}>
-                <FlatList
-                data={poster}
+            <FlatList
+                data={songs}
                 keyExtractor={item => item.id}
                 renderItem={(item, index) => (<Cards item={item} index={index} />)}
                 numColumns={2}
@@ -70,7 +73,8 @@ export default function OnlineS() {
                 ListHeaderComponentStyle={styles.flatListHeader}
                 ListFooterComponent={renderFooter}
                 ListFooterComponentStyle={styles.flatListFooter}
-                />
+            />
         </SafeAreaView>
     )
 }
+
