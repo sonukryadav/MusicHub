@@ -1,6 +1,6 @@
 import { View, Text, SafeAreaView, Image, Animated, Alert, TouchableOpacity, FlatList, ScrollView, Dimensions } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
-import TrackPlayer, { Capability, Event, RepeatMode, State, usePlaybackState, useProgress, useTrackPlayerProgress, useTrackPlayerEvents, TrackPlayerEvents } from 'react-native-track-player';
+import TrackPlayer, { RepeatMode, State, usePlaybackState, useProgress } from 'react-native-track-player';
 import styles from '../Styles/SingleAudio';
 import RollingText from "react-native-rolling-text";
 import Slider from '@react-native-community/slider';
@@ -9,7 +9,6 @@ import { Loading1 } from '../Views';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import img1 from "../Assets/MusicHub-logo.png";
 import { useSelector } from "react-redux";
-
 
 const { width } = Dimensions.get("window");
 
@@ -150,7 +149,6 @@ export default function SingleAudio({route}) {
                         <View style={styles.v3}>
                             <View style={styles.flatListView}>
                                 <FlatList
-                                    // ref={songSlider}
                                     ref={ref}
                                     data={files}
                                     horizontal
@@ -186,7 +184,6 @@ export default function SingleAudio({route}) {
                                         maximumTrackTintColor="#000000"
                                         thumbTintColor="#135763"
                                         tapToSeek={true}
-                                        // onSlidingComplete={async (value) => await TrackPlayer.seekTo(value)}
                                         onValueChange={async value => {
                                             await TrackPlayer.seekTo(value);
                                         }}

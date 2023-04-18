@@ -14,3 +14,4 @@ export { default as TalktimeFeatures } from "./TalktimeFeatures";
 export { default as LocalAudioFiles } from "./LocalAudioFiles";
 export { default as SingleAudio } from "./SingleAudio";
 export { default as AllPlay } from "./AllPlay"
+export { default as OnlineS } from "./OnlineS"
