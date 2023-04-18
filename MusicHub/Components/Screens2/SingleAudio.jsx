@@ -21,6 +21,7 @@ export default function SingleAudio({route}) {
     const progress = useProgress();
     const [repeatMode, setRepeatMode] = useState("repeat-off");
     const [isPlaying, setIsPlaying] = useState(false);
+    const [trackID, setTrackID] = useState(route.params.index1);
 
     const { localAudios } = useSelector((state) => state.localAudio);
     const { title, url, index1 } = route.params;
@@ -46,38 +47,20 @@ export default function SingleAudio({route}) {
                     animated: true,
                     index: index1,
                 });
-            }, 700)
+            }, 1000)
         })();
-    }, [index1]);
+    }, []);
 
 
-    // useEffect(() => {
-    //     const listener = async (data) => {
-    //         const queueEnded = data.type === 'playback-queue-ended';
-    //         if (queueEnded) {
-    //             await TrackPlayer.skipToNext();
-    //             setSongIndex(pre => pre + 1);
-    //         }
-    //     };
-
-    //     TrackPlayer.addEventListener('playback-queue-ended', listener);
-
-    //     return () => {
-    //         TrackPlayer.removeEventListener('playback-queue-ended', listener);
-    //     };
-    // }, []);
-
-
-
-    // const valuePosition = Math.floor(progress.position);
-    // useEffect(() => {
-    //     if ((valuePosition + 1) === Math.floor(progress.duration) && repeatMode !== "repeat-once") {
-    //         setSongIndex(pre => pre + 1);
-    //         console.log(valuePosition, Math.floor(progress.duration));
-    //     }
-    // });
-
-    // console.log(valuePosition, Math.floor(progress.duration));
+    useEffect(() => {
+        (async() => {
+            const trackId = await TrackPlayer.getCurrentTrack();
+            if (trackID !== trackId) {
+                setTrackID(pre => trackId);
+                setSongIndex(pre => trackId);
+            }
+        })();
+    })
 
     if (files.length === 0) {
         return (
@@ -211,7 +194,7 @@ export default function SingleAudio({route}) {
                                 </View>
                                 <View style={styles.v8}>
                                     <Text style={styles.time}>{formatTime(progress.position)}</Text>
-                                    <Text style={styles.time}>{formatTime(progress.duration - progress.position)}</Text>
+                                    <Text style={styles.time}>{Math.abs(formatTime(progress.duration - progress.position))}</Text>
                                 </View>
                             </View>
                             <View style={styles.v9}>
