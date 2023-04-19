@@ -5,6 +5,8 @@ import Fontisto from "react-native-vector-icons/Fontisto";
 import { Loading1, SlideUpView } from '../Views';
 import { useNavigation } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
+import { setUpPlayer } from "../HelperFunctions";
+
 
 export default function LocalAudioFiles() {
     const [files, setFiles] = useState([]);
@@ -12,8 +14,12 @@ export default function LocalAudioFiles() {
     const navigation = useNavigation();
     const { localAudios } = useSelector((state) => state.localAudio);
 
+
     useEffect(() => {
-        setFiles(pre => localAudios);
+        (async() => {
+            setFiles(pre => localAudios);
+            await setUpPlayer(localAudios);
+        })();
     }, [localAudios]);
 
 

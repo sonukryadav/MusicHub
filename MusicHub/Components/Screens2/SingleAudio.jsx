@@ -30,10 +30,6 @@ export default function SingleAudio({route}) {
     const iconSize = 50;
     const iconColor = "black";
 
-
-
-    console.log("songIndex : ---------- ", songIndex);
-
     const setAudioFiles = async () => {
         setFiles(pre=>localAudios);
     }

@@ -26,15 +26,16 @@ const styles = StyleSheet.create({
     },
     v2: {
         flex: 1,
-        padding:10,
+        padding:5,
     },
     posterImage: {
         width: "100%",
-        height:200
+        height:200,
+        borderWidth : 5,
+        borderColor:"teal"
     },
     flatList1: {
-        paddingTop:1,
-        borderWidth: 3,
+        borderWidth: 2,
         borderColor:"green",
     },
     flatListRow: {

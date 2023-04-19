@@ -37,11 +37,17 @@ export default function OnlineSongList() {
     );
 
 
+
+    const sendTo = (item) => {
+        navigation.navigate("onlinesinglesongplayer", {songDetail : item})
+    }
+
+
     const Cards = ({ item, index }) => {
         return (
             <>
                 <View style={styles.v2}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={()=>sendTo(item.item)}>
                         <Image source={{ uri: `${item.item.posterUrl}` }} resizeMode='contain' style={styles.posterImage} />
                     </TouchableOpacity>
                     <Text style={styles.t2}>{item.item.songName}</Text>

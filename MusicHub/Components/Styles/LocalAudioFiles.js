@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         borderRadius: 15,
     },
     v3: {
-        flex: 0.94,
+        flex: 0.9,
     },
     v3i: {
         flexDirection: "row",
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
         marginLeft: 15,
     },
     v6: {
-        flex: 0.06,
+        flex: 0.1,
         alignItems: "center",
     },
     v6i: {
