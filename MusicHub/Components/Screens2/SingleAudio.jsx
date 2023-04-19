@@ -191,7 +191,7 @@ export default function SingleAudio({route}) {
                                 </View>
                                 <View style={styles.v8}>
                                     <Text style={styles.time}>{formatTime(progress.position)}</Text>
-                                    <Text style={styles.time}>{Math.abs(formatTime(progress.duration - progress.position))}</Text>
+                                    <Text style={styles.time}>{(formatTime(progress.duration))}</Text>
                                 </View>
                             </View>
                             <View style={styles.v9}>

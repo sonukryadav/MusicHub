@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     posterImage: {
         width: "100%",
         height: 200,
-        borderRadius: 100,
+        borderRadius: 10,
     },
     flatList1: {
         paddingTop: 1,

@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     },
     v2: {
         flex: 1,
-        // padding:10,
+        padding:10,
     },
     posterImage: {
         width: "100%",

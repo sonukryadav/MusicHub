@@ -1,8 +1,6 @@
 import RNFS from 'react-native-fs';
 import searchAllAudioFiles from './searchAllAudioFiles';
 
-
-
 const trackFormattedAudioFiles = async () => {
     try {
         const audioFiles = await searchAllAudioFiles(RNFS.ExternalStorageDirectoryPath);

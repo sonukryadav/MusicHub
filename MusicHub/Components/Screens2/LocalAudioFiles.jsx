@@ -20,7 +20,7 @@ export default function LocalAudioFiles() {
     if (files.length === 0) {
         return (
             <View style={styles.loadV1}>
-                <Loading1 text={"Hold on, retrieving audio files..."} />
+                <Loading1 text={"searching files..."} />
             </View>
         );
     }
