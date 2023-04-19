@@ -17,7 +17,7 @@ export default function LocalAudioFiles() {
 
     useEffect(() => {
         (async() => {
-            setFiles(pre => localAudios);
+            setFiles(localAudios);
             await setUpPlayer(localAudios);
         })();
     }, [localAudios]);
