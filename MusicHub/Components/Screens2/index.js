@@ -16,4 +16,4 @@ export { default as SingleAudio } from "./SingleAudio";
 export { default as AllPlay } from "./AllPlay";
 export { default as OnlineS } from "./OnlineS";
 export { default as OnlineSongList } from "./OnlineSongList";
-export { default as OnlineSingleSongPlayer} from "./OnlineSingleSongPlayer";
+export { default as OnlineSingleSongPlayer } from "./OnlineSingleSongPlayer";
