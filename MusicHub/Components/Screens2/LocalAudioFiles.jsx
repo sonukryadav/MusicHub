@@ -3,24 +3,32 @@ import React, { useEffect, useState } from 'react';
 import styles from '../Styles/LocalAudioFiles';
 import Fontisto from "react-native-vector-icons/Fontisto";
 import { Loading1, SlideUpView } from '../Views';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useIsFocused } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
-import { setUpPlayer } from "../HelperFunctions";
+import TrackPlayer, { RepeatMode, State, usePlaybackState, useProgress } from 'react-native-track-player';
+
 
 
 export default function LocalAudioFiles() {
     const [files, setFiles] = useState([]);
     const [visible, setVisible] = useState(false);
+    const isFocused = useIsFocused();
     const navigation = useNavigation();
     const { localAudios } = useSelector((state) => state.localAudio);
 
 
     useEffect(() => {
-        (async() => {
+        (() => {
             setFiles(localAudios);
-            await setUpPlayer(localAudios);
         })();
-    }, [localAudios]);
+    }, []);
+
+    if (isFocused) {
+        (async () => {
+            await TrackPlayer.reset();
+            await TrackPlayer.add(localAudios);
+        })();
+    }
 
 
     if (files.length === 0) {

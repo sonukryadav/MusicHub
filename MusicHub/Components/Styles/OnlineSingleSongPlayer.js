@@ -7,7 +7,6 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     scrollV: {
-        flex: 1,
         padding: 5,
         alignItems: "center",
     },

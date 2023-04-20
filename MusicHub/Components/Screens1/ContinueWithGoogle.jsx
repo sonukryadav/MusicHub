@@ -68,16 +68,16 @@ export default function ContinueWithGoogle() {
 	return (
 		<SafeAreaView style={styles.sav}>
 			<ScrollView contentContainerStyle={styles.container0}>
-			<View style={styles.container1}>
-				<Text style={styles.text1}>{ "Verify with Google"}</Text>
-				<GoogleSigninButton
-					style={styles.googleButton}
-					size={GoogleSigninButton.Size.Wide}
-					color={GoogleSigninButton.Color.Light}
-					onPress={signIn}
-					disabled={isSigninInProgress}
-				/>
-			</View>
+				<Text style={styles.text1}>{"Verify with Google"}</Text>
+				<View style={styles.v1}>
+					<GoogleSigninButton
+						style={styles.googleButton}
+						size={GoogleSigninButton.Size.Wide}
+						color={GoogleSigninButton.Color.Light}
+						onPress={signIn}
+						disabled={isSigninInProgress}
+					/>
+				</View>
 			<Text style={styles.textWarn}>{warn}</Text>
 		</ScrollView>
 		</SafeAreaView>

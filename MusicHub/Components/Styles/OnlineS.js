@@ -2,7 +2,6 @@ import { StyleSheet, Dimensions } from "react-native";
 
 const { width, height } = Dimensions.get("window");
 
-
 const styles = StyleSheet.create({
     loadV1: {
         flex: 1,
@@ -26,17 +25,16 @@ const styles = StyleSheet.create({
     },
     v2: {
         flex: 1,
-        padding:5,
+        padding: 5,
+        borderWidth:1,
     },
     posterImage: {
         width: "100%",
         height:200,
-        borderWidth : 5,
-        borderColor:"teal"
     },
     flatList1: {
-        borderWidth: 2,
-        borderColor:"green",
+        // borderWidth: 2,
+        // borderColor:"green",
     },
     flatListRow: {
         justifyContent: 'space-between',

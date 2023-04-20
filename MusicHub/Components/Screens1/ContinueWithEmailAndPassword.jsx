@@ -152,7 +152,6 @@ const ContinueWithEmailAndPassword = () => {
 	return (
 		<SafeAreaView style={styles.container}>
 			<ScrollView contentContainerStyle={styles.v0}>
-				<View style={styles.viewStart}>
 					<Text style={styles.text1}>Create new account</Text>
 					<TextInput
 						style={styles.input1}
@@ -161,10 +160,12 @@ const ContinueWithEmailAndPassword = () => {
 						onChangeText={(email) => inputs("email", email)}
 						keyboardType="email-address"
 						placeholderTextColor="#4D4D4D"
-					/>
+				/>
+				<View style={ styles.inpV2}>
 					<Text style={styles.text2}>
 						{input.email.length === 0 ? "" : !emailV && "❌ Invalid Email"}
 					</Text>
+				</View>
 
 					<View style={styles.v1}>
 						<TextInput
@@ -182,14 +183,15 @@ const ContinueWithEmailAndPassword = () => {
 						</TouchableOpacity>
 					</View>
 
+				<View style={styles.inpV2}>
 					<Text style={styles.text3}>
 						{input.password.length === 0 ? "" : !active && invalid}
 					</Text>
+				</View>
 
 					<TouchableOpacity onPress={createAccount} disabled={!emailV && !active}>
 						<Text style={styles.text4}>Create account</Text>
 					</TouchableOpacity>
-				</View>
 			</ScrollView>
 			<Text style={styles.err1}>{ message1 }</Text>
 		</SafeAreaView>

@@ -40,8 +40,6 @@ const styles = StyleSheet.create({
     },
     flatList1: {
         paddingTop: 1,
-        borderWidth: 3,
-        borderColor: "green",
     },
     flatListRow: {
         justifyContent: 'space-between',

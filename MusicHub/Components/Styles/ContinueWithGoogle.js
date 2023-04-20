@@ -1,23 +1,18 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions} from "react-native";
+
+const { width, height } = Dimensions.get("window");
 
 
 const styles = StyleSheet.create({
     sav: {
-        flex:1,
+        flex: 1,
+        backgroundColor: "#fff",
     },
     container0: {
-        flex: 1,
-        justifyContent: "center",
-        backgroundColor:"#fff",
-    },
-    container1: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems:"center",
     },
     googleButton: {
-        width: "70%",
-        height: "9%",
+        width:width*0.8,
+        height: 80,
         backgroundColor: "black",
     },
     textWarn: {
@@ -30,6 +25,11 @@ const styles = StyleSheet.create({
         color: "black",
         fontWeight: "700",
         marginVertical: 25,
+        alignItems:"center",
+    },
+    v1: {
+        justifyContent: "center",
+        alignItems: "center",
     },
 
 });

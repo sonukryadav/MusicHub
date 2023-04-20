@@ -3,8 +3,6 @@ import React, { useEffect, useState} from 'react';
 import styles from '../Styles/OnlineSingleSongPlayer';
 import { useRoute } from "@react-navigation/native";
 import Slider from '@react-native-community/slider';
-import { setUpPlayer } from "../HelperFunctions";
-import { useSelector } from "react-redux";
 import TrackPlayer, { RepeatMode, State, usePlaybackState, useProgress } from 'react-native-track-player';
 import Ionicons from "react-native-vector-icons/Ionicons";
 
@@ -17,8 +15,6 @@ export default function OnlineSingleSongPlayer() {
     const playBackState = usePlaybackState();
     const { songDetail } = route.params;
 
-    console.log(songDetail);
-
     useEffect(() => {
         (async() => {
             const obj = {
@@ -26,9 +22,10 @@ export default function OnlineSingleSongPlayer() {
                 title: songDetail.songName,
                 artist: songDetail.artists,
             }
-            await setUpPlayer([obj]);
+            await TrackPlayer.reset();
+            await TrackPlayer.add([obj]);
         })();
-    }, []);
+    }, [songDetail]);
 
     const playPause = async (playBackState) => {
         if (isPlaying) {
@@ -46,6 +43,8 @@ export default function OnlineSingleSongPlayer() {
         return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
     };
 
+
+    console.log(playBackState);
 
 
     return (

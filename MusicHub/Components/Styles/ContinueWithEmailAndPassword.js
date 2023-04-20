@@ -1,4 +1,6 @@
-import { StyleSheet, Platform} from "react-native";
+import { StyleSheet, Dimensions} from "react-native";
+
+const { width, height } = Dimensions.get("window");
 
 
 const styles = StyleSheet.create({
@@ -7,11 +9,9 @@ const styles = StyleSheet.create({
 		backgroundColor: "#fff",
 	},
 	v0: {
-		flex: 1,
-		alignItems:"center",
+		alignItems: "center",
 	},
 	viewStart: {
-		flex: 1,
 		justifyContent: "center",
 		width: "70%",
 	},
@@ -23,6 +23,7 @@ const styles = StyleSheet.create({
 		marginVertical: 25,
 	},
 	input1: {
+		width:width *0.7,
 		height: 45,
 		borderWidth: 1.5,
 		borderRadius: 20,
@@ -30,8 +31,11 @@ const styles = StyleSheet.create({
 		fontSize: 20,
 		color: "black",
 	},
+	inpV2: {
+		width: width * 0.7,
+	},
 	input2: {
-		flex: 1,
+		width: width * 0.7,
 		height: 45,
 		borderWidth: 1.5,
 		borderRadius: 20,
@@ -44,7 +48,8 @@ const styles = StyleSheet.create({
 		marginHorizontal: 20,
 		marginVertical: 8,
 		marginBottom: 20,
-		color:"black",
+		color: "black",
+		alignSelf:"flex-start"
 	},
 	text3: {
 		fontSize: 14,
@@ -64,6 +69,7 @@ const styles = StyleSheet.create({
 		backgroundColor: "#5FACFA",
 		color: "#0D0D0D",
 		elevation: 10,
+		width: width * 0.7,
 	},
 	v1: {
 		flexDirection:"row",

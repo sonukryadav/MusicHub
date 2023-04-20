@@ -21,6 +21,7 @@ export default function SingleAudio({route}) {
     const [repeatMode, setRepeatMode] = useState("repeat-off");
     const [isPlaying, setIsPlaying] = useState(false);
     const [trackID, setTrackID] = useState(route.params.index1);
+    const [shuffleI, setShuffleI] = useState(false);
 
     const { localAudios } = useSelector((state) => state.localAudio);
     const { title, url, index1 } = route.params;
@@ -114,6 +115,7 @@ export default function SingleAudio({route}) {
 
 
     const shuffle = async (playBackState) => {
+        setShuffleI(pre=>!pre);
     }
 
     const repeat = async (playBackState) => {
@@ -192,7 +194,7 @@ export default function SingleAudio({route}) {
                             </View>
                             <View style={styles.v9}>
                                 <TouchableOpacity onPress={() => shuffle(playBackState)}>
-                                    <Ionicons name={"md-shuffle-sharp"} size={iconSize} color={iconColor} />
+                                    <MaterialCommunityIcons name={shuffleI ? "shuffle-variant" : "shuffle"} size={iconSize} color={iconColor} />
                                 </TouchableOpacity>
                                 <TouchableOpacity onPress={() => prev(playBackState)}>
                                     <Ionicons name={"md-play-skip-back-circle"} size={iconSize} color={iconColor} />

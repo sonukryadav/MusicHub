@@ -19,7 +19,6 @@ const SignUp = () => {
     return (
 			<SafeAreaView style={styles.safeAreaView}>
 				<ScrollView contentContainerStyle={styles.scrollView}>
-					<View style={styles.v1}>
 						<View style={styles.v2}>
 							<Image
 							style={styles.image1}
@@ -35,7 +34,6 @@ const SignUp = () => {
 							<Btn text={"Continue with phone number"} where={"withphone"} />
 							<Btn text={"Sign up with email & password"} where={"withemailpassword"} />
 						</View>
-					</View>
 				</ScrollView>
 			</SafeAreaView>
 		);

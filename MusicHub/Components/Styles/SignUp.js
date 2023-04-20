@@ -1,24 +1,20 @@
-import { StyleSheet, StatusBar} from "react-native";
+import { StyleSheet, StatusBar, Dimensions} from "react-native";
 
+const { width , height} = Dimensions.get("window");
 
 const styles = StyleSheet.create({
 	safeAreaView: {
 		flex: 1,
+		backgroundColor: "#fff",
 	},
 	scrollView: {
-		flex: 1,
-	},
-	v1: {
-		flex: 1,
-		alignItems: "center",
-		backgroundColor: "#fff",
-		justifyContent: "center"
+		justifyContent:"center",
 	},
 	v2: {
 		alignItems: "center",
 	},
 	image1: {
-		width: 320,
+		width: width*0.5,
 		height: 250,
 	},
 	v3: {
@@ -27,9 +23,10 @@ const styles = StyleSheet.create({
 	t1: {
 		fontSize: 25,
 		fontWeight: 800,
-		color:"black"
+		color: "black",
 	},
 	v4: {
+		alignItems: "center",
 		paddingVertical: 30,
 	},
 	button1: {
@@ -44,6 +41,7 @@ const styles = StyleSheet.create({
 		backgroundColor: "#5FACFA",
 		color: "#0D0D0D",
 		elevation: 10,
+		width:width *0.7,
 	},
 });
 

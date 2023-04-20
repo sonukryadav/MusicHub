@@ -4,7 +4,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NewGroup, Calls, PeopleNearby, SavedMessages, Settings, InviteFriends, TalktimeFeatures, Contacts, Account, Camera, Search, SingleAudio, OnlineSongList, OnlineSingleSongPlayer } from "../Screens2"
 import { DrawerNavigation } from '../Navigation';
 import { useSelector } from "react-redux";
-import { requestStoragePermission, trackFormattedAudioFiles } from "../HelperFunctions";
+import { requestStoragePermission, trackFormattedAudioFiles, setUpPlayer } from "../HelperFunctions";
 import { sendAudio } from "../ReduxKit/LocalAudioSlice";
 import { useDispatch } from "react-redux";
 
@@ -25,6 +25,7 @@ const NativeStack2 = () => {
         try {
             const audioFiles = await trackFormattedAudioFiles();
             dispatch(sendAudio(audioFiles));
+            await setUpPlayer();
         } catch (error) {
             console.log("error in grantedPerms -----", error);
         }

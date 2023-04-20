@@ -1,6 +1,6 @@
 import TrackPlayer, { Capability, Event, RepeatMode, State, usePlaybackState, useProgress, useTrackPlayerEvents } from 'react-native-track-player';
 
-const setUpPlayer = async (arr) => {
+const setUpPlayer = async () => {
     try {
         await TrackPlayer.setupPlayer();
         TrackPlayer.updateOptions({
@@ -16,8 +16,8 @@ const setUpPlayer = async (arr) => {
             // , Capability.SeekTo, Capability.Like, Capability.Stop, Capability.SeekTo, Capability.SkipToPrevious, Capability.SkipToNext, Capability.SkipToPrevious, Capability.JumpForward
             compactCapabilities: [Capability.Play, Capability.Pause],
         });
-        await TrackPlayer.reset();
-        await TrackPlayer.add(arr);
+        // await TrackPlayer.reset();
+        // await TrackPlayer.add(arr);
     } catch (error) {
         console.log("error in setUpPlayer -----", error);
     }
