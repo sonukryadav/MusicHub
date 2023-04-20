@@ -9,7 +9,6 @@ const styles = StyleSheet.create({
         // padding: 60,
     },
     v0: {
-        flex: 1,
         alignItems:"center",
     },
     viewStart: {
@@ -46,12 +45,14 @@ const styles = StyleSheet.create({
         marginHorizontal: 20,
         marginVertical: 8,
         marginBottom: 20,
+        color:"black"
     },
     text3: {
         fontSize: 14,
         marginHorizontal: 20,
         marginVertical: 8,
         marginBottom: 20,
+        color:"black"
     },
     text4: {
         fontSize: 20,

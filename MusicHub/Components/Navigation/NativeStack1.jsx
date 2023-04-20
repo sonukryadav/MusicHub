@@ -54,7 +54,7 @@ const NativeStack1 = () => {
     			/>
 
     			<NStack.Screen
-    				name="signinforcreate"
+				    name="signinforcreate"
     				component={SignInForCreate}
     				options={() => ({ headerShown: true, headerTitle: "New user Sign in" })}
     			/>

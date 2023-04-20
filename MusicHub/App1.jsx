@@ -22,10 +22,13 @@ const App1 = () => {
 		return null;
 	}
 
+	console.log(user);
+
     return (
 			<>
 			<StatusBar backgroundColor="black" barStyle="light-content" />
-			{user ? <NativeStack2 /> : <NativeStack1 />}
+			{/* {user ? <NativeStack2 /> : <NativeStack1 />} */}
+			<NativeStack1 />
 			</>
 		);
 }

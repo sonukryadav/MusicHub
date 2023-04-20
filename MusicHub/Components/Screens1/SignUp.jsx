@@ -16,6 +16,7 @@ const Btn = ({ text, where }) => {
 }
 
 const SignUp = () => {
+	const navigation = useNavigation();
     return (
 			<SafeAreaView style={styles.safeAreaView}>
 				<ScrollView contentContainerStyle={styles.scrollView}>

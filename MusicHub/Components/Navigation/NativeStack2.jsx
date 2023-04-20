@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { Alert } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NewGroup, Calls, PeopleNearby, SavedMessages, Settings, InviteFriends, TalktimeFeatures, Contacts, Account, Camera, Search, SingleAudio, OnlineSongList, OnlineSingleSongPlayer } from "../Screens2"
-import { DrawerNavigation } from '../Navigation';
+import { DrawerNavigation, NativeStack1 } from '../Navigation';
 import { useSelector } from "react-redux";
 import { requestStoragePermission, trackFormattedAudioFiles, setUpPlayer } from "../HelperFunctions";
 import { sendAudio } from "../ReduxKit/LocalAudioSlice";
