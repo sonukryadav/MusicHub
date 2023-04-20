@@ -15,6 +15,8 @@ import { toggle1 } from "../ReduxKit/ThemeSlice";
 import { AsyncSet, AsyncGet, AsyncDelete } from "../AsyncStorage/AsyncStorage";
 import { lightTheme, darkTheme } from "../Styles/DrawerNavigation";
 import auth from '@react-native-firebase/auth';
+import { userDetailFormState } from "../ReduxKit/UserDetailFormStateSlice";
+import { USERDETAILFORMSTATE } from "../../ENV";
 
 
 const Drawer = createDrawerNavigator();
@@ -51,6 +53,14 @@ function CustomDrawerContent(props) {
     const onToggle = async () => {
         dispatch(toggle1());
         await AsyncSet("theme", !theme);
+    };
+
+    const signOutUser = async () => {
+        // dispatch(userDetailFormState(false))
+        // await AsyncSet(`${USERDETAILFORMSTATE.UDFS}`, false);
+        auth()
+            .signOut()
+            .then(() => Alert.alert('User signed out successfully!'));
     };
 
     return (
@@ -104,9 +114,7 @@ function CustomDrawerContent(props) {
                 label={() => <Text style={styles.drawerText}>{"Logout"}</Text>}
                 onPress={() => {
                     try {
-                        auth()
-                            .signOut()
-                            .then(() => Alert.alert('User signed out successfully!'));
+                        signOutUser();
                     } catch (error) {
                         Alert.alert("Something went wrong!");
                         console.log(error);

@@ -14,6 +14,9 @@ import auth from '@react-native-firebase/auth';
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
 import { createdUserData } from "../ReduxKit/CreateUserFirebaseAtSignIn";
+import { USERDETAILFORMSTATE } from "../../ENV";
+import { userDetailFormState } from "../ReduxKit/UserDetailFormStateSlice.js"
+import { AsyncSet } from "../AsyncStorage/AsyncStorage";
 
 
 const ContinueWithEmailAndPassword = () => {
@@ -86,6 +89,8 @@ const ContinueWithEmailAndPassword = () => {
 
 	const signOutAndVerify = async (result) => {
 		try {
+			dispatch(userDetailFormState(false));
+			await AsyncSet(`${USERDETAILFORMSTATE.UDFS}`, false);
 			await auth().currentUser.sendEmailVerification();
 			await auth().signOut();
 			Alert.alert("Verify your email, a link has been sent and then sign in.");
@@ -103,8 +108,8 @@ const ContinueWithEmailAndPassword = () => {
 			if (emailV && active) {
 				auth()
 					.createUserWithEmailAndPassword(input.email, input.password)
-					.then((result) => {
-						setMessage1('User account created now signed in!');
+					.then(async(result) => {
+						setMessage1('User account created now sign in!');
 						signOutAndVerify(result);
 					})
 					.catch(error => {
@@ -198,9 +203,6 @@ const ContinueWithEmailAndPassword = () => {
 					</TouchableOpacity>
 			</ScrollView>
 			<Text style={styles.err1}>{message1}</Text>
-			<TouchableOpacity onPress={() => navigation.navigate("userdetailform")}>
-				<Text style={{ color: "black" }}>{"goooo"}</Text>
-			</TouchableOpacity>
 		</SafeAreaView>
 	);
 };

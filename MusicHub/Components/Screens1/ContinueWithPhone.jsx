@@ -6,6 +6,10 @@ import styles from '../Styles/ContinueWithPhone';
 import { useNavigation } from "@react-navigation/native";
 import { createdUserData } from "../ReduxKit/CreateUserFirebaseAtSignIn";
 import { useDispatch } from "react-redux";
+import { USERDETAILFORMSTATE } from "../../ENV";
+import { userDetailFormState } from "../ReduxKit/UserDetailFormStateSlice.js"
+import { AsyncSet } from "../AsyncStorage/AsyncStorage";
+
 
 const ContinueWithPhone = () => {
 	const [phoneNumber, setPhoneNumber] = useState('');
@@ -68,6 +72,8 @@ const ContinueWithPhone = () => {
 					uid: result.user.uid,
 				}
 				dispatch(createdUserData(userDetails));
+				dispatch(userDetailFormState(false));
+				await AsyncSet(`${USERDETAILFORMSTATE.UDFS}`, false);
 				setWarn("Congratulations your number is now verified.");
 				Alert.alert("Hurrya, Your number is now verified.")
 				setPhoneNumber("");

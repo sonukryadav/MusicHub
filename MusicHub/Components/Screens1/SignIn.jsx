@@ -106,7 +106,7 @@ const SignIn = () => {
 							email: "",
 							password: "",
 						});
-						navigation.navigate("home");
+						navigation.navigate("stackHome");
 					} else {
 						setMessage1("You haven't verified your email!");
 						Alert.alert("You haven't verified your email!");

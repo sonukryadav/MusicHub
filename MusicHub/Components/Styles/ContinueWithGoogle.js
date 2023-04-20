@@ -4,6 +4,11 @@ const { width, height } = Dimensions.get("window");
 
 
 const styles = StyleSheet.create({
+    loadV1: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: "center",
+    },
     sav: {
         flex: 1,
         backgroundColor: "#fff",

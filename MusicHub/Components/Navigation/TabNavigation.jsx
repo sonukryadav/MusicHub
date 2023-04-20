@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Entypo from "react-native-vector-icons/Entypo";
-import { Account, Home, LocalAudioFiles, AllPlay, OnlineS } from "../Screens2";
+import { Account, Home, LocalAudioFiles, OnlineS } from "../Screens2";
 
 
 const Tab = createBottomTabNavigator();
@@ -9,6 +9,7 @@ const Tab = createBottomTabNavigator();
 const TabNavigation = () => {
   return (
     <Tab.Navigator
+      initialRouteName="Online"
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
@@ -18,8 +19,6 @@ const TabNavigation = () => {
             iconName = focused ? 'musical-notes' : 'musical-notes-outline';
           } else if (route.name === 'Online') {
             iconName = focused ? 'md-pause' : 'md-play';
-          } else if (route.name === 'All Play') {
-            iconName = focused ? 'md-add-circle-sharp' : 'md-add-circle-outline';
           } else if (route.name === 'Notifications') {
             iconName = focused ? 'ios-notifications-sharp' : 'ios-notifications-outline';
           }
@@ -27,14 +26,13 @@ const TabNavigation = () => {
         },
         tabBarActiveTintColor: 'black',
         tabBarInactiveTintColor: 'gray',
-        headerShown: false
+        headerShown: false,
       })
       }
     >
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Offline" component={LocalAudioFiles} />
       <Tab.Screen name="Online" component={OnlineS} />
-      <Tab.Screen name="All Play" component={AllPlay} />
       <Tab.Screen name="Notifications" component={Account} />
     </Tab.Navigator>
   );

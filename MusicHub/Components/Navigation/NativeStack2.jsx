@@ -27,7 +27,7 @@ const NativeStack2 = () => {
             dispatch(sendAudio(audioFiles));
             await setUpPlayer();
         } catch (error) {
-            console.log("error in grantedPerms -----", error);
+            console.log("error in grantedPerms :", error);
         }
     }
 

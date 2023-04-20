@@ -8,6 +8,8 @@ import { useDispatch } from "react-redux";
 import { GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import ENV from '../../ENV';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Loading1 } from "../Views";
+
 
 GoogleSignin.configure({
 	webClientId: `${ENV.WEB_CLIENT_ID}`,
@@ -37,7 +39,7 @@ export default function ContinueWithGoogle() {
 				uid: userInfo.user.uid
 			}
 			dispatch(createdUserData(userData));
-			Alert.alert("Hurray! You are registered successfully.");
+			Alert.alert("Hurray! authentication successfully.");
 			// console.log(userInfo);
 			setIsSigninInProgress(false);
 			navigation.navigate("userdetailform");
@@ -70,6 +72,7 @@ export default function ContinueWithGoogle() {
 			<ScrollView contentContainerStyle={styles.container0}>
 				<Text style={styles.text1}>{"Verify with Google"}</Text>
 				<View style={styles.v1}>
+					{isSigninInProgress && <Loading1 text={"Verifying..."} />}
 					<GoogleSigninButton
 						style={styles.googleButton}
 						size={GoogleSigninButton.Size.Wide}

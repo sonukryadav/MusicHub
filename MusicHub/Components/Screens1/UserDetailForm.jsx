@@ -16,7 +16,9 @@ import  FontAwesome5  from "react-native-vector-icons/FontAwesome5";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import firestore from '@react-native-firebase/firestore';
-
+import { AsyncSet, AsyncGet, AsyncDelete } from "../AsyncStorage/AsyncStorage";
+import { USERDETAILFORMSTATE } from "../../ENV";
+import { userDetailFormState } from "../ReduxKit/UserDetailFormStateSlice";
 
 
 const UserDetailForm = () => {
@@ -78,7 +80,7 @@ const UserDetailForm = () => {
     }
 
 
-    const createAccount = () => {
+    const createAccount = async() => {
         try {
             if (emailV && active) {
                 if (input.name.length < 3) {
@@ -103,7 +105,7 @@ const UserDetailForm = () => {
                                 inputedDOB: input.dob
                             }
                             setUserToFireStore(userDetails);
-                            Alert.alert("Created");
+                            Alert.alert("Welcome, account created successfully!");
                             setInput({
                                 email: "",
                                 password: "",
@@ -111,7 +113,9 @@ const UserDetailForm = () => {
                                 gender: "",
                                 dob: new Date(),
                             });
-                            navigation.navigate("home");
+                            dispatch(userDetailFormState(true));
+                            await AsyncSet(`${USERDETAILFORMSTATE.UDFS}`, true);
+                            navigation.navigate("stackHome");
                         } else {
                             setMessage1("Sorry you do not meet MusicHub's age requirements (Min. Age >= 18).");
                             Alert.alert("Sorry you do not meet MusicHub's age requirements (Min. Age >= 18).");
@@ -206,7 +210,7 @@ const UserDetailForm = () => {
                     <View style={styles.v1}>
                         <TextInput
                             style={styles.input2}
-                            placeholder="Enter Password"
+                            placeholder="Enter same password"
                             value={input.password}
                             onChangeText={(text) => OnChangeInput("password", text)}
                             secureTextEntry={!showHide}

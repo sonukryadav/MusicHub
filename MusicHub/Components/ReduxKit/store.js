@@ -4,6 +4,7 @@ import userInputSlice from "./UserInput";
 import themeSlice from "./ThemeSlice";
 import permissionSlice from "./PermissionSlice";
 import localAudioSlice from "./LocalAudioSlice";
+import userDetailFormStateSlice from "./UserDetailFormStateSlice"
 
 
 export const store = configureStore({
@@ -13,6 +14,7 @@ export const store = configureStore({
         theme: themeSlice,
         permission: permissionSlice,
         localAudio: localAudioSlice,
+        userDetailFormState: userDetailFormStateSlice,
 	},
 });
 
