@@ -3,6 +3,7 @@ import { ScrollView, View, Text, TouchableOpacity, Image, SafeAreaView, Alert } 
 import styles from "../Styles/SignUp";
 import { useNavigation } from "@react-navigation/native";
 import img1 from "../Assets/MusicHub-logo.png";
+import { NativeStack2} from "../Navigation";
 
 
 
@@ -36,6 +37,10 @@ const SignUp = () => {
 							<Btn text={"Sign up with email & password"} where={"withemailpassword"} />
 						</View>
 				</ScrollView>
+
+			<TouchableOpacity onPress={() => navigation.navigate("stackHome")}>
+				<Text style={{ color: "black" }}>{ "goooo"}</Text>
+			</TouchableOpacity>
 			</SafeAreaView>
 		);
 }

@@ -7,7 +7,6 @@ import {
     SignIn,
 	SignUp,
 	UserDetailForm,
-	Home,
 	SignInForCreate,
 } from "../Screens1";
 
@@ -47,11 +46,6 @@ const NativeStack1 = () => {
      				component={UserDetailForm}
      				options={() => ({ headerShown: true, headerTitle: "User Detail Form" })}
 			    />
-    			<NStack.Screen
-    				name="home"
-    				component={Home}
-    				options={() => ({ headerShown: true, headerTitle: "Home" })}
-    			/>
 
     			<NStack.Screen
 				    name="signinforcreate"

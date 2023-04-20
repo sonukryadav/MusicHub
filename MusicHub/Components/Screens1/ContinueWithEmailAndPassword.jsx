@@ -84,15 +84,19 @@ const ContinueWithEmailAndPassword = () => {
 	}, [input.email, input.password])
 
 
-	const signOutAndVerify = async(result) => {
-		await auth().currentUser.sendEmailVerification();
-		await auth().signOut();
-		Alert.alert("Verify your email, a link has been sent and then sign in.");
-		setInput({
-			email: "",
-			password: "",
-		});
-		navigation.navigate("signinforcreate");
+	const signOutAndVerify = async (result) => {
+		try {
+			await auth().currentUser.sendEmailVerification();
+			await auth().signOut();
+			Alert.alert("Verify your email, a link has been sent and then sign in.");
+			setInput({
+				email: "",
+				password: "",
+			});
+			navigation.navigate("signinforcreate")
+		} catch (error) {
+			console.log(error);
+		}
 	}
 
 	const createAccount = async() => {
@@ -123,7 +127,7 @@ const ContinueWithEmailAndPassword = () => {
 									email: "",
 									password: "",
 								});
-								navigation.navigate("home");
+								navigation.navigate("stackHome");
 							}).catch(error => {
 								setMessage1(error.message);
 								Alert.alert("Seems this email address is already in use, please sign in.");
@@ -193,7 +197,10 @@ const ContinueWithEmailAndPassword = () => {
 						<Text style={styles.text4}>Create account</Text>
 					</TouchableOpacity>
 			</ScrollView>
-			<Text style={styles.err1}>{ message1 }</Text>
+			<Text style={styles.err1}>{message1}</Text>
+			<TouchableOpacity onPress={() => navigation.navigate("userdetailform")}>
+				<Text style={{ color: "black" }}>{"goooo"}</Text>
+			</TouchableOpacity>
 		</SafeAreaView>
 	);
 };
