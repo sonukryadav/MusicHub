@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Entypo from "react-native-vector-icons/Entypo";
-import { Account, Home, LocalAudioFiles, OnlineS } from "../Screens2";
+import { LocalAudioFiles, OnlineS } from "../Screens2";
 
 
 const Tab = createBottomTabNavigator();
@@ -13,14 +13,10 @@ const TabNavigation = () => {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
-          if (route.name === 'Home') {
-            iconName = focused ? 'home' : 'home-outline';
-          } else if (route.name === 'Offline') {
+          if (route.name === 'Offline') {
             iconName = focused ? 'musical-notes' : 'musical-notes-outline';
           } else if (route.name === 'Online') {
             iconName = focused ? 'md-pause' : 'md-play';
-          } else if (route.name === 'Notifications') {
-            iconName = focused ? 'ios-notifications-sharp' : 'ios-notifications-outline';
           }
           return <Ionicons name={iconName} size={size} color={color} />;
         },
@@ -30,10 +26,8 @@ const TabNavigation = () => {
       })
       }
     >
-      <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Offline" component={LocalAudioFiles} />
       <Tab.Screen name="Online" component={OnlineS} />
-      <Tab.Screen name="Notifications" component={Account} />
     </Tab.Navigator>
   );
 }

@@ -33,7 +33,7 @@ export default function OnlineS() {
             <>
                 <View style={styles.v2}>
                     <TouchableOpacity onPress={moveTo}>
-                        <Image source={{ uri: `${item.item.posterUrl}`}} resizeMode='contain'  style={styles.posterImage} />
+                        <Image source={{ uri: `${item.item.posterUrl}`}} resizeMode='contain' style={styles.posterImage} />
                     </TouchableOpacity>
                 </View>
             </>

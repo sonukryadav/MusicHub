@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, Switch, Alert } from "react-native";
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList, DrawerItem } from "@react-navigation/drawer";
-import MaterialIcons from "react-native-vector-icons/MaterialCommunityIcons"
-import AntDesign from "react-native-vector-icons/AntDesign";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import Entypo from "react-native-vector-icons/Entypo";
 import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { TabNavigation } from ".";
@@ -15,8 +11,6 @@ import { toggle1 } from "../ReduxKit/ThemeSlice";
 import { AsyncSet, AsyncGet, AsyncDelete } from "../AsyncStorage/AsyncStorage";
 import { lightTheme, darkTheme } from "../Styles/DrawerNavigation";
 import auth from '@react-native-firebase/auth';
-import { userDetailFormState } from "../ReduxKit/UserDetailFormStateSlice";
-import { USERDETAILFORMSTATE } from "../../ENV";
 
 
 const Drawer = createDrawerNavigator();
@@ -98,15 +92,7 @@ function CustomDrawerContent(props) {
                 </View>
             </View>
             {/* <DrawerItemList {...props} /> */}
-            <DItem IconG={MaterialIcons} IconN={"group"} labelT={"New Group"} navigateTo={"newGroup"} />
-            <DItem IconG={FontAwesome} IconN={"address-book"} labelT={"Contacts"} navigateTo={"contacts"} />
-            <DItem IconG={Ionicons} IconN={"call"} labelT={"Calls"} navigateTo={"calls"} />
-            <DItem IconG={Ionicons} IconN={"location"} labelT={"People Nearby"} navigateTo={"peopleNearby"} />
-            <DItem IconG={FontAwesome} IconN={"bookmark"} labelT={"Saved Messages"} navigateTo={"savedMessages"} />
             <DItem IconG={Ionicons} IconN={"settings"} labelT={"Settings"} navigateTo={"settings"} />
-            <View style={{ borderBottomWidth: 1, borderColor: "grey", opacity: 0.5, marginVertical: 10 }}></View>
-            <DItem IconG={Entypo} IconN={"add-user"} labelT={"Invite Friends"} navigateTo={"inviteFriends"} />
-            <DItem IconG={AntDesign} IconN={"questioncircle"} labelT={"TalkTime Features"} navigateTo={"talktimeFeatures"} />
             <DrawerItem
                 icon={({ focused, color, size }) => (
                     <MaterialCommunityIcons color={"grey"} size={size} name={"logout"} />
