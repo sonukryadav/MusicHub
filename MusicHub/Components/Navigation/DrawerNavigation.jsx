@@ -11,6 +11,7 @@ import { toggle1 } from "../ReduxKit/ThemeSlice";
 import { AsyncSet, AsyncGet, AsyncDelete } from "../AsyncStorage/AsyncStorage";
 import { lightTheme, darkTheme } from "../Styles/DrawerNavigation";
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 
 
 const Drawer = createDrawerNavigator();
@@ -37,9 +38,18 @@ const DItem = ({ IconG, IconN, labelT, navigateTo }) => {
 
 
 function CustomDrawerContent(props) {
+    const [detail, setDetail] = useState({});
     const { navigation } = props;
     const { theme } = useSelector((state) => state.theme);
     const dispatch = useDispatch();
+
+    React.useEffect(() => {
+        (async () => {
+            const user = auth().currentUser;
+            const user1 = await firestore().collection('users').doc(user.uid).get();
+            setDetail(user1?._data);
+        })();
+    }, []);
 
     On = theme;
     const styles = On ? lightTheme : darkTheme;
@@ -62,10 +72,10 @@ function CustomDrawerContent(props) {
 
             <View style={styles.view1}>
                 <View>
-                    {1 ?
+                    {detail.photoURL ?
                         <TouchableOpacity onPress={() => navigation.navigate("settings")}>
                             <Image
-                                source={{ uri: "https://images.pexels.com/photos/53435/tree-oak-landscape-view-53435.jpeg?cs=srgb&dl=pexels-pixabay-53435.jpg&fm=jpg" }}
+                                source={{ uri: detail.photoURL }}
                                 style={styles.profileImage}
                             /></TouchableOpacity> :
                         <View style={styles.v7}>
@@ -74,8 +84,8 @@ function CustomDrawerContent(props) {
                             </TouchableOpacity>
                         </View>
                     }
-                    <Text style={styles.userName}> {"firstName"}</Text>
-                    <Text style={styles.userNumber}> {"mobileNumber"}</Text>
+                    <Text style={styles.userName}> {detail.inputedName ? detail.inputedName : "No name" }</Text>
+                    <Text style={styles.userNumber}> {detail.inputedEmail ? detail.inputedEmail : "No email"}</Text>
                 </View>
                 <View>
                     <TouchableOpacity style={styles.toggle1}>
@@ -93,6 +103,7 @@ function CustomDrawerContent(props) {
             </View>
             {/* <DrawerItemList {...props} /> */}
             <DItem IconG={Ionicons} IconN={"md-person-circle"} labelT={"Account"} navigateTo={"Account"} />
+            <DItem IconG={Ionicons} IconN={"md-search"} labelT={"Search"} navigateTo={"Search"} />
             <DrawerItem
                 icon={({ focused, color, size }) => (
                     <MaterialCommunityIcons color={"grey"} size={size} name={"logout"} />

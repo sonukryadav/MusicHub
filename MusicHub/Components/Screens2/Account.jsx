@@ -72,7 +72,7 @@ export default function Account() {
         <View style={styles.fieldContainer}>
           <Text style={styles.label}>Name</Text>
           {mode === "view" ? (
-            <Text style={styles.text}>{detail.displayName ? detail.inputedName : "No name found"}</Text>
+            <Text style={styles.text}>{detail.inputedName ? detail.inputedName : "No name found"}</Text>
           ) : (
             <TextInput
               style={styles.input}
@@ -84,7 +84,7 @@ export default function Account() {
         <View style={styles.fieldContainer}>
           <Text style={styles.label}>Email</Text>
           {mode === "view" ? (
-            <Text style={styles.text}>{detail.email ? detail.inputedEmail : "No Email found"}</Text>
+            <Text style={styles.text}>{detail.inputedEmail ? detail.inputedEmail : "No Email found"}</Text>
           ) : (
             <TextInput
               style={styles.input}
