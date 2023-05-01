@@ -69,7 +69,7 @@ function CustomDrawerContent(props) {
                                 style={styles.profileImage}
                             /></TouchableOpacity> :
                         <View style={styles.v7}>
-                            <TouchableOpacity onPress={() => navigation.navigate("settings")}>
+                            <TouchableOpacity onPress={() => navigation.navigate("account")}>
                                 <MaterialCommunityIcons name="camera-plus" size={55} color={"white"} />
                             </TouchableOpacity>
                         </View>
@@ -92,7 +92,7 @@ function CustomDrawerContent(props) {
                 </View>
             </View>
             {/* <DrawerItemList {...props} /> */}
-            <DItem IconG={Ionicons} IconN={"settings"} labelT={"Settings"} navigateTo={"settings"} />
+            <DItem IconG={Ionicons} IconN={"md-person-circle"} labelT={"Account"} navigateTo={"Account"} />
             <DrawerItem
                 icon={({ focused, color, size }) => (
                     <MaterialCommunityIcons color={"grey"} size={size} name={"logout"} />

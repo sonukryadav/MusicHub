@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Alert } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { Settings, SingleAudio, OnlineSongList, OnlineSingleSongPlayer } from "../Screens2";
+import {Account, SingleAudio, OnlineSongList, OnlineSingleSongPlayer } from "../Screens2";
 import { DrawerNavigation} from '../Navigation';
 import { useSelector } from "react-redux";
 import { requestStoragePermission, trackFormattedAudioFiles, setUpPlayer } from "../HelperFunctions";
@@ -47,7 +47,7 @@ const NativeStack2 = () => {
                 }}
             >
                 <Stack.Screen name="stackHome" component={DrawerNavigation} options={{ headerShown: false, }} />
-                <Stack.Screen name="settings" component={Settings} options={{ title: 'Settings' }} />
+                <Stack.Screen name="account" component={Account} options={{ title: 'Account' }} />
                 <Stack.Screen name="singleaudio" component={SingleAudio} />
                 <Stack.Screen name="onlinesonglist" component={OnlineSongList} />
                 <Stack.Screen name="onlinesinglesongplayer" component={OnlineSingleSongPlayer} />
