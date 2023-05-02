@@ -54,17 +54,23 @@ const styles = StyleSheet.create({
         padding: 5,
         margin: 8,
         borderRadius: 10,
-        elevation:10,
+        elevation: 10,
+        overflow:"hidden",
     },
     v4: {
     },
     v5: {
+        flex:1,
         marginLeft: 20,
+        marginRight: 10,
+        overflow: "hidden",
     },
     t2: {
         color: "black",
         fontSize: 20,
-        fontWeight:600
+        fontWeight: 600,
+        marginRight: 35,
+ 
     },
     t3: {
         color:"black"

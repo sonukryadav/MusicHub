@@ -35,7 +35,7 @@ const Search = () => {
             <Image source={{ uri: item.item.posterUrl }} resizeMode="contain" style={styles.poster1} />
           </View>
           <View style={styles.v5}>
-            <Text style={styles.t2}>{item.item.songName}</Text>
+            <Text style={styles.t2}>{item.item.songName }</Text>
             <Text style={styles.t3}>{item.item.artists}</Text>
           </View>
         </View>
