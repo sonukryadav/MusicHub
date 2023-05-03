@@ -19,6 +19,8 @@ import firestore from '@react-native-firebase/firestore';
 import { AsyncSet, AsyncGet, AsyncDelete } from "../AsyncStorage/AsyncStorage";
 import { USERDETAILFORMSTATE } from "../../ENV";
 import { userDetailFormState } from "../ReduxKit/UserDetailFormStateSlice";
+import Toast from 'react-native-toast-message';
+import { Toast1 } from "../Views";
 
 
 const UserDetailForm = () => {
@@ -86,11 +88,17 @@ const UserDetailForm = () => {
                 if (input.name.length < 3) {
                     if (input.name.length === 0) {
                         setMessage1("Please, enter your name to continue further.");
-                        Alert.alert("Please, enter your name to continue further.");
+                        Toast.show({
+                            type: 'info',
+                            text1: 'Please, enter your name to continue further.'
+                        });
                         return;
                     } else {
                         setMessage1("Your name is too short, please provide full name!");
-                        Alert.alert("Your name is too short!");
+                        Toast.show({
+                            type: 'info',
+                            text1: 'Your name is too short!',
+                        });
                         return;
                     }
                 } else {
@@ -105,7 +113,10 @@ const UserDetailForm = () => {
                                 inputedDOB: input.dob
                             }
                             setUserToFireStore(userDetails);
-                            Alert.alert("Welcome, account created successfully!");
+                            Toast.show({
+                                type: 'success',
+                                text1: 'Welcome, account created successfully!',
+                            });
                             setInput({
                                 email: "",
                                 password: "",
@@ -116,23 +127,36 @@ const UserDetailForm = () => {
                             dispatch(userDetailFormState(true));
                             await AsyncSet(`${USERDETAILFORMSTATE.UDFS}`, true);
                             navigation.navigate("stackHome");
+                            return;
                         } else {
                             setMessage1("Sorry you do not meet MusicHub's age requirements (Min. Age >= 18).");
-                            Alert.alert("Sorry you do not meet MusicHub's age requirements (Min. Age >= 18).");
+                            Toast.show({
+                                type: 'info',
+                                text1: 'Sorry, Min. Age >= 18)',
+                            });
                         }
                     } else {
                         setMessage1("Please select your gender.");
-                        Alert.alert("Please select your gender.");
+                        Toast.show({
+                            type: 'info',
+                            text1: 'Please select your gender',
+                        });
                     }
                 }
             } else {
                 setMessage1("Check your email and password!!!");
-                Alert.alert("Check your email and password!!!");
+                Toast.show({
+                    type: 'error',
+                    text1: 'Check your email and password!!!',
+                });
                 return;
             }
         } catch (error) {
             setMessage1("Something went wrong, try Again!");
-            Alert.alert("Something went wrong, try Again!");
+            Toast.show({
+                type: 'error',
+                text1: 'Something went wrong, try Again!',
+            });
             return;
         }
     }
@@ -210,7 +234,7 @@ const UserDetailForm = () => {
                     <View style={styles.v1}>
                         <TextInput
                             style={styles.input2}
-                            placeholder="Enter same password"
+                            placeholder="Enter password"
                             value={input.password}
                             onChangeText={(text) => OnChangeInput("password", text)}
                             secureTextEntry={!showHide}
@@ -277,6 +301,7 @@ const UserDetailForm = () => {
                     </TouchableOpacity>
                 </View>
                 <Text style={styles.textBottom}>{message1}</Text>
+                <Toast1 />
             </ScrollView>
         </SafeAreaView>
 	);

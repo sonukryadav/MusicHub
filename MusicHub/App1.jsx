@@ -7,6 +7,7 @@ import { AsyncSet, AsyncGet, AsyncDelete } from "./Components/AsyncStorage/Async
 import { userDetailFormState } from "./Components/ReduxKit/UserDetailFormStateSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { USERDETAILFORMSTATE } from "./ENV.js"
+import { SignUp} from "./Components/Screens2";
 
 
 
@@ -49,15 +50,13 @@ const App1 = () => {
 			<>
 			<StatusBar backgroundColor="black" barStyle="light-content" />
 			<Stack.Navigator>
-				{user && userDetailFormStateData ? (
-					<Stack.Group>
-						<Stack.Screen name="home" component={NativeStack2} options={() => ({ headerShown: false })} />
-					</Stack.Group>
-				) : (
-					<Stack.Group>
-							<Stack.Screen name="auth" component={NativeStack1} options={() => ({ headerShown: false })} />
-					</Stack.Group>
-				)}
+				<Stack.Group>
+				{/* {user  ? ( */}
+					<Stack.Screen name="home" component={NativeStack2} options={() => ({ headerShown: false })} />
+				{/* ) : ( */}
+					{/* <Stack.Screen name="auth" component={SignUp} options={() => ({ headerShown: false })} /> */}
+				{/* )} */}
+				</Stack.Group>
 			</Stack.Navigator>
 			</>
 		);

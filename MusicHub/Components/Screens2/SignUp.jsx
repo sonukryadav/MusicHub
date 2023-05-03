@@ -3,6 +3,8 @@ import { ScrollView, View, Text, TouchableOpacity, Image, SafeAreaView, Alert } 
 import styles from "../Styles/SignUp";
 import { useNavigation } from "@react-navigation/native";
 import img1 from "../Assets/MusicHub-logo.png";
+import Toast from 'react-native-toast-message';
+import { Toast1 } from "../Views";
 
 
 
@@ -17,6 +19,14 @@ const Btn = ({ text, where }) => {
 
 const SignUp = () => {
 	const navigation = useNavigation();
+
+	React.useEffect(() => {
+		Toast.show({
+			type: 'success',
+			text1: '💝💝        Welcome to MusicHub       💝💝',
+		});
+	}, []);
+
     return (
 			<SafeAreaView style={styles.safeAreaView}>
 				<ScrollView contentContainerStyle={styles.scrollView}>
@@ -34,7 +44,8 @@ const SignUp = () => {
 							<Btn text={"Continue with Google"} where={"withgoogle"} />
 							<Btn text={"Continue with phone number"} where={"withphone"} />
 							<Btn text={"Sign up with email & password"} where={"withemailpassword"} />
-						</View>
+        				</View>
+        				<Toast1 />
 				</ScrollView>
 			</SafeAreaView>
 		);

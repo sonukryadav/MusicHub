@@ -43,7 +43,7 @@ export default function LocalAudioFiles() {
         setVisible((pre) => !pre);
     }
 
-    console.log(files[0]);
+    // console.log(files[0]);
 
     const singleBlock = (item, index) => {
         navigation.navigate("singleaudio", {title : item.title, url : item.url, index1 : index});

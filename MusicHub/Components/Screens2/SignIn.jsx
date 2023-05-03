@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
 	View,
 	Text,
@@ -8,18 +8,16 @@ import {
 	Alert,
 	TouchableOpacity,
 } from "react-native";
-import styles from "../Styles/ContinueWithEmailAndPassword";
+import styles from "../Styles/SignIn";
 import FontAwesome5  from "react-native-vector-icons/FontAwesome5";
 import auth from '@react-native-firebase/auth';
 import { useNavigation } from "@react-navigation/native";
+import { createdUserData }  from "../ReduxKit/CreateUserFirebaseAtSignIn";
 import { useDispatch } from "react-redux";
-import { createdUserData } from "../ReduxKit/CreateUserFirebaseAtSignIn";
-import { USERDETAILFORMSTATE } from "../../ENV";
-import { userDetailFormState } from "../ReduxKit/UserDetailFormStateSlice.js"
-import { AsyncSet } from "../AsyncStorage/AsyncStorage";
+import Toast from 'react-native-toast-message';
+import { Toast1 } from "../Views";
 
-
-const ContinueWithEmailAndPassword = () => {
+const SignIn = () => {
 	const [input, setInput] = React.useState({
 		email: "",
 		password: "",
@@ -33,8 +31,9 @@ const ContinueWithEmailAndPassword = () => {
 	const invalid = `Your password is weak, it should have : \n- password should be of 6 characters length \n- password should contain\n• uppercase letter\n• lowercase letter\n• number\n• special character`;
 
 	const inputs = (name, value) => {
-		setInput({ ...input, [name]: value });
+		setInput(prevState => ({...prevState,[name]: value}));
 	};
+
 
 	React.useEffect(() => {
 		let password = input.password;
@@ -63,6 +62,7 @@ const ContinueWithEmailAndPassword = () => {
 			return regex.test(email);
 		})(input.email);
 
+
 		if (emailValidation) {
 			setEmailV(true);
 		} else {
@@ -84,84 +84,89 @@ const ContinueWithEmailAndPassword = () => {
 
 	React.useEffect(() => {
 		setMessage1("");
-	}, [input.email, input.password])
+	}, [input])
 
 
-	const signOutAndVerify = async (result) => {
-		try {
-			dispatch(userDetailFormState(false));
-			await AsyncSet(`${USERDETAILFORMSTATE.UDFS}`, false);
-			await auth().currentUser.sendEmailVerification();
-			await auth().signOut();
-			Alert.alert("Verify your email, a link has been sent and then sign in.");
-			setInput({
-				email: "",
-				password: "",
+	const login = async () => {
+
+		if (emailV && active) {
+			auth()
+				.signInWithEmailAndPassword(input.email, input.password)
+				.then((result) => {
+					if (result.user.emailVerified) {
+						setMessage1('Signed in successfully!');
+						const userDetails = {
+							displayName: result.user.providerData[0].displayName,
+							email: result.user.email,
+							emailVerified: result.user.emailVerified,
+							phoneNumber: result.user.providerData[0].phoneNumber,
+							photoURL: result.user.providerData[0].photoURL,
+							uid: result.user.uid,
+						}
+						dispatch(createdUserData(userDetails));
+						setInput({
+							email: "",
+							password: "",
+						});
+						navigation.navigate("stackHome");
+					} else {
+						setMessage1("You haven't verified your email!");
+						Toast.show({
+							type: 'info',
+							text1: "You haven't verified your email!",
+						});
+						return;
+					}
+				})
+				.catch(error => {
+					console.log(error);
+					if (error.code === 'auth/invalid-email') {
+						setMessage1(error.message);
+						Toast.show({
+							type: 'error',
+							text1: "That email address is invalid!",
+						});
+						return;
+					}
+					if (error.code === 'auth/user-not-found') {
+						setMessage1(error.message);
+						Toast.show({
+							type: 'error',
+							text1: "User not found!!",
+						});
+						return;
+					}
+					if (error.code === 'auth/wrong-password') {
+						setMessage1(error.message);
+						setMessage1(error.message);
+						Toast.show({
+							type: 'error',
+							text1: "Invalid password!!!",
+						});
+						return;
+					}
+					Toast.show({
+						type: 'error',
+						text1: "Error Occurred! Please try later",
+					});
+					setMessage1(error.message);
+				});
+
+		} else {
+			Toast.show({
+				type: 'error',
+				text1: "Check your email and password!!!",
 			});
-			navigation.navigate("signinforcreate")
-		} catch (error) {
-			console.log(error);
+			setMessage1("Check your email and password!!!");
 		}
 	}
-
-	const createAccount = async() => {
-			if (emailV && active) {
-				auth()
-					.createUserWithEmailAndPassword(input.email, input.password)
-					.then(async(result) => {
-						setMessage1('User account created now sign in!');
-						signOutAndVerify(result);
-					})
-					.catch(error => {
-						// setMessage1(error.message);
-						if (error.code === 'auth/email-already-in-use') {
-							// If already signup then signin
-							auth().signInWithEmailAndPassword(input.email, input.password).then((result) => {
-								setMessage1('Signed In!Signed In Successful!.');
-								Alert.alert('Signed In!', "Signed In Successful!.");
-								const userDetails = {
-									displayName: result.user.providerData[0].displayName,
-									email: result.user.email,
-									emailVerified: result.user.emailVerified,
-									phoneNumber: result.user.providerData[0].phoneNumber,
-									photoURL: result.user.providerData[0].photoURL,
-									uid: result.user.uid,
-								}
-								dispatch(createdUserData(userDetails));
-								setInput({
-									email: "",
-									password: "",
-								});
-								navigation.navigate("stackHome");
-							}).catch(error => {
-								setMessage1(error.message);
-								Alert.alert("Seems this email address is already in use, please sign in.");
-							});
-						} else if (error.code === 'auth/invalid-email') {
-							setMessage1(error.message);
-							Alert.alert('That email address is invalid!');
-						} else if (error.code === 'auth/wrong-password') {
-							console.log("wrong password---------------");
-							setMessage1(error.message);
-							Alert.alert('Invalid password!!');
-						} else {
-							setMessage1(error.message);
-							Alert.alert("Error Occurred! Please try later");
-						}
-						console.log(error);
-					});
-
-			} else {
-				setMessage1("Check your email and password!!!");
-				Alert.alert("Check your email and password!!!");
-			}
-	}
-
 
 	return (
 		<SafeAreaView style={styles.container}>
 			<ScrollView contentContainerStyle={styles.v0}>
-					<Text style={styles.text1}>Create new account</Text>
+				<View style={styles.viewStart}>
+					<View>
+						<Text style={styles.text1}>Sign in to your account</Text>
 					<TextInput
 						style={styles.input1}
 						placeholder="Enter Email"
@@ -169,19 +174,18 @@ const ContinueWithEmailAndPassword = () => {
 						onChangeText={(email) => inputs("email", email)}
 						keyboardType="email-address"
 						placeholderTextColor="#4D4D4D"
-				/>
-				<View style={ styles.inpV2}>
+					/>
 					<Text style={styles.text2}>
 						{input.email.length === 0 ? "" : !emailV && "❌ Invalid Email"}
 					</Text>
-				</View>
+					</View>
 
 					<View style={styles.v1}>
 						<TextInput
 							style={styles.input2}
 							placeholder="Enter Password"
 							value={input.password}
-							onChangeText={(password) => inputs("password", password)}
+							onChangeText={password => inputs("password", password)}
 							secureTextEntry={!showHide}
 							placeholderTextColor="#4D4D4D"
 						/>
@@ -192,22 +196,23 @@ const ContinueWithEmailAndPassword = () => {
 						</TouchableOpacity>
 					</View>
 
-				<View style={styles.inpV2}>
+
 					<Text style={styles.text3}>
 						{input.password.length === 0 ? "" : !active && invalid}
 					</Text>
-				</View>
 
-					<TouchableOpacity onPress={createAccount} disabled={!emailV && !active}>
-						<Text style={styles.text4}>Create account</Text>
+					<TouchableOpacity onPress={login} disabled={!emailV && !active}>
+						<Text style={styles.text4}>Login</Text>
 					</TouchableOpacity>
+				</View>
 			</ScrollView>
 			<Text style={styles.err1}>{message1}</Text>
+			<Toast1 />
 		</SafeAreaView>
 	);
 };
 
-export default ContinueWithEmailAndPassword;
+export default SignIn;
 
 // password should be of 8 characters length
 //     - password should contain

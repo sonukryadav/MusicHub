@@ -14,6 +14,8 @@ import auth from '@react-native-firebase/auth';
 import { useNavigation } from "@react-navigation/native";
 import { createdUserData } from "../ReduxKit/CreateUserFirebaseAtSignIn";
 import { useDispatch, useSelector } from "react-redux";
+import { Toast1 } from "../Views";
+import Toast from 'react-native-toast-message';
 
 const SignInForCreate = () => {
     const [input, setInput] = React.useState({
@@ -108,7 +110,10 @@ const SignInForCreate = () => {
                         navigation.navigate("userdetailform");
                     } else {
                         setMessage1("You haven't verified your email!");
-                        Alert.alert("You haven't verified your email!");
+                        Toast.show({
+                            type: "info",
+                            text1:"You haven't verified your email!",
+                        });
                         return;
                     }
                 })
@@ -116,26 +121,41 @@ const SignInForCreate = () => {
                     console.log(error);
                     if (error.code === 'auth/invalid-email') {
                         setMessage1(error.message);
-                        Alert.alert('That email address is invalid!');
+                        Toast.show({
+                            type: "error",
+                            text1: "That email address is invalid!",
+                        });
                         return;
                     }
                     if (error.code === 'auth/user-not-found') {
                         setMessage1(error.message);
-                        Alert.alert('User not found!!');
+                        Toast.show({
+                            type: "error",
+                            text1: "User not found!!",
+                        });
                         return;
                     }
                     if (error.code === 'auth/wrong-password') {
                         setMessage1(error.message);
-                        Alert.alert('Invalid password!!');
+                        Toast.show({
+                            type: "error",
+                            text1: "Invalid password!!",
+                        });
                         return;
                     }
-                    Alert.alert("Error Occurred! Please try later")
+                    Toast.show({
+                        type: "error",
+                        text1: "Error Occurred! Please try later",
+                    });
                     setMessage1(error.message);
                 });
 
         } else {
-            Alert.alert("Check your email and password!!!");
             setMessage1("Check your email and password!!!");
+            Toast.show({
+                type: "error",
+                text1: "Check your email and password!!!",
+            });
         }
     }
 
@@ -183,6 +203,7 @@ const SignInForCreate = () => {
                 </View>
             </ScrollView>
             <Text style={styles.err1}>{message1}</Text>
+            <Toast1 />
         </SafeAreaView>
     );
 };

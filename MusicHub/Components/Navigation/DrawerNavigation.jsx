@@ -12,6 +12,8 @@ import { AsyncSet, AsyncGet, AsyncDelete } from "../AsyncStorage/AsyncStorage";
 import { lightTheme, darkTheme } from "../Styles/DrawerNavigation";
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
+import Toast from 'react-native-toast-message';
+import { Toast1} from "../Views";
 
 
 const Drawer = createDrawerNavigator();
@@ -43,13 +45,15 @@ function CustomDrawerContent(props) {
     const { theme } = useSelector((state) => state.theme);
     const dispatch = useDispatch();
 
+
     React.useEffect(() => {
         (async () => {
             const user = auth().currentUser;
             const user1 = await firestore().collection('users').doc(user.uid).get();
             setDetail(user1?._data);
         })();
-    }, []);
+    });
+
 
     On = theme;
     const styles = On ? lightTheme : darkTheme;
@@ -64,7 +68,16 @@ function CustomDrawerContent(props) {
         // await AsyncSet(`${USERDETAILFORMSTATE.UDFS}`, false);
         auth()
             .signOut()
-            .then(() => Alert.alert('User signed out successfully!'));
+            .then(() => {
+                Toast.show({
+                    type: 'success',
+                    text1: 'User signed out successfully.'
+                });
+                setDetail({})
+                navigation.navigate("signup");
+                return;
+            }
+            );
     };
 
     return (
@@ -72,10 +85,10 @@ function CustomDrawerContent(props) {
 
             <View style={styles.view1}>
                 <View>
-                    {detail.photoURL ?
+                    {detail ?
                         <TouchableOpacity onPress={() => navigation.navigate("settings")}>
                             <Image
-                                source={{ uri: detail.photoURL }}
+                                source={{ uri: detail.photoURL || `https://firebasestorage.googleapis.com/v0/b/musichub2.appspot.com/o/MusicHub%2FMusicHub-logo.png?alt=media&token=c259d378-41f1-4618-b1da-4d56b498c02a` }}
                                 style={styles.profileImage}
                             /></TouchableOpacity> :
                         <View style={styles.v7}>
@@ -84,8 +97,8 @@ function CustomDrawerContent(props) {
                             </TouchableOpacity>
                         </View>
                     }
-                    <Text style={styles.userName}> {detail.inputedName ? detail.inputedName : "No name" }</Text>
-                    <Text style={styles.userNumber}> {detail.inputedEmail ? detail.inputedEmail : "No email"}</Text>
+                    <Text style={styles.userName}> {detail? detail.inputedName : "No name" }</Text>
+                    <Text style={styles.userNumber}> {detail ? detail.inputedEmail : "No email"}</Text>
                 </View>
                 <View>
                     <TouchableOpacity style={styles.toggle1}>
@@ -158,6 +171,7 @@ const DrawerNavigation = ({ navigation }) => {
                     }
                 }} />
             </Drawer.Navigator>
+            <Toast1 />
         </>
     );
 }

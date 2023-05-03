@@ -9,6 +9,8 @@ import { useDispatch } from "react-redux";
 import { USERDETAILFORMSTATE } from "../../ENV";
 import { userDetailFormState } from "../ReduxKit/UserDetailFormStateSlice.js"
 import { AsyncSet } from "../AsyncStorage/AsyncStorage";
+import Toast from 'react-native-toast-message';
+import { Toast1 } from "../Views";
 
 
 const ContinueWithPhone = () => {
@@ -31,22 +33,34 @@ const ContinueWithPhone = () => {
 		try {
 			if (phoneNumber.length < 10) {
 				setWarn("Please check your number, it seems invalid.");
-				Alert.alert("Check your number");
+				Toast.show({
+					type: 'error',
+					text1: 'Check your number',
+				});
 				return;
 			}
 			const confirmation = await auth().signInWithPhoneNumber(`${countryCodeDigit}${phoneNumber}`);
 			setConfirm(confirmation);
 			setWarn("OTP has been sent, please verify.");
-			Alert.alert("OTP has been sent, please verify!")
+			Toast.show({
+				type: 'success',
+				text1: 'OTP has been sent, please verify!',
+			});
 		} catch (error) {
 			console.log(error);
 			if (error.code === "auth/too-many-requests") {
 				setWarn(error.message);
-				Alert.alert("To many attempts please try after some time or try with other number.");
+				Toast.show({
+					type: 'info',
+					text1: 'To many attempts please try after some time or try with other number.',
+				});
 				return;
 			}
 			setWarn(error.message);
-			Alert.alert("Please check your number");
+			Toast.show({
+				type: 'error',
+				text1: 'Please check your number',
+			});
 		}
 	}
 
@@ -54,12 +68,18 @@ const ContinueWithPhone = () => {
 			try {
 				if (!confirm) {
 					setWarn("Please enter your number and touch on send OTP button");
-					Alert.alert("Please enter your number and touch on send OTP button");
+					Toast.show({
+						type: 'info',
+						text1: 'Please enter your number',
+					});
 					return;
 				}
 				if (otp.length !== 6) {
 					setWarn("Please check your OTP, it seems you have entered wrong or invalid.");
-					Alert.alert("Please check your entered OTP, it seems wrong or invalid.");
+					Toast.show({
+						type: 'error',
+						text1: 'Please check your entered OTP',
+					});
 					return;
 				}
 				let result = await confirm.confirm(otp);
@@ -75,7 +95,10 @@ const ContinueWithPhone = () => {
 				dispatch(userDetailFormState(false));
 				await AsyncSet(`${USERDETAILFORMSTATE.UDFS}`, false);
 				setWarn("Congratulations your number is now verified.");
-				Alert.alert("Hurrya, Your number is now verified.")
+				Toast.show({
+					type: 'success',
+					text1: 'Hurrya, Your number is now verified.',
+				});
 				setPhoneNumber("");
 				setOtp("");
 				navigation.navigate("userdetailform");
@@ -83,16 +106,25 @@ const ContinueWithPhone = () => {
 				console.log(error);
 				if (error.code === "auth/session-expired") {
 					setWarn("Your OTP is expired, please try again");
-					Alert.alert("Your OTP is expired, please try again");
+					Toast.show({
+						type: 'info',
+						text1: 'Your OTP is expired, please try again',
+					});
 					return;
 				}
 				if (error.code === "auth/invalid-verification-code") {
 					setWarn("It seems you have entered wrong OTP, Please try again!");
-					Alert.alert("It seems you have entered wrong OTP, Please try again!");
+					Toast.show({
+						type: 'info',
+						text1: 'Entered wrong OTP, Please try again!',
+					});
 					return;
 				}
 				setWarn(error.message);
-				Alert.alert(error.message);
+				Toast.show({
+					type: 'error',
+					text1: error.message,
+				});
 			}
 		}
 
@@ -176,6 +208,7 @@ const ContinueWithPhone = () => {
 
 					</View>
 					<Text style={styles.warnText}>{warn}</Text>
+					<Toast1 />
 				</View>
 			</ScrollView>
 		</SafeAreaView>

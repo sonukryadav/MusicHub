@@ -9,6 +9,9 @@ import { GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/go
 import ENV from '../../ENV';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Loading1 } from "../Views";
+import Toast from 'react-native-toast-message';
+import { Toast1 } from "../Views";
+import firestore from '@react-native-firebase/firestore';
 
 
 GoogleSignin.configure({
@@ -39,29 +42,56 @@ export default function ContinueWithGoogle() {
 				uid: userInfo.user.uid
 			}
 			dispatch(createdUserData(userData));
-			Alert.alert("Hurray! authentication successfully.");
-			// console.log(userInfo);
+			Toast.show({
+				type: 'success',
+				text1: 'Hurray! authentication successfully.'
+			})
 			setIsSigninInProgress(false);
-			navigation.navigate("userdetailform");
+
+			const user = auth().currentUser;
+			const user1 = await firestore().collection('users').doc(user?.uid).get();
+
+
+			if (user && user1._data) {
+				navigation.navigate("stackHome");
+			} else if (user && !user1._data) {
+				navigation.navigate("userdetailform");
+			} else if (!user && !user1._data) {
+				navigation.navigate("signup");
+			}
+
+
 		} catch (error) {
 			setIsSigninInProgress(false);
 			console.log(error);
 			if (error.code === statusCodes.SIGN_IN_CANCELLED) {
 				// user cancelled the login flow
 				setWarn(error.message);
-				Alert.alert(error.message);
+				Toast.show({
+					type: 'error',
+					text1: error.message,
+				});
 			} else if (error.code === statusCodes.IN_PROGRESS) {
 				// operation (e.g. sign in) is in progress already
 				setWarn(error.message);
-				Alert.alert(error.message);
+				Toast.show({
+					type: 'error',
+					text1: error.message,
+				});
 			} else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
 				// play services not available or outdated
 				setWarn(error.message);
-				Alert.alert(error.message);
+				Toast.show({
+					type: 'error',
+					text1: error.message,
+				});
 			} else {
 				// some other error occurred
 				setWarn(error.message);
-				Alert.alert(error.message);
+				Toast.show({
+					type: 'error',
+					text1: error.message,
+				});
 			}
 		}
 	};
@@ -82,6 +112,7 @@ export default function ContinueWithGoogle() {
 					/>
 				</View>
 			<Text style={styles.textWarn}>{warn}</Text>
+			<Toast1 />
 		</ScrollView>
 		</SafeAreaView>
 	);

@@ -6,9 +6,8 @@ import {
     ContinueWithPhone,
     SignIn,
 	SignUp,
-	UserDetailForm,
 	SignInForCreate,
-} from "../Screens1";
+} from "../Screens2";
 
 
 const NStack = createNativeStackNavigator();
@@ -41,12 +40,6 @@ const NativeStack1 = () => {
 					component={ContinueWithEmailAndPassword}
 					options={() => ({ headerShown: true, headerTitle: "Sign up with email & password" })}
     			/>
-    			<NStack.Screen
-     				name="userdetailform"
-     				component={UserDetailForm}
-     				options={() => ({ headerShown: true, headerTitle: "User Detail Form" })}
-			    />
-
     			<NStack.Screen
 				    name="signinforcreate"
     				component={SignInForCreate}

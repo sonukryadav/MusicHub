@@ -1,4 +1,6 @@
-import { StyleSheet, Platform } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
+
+const { width, height } = Dimensions.get("window");
 
 
 const styles = StyleSheet.create({
@@ -11,7 +13,7 @@ const styles = StyleSheet.create({
     },
     viewStart: {
         flex: 1,
-        width:"70%",
+        width:width*0.9,
         justifyContent: "center",
     },
     text1: {

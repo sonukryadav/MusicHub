@@ -1,7 +1,15 @@
 import React, { useEffect } from 'react';
 import { Alert } from "react-native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import {Account, SingleAudio, OnlineSongList, OnlineSingleSongPlayer, Search } from "../Screens2";
+import {
+    Account, SingleAudio, OnlineSongList, OnlineSingleSongPlayer, Search, UserDetailForm,
+    ContinueWithEmailAndPassword,
+    ContinueWithGoogle,
+    ContinueWithPhone,
+    SignIn,
+    SignUp,
+    SignInForCreate,
+} from "../Screens2";
 import { DrawerNavigation} from '../Navigation';
 import { useSelector } from "react-redux";
 import { requestStoragePermission, trackFormattedAudioFiles, setUpPlayer } from "../HelperFunctions";
@@ -51,7 +59,41 @@ const NativeStack2 = () => {
                 <Stack.Screen name="singleaudio" component={SingleAudio} />
                 <Stack.Screen name="onlinesonglist" component={OnlineSongList} />
                 <Stack.Screen name="onlinesinglesongplayer" component={OnlineSingleSongPlayer} />
-                <Stack.Screen name="search" component={ Search} />
+                <Stack.Screen name="search" component={Search} />
+                <Stack.Screen name="userdetailform" component={UserDetailForm} options={() => ({ headerShown: true, headerTitle: "User Detail Form" })}
+                />
+
+
+                <Stack.Screen
+                    name="signup"
+                    component={SignUp}
+                    options={() => ({ headerShown: false })}
+                />
+                <Stack.Screen
+                    name="signin"
+                    component={SignIn}
+                    options={() => ({ headerShown: true, headerTitle: "Sign In" })}
+                />
+                <Stack.Screen
+                    name="withgoogle"
+                    component={ContinueWithGoogle}
+                    options={() => ({ headerShown: true, headerTitle: "Continue with Google" })}
+                />
+                <Stack.Screen
+                    name="withphone"
+                    component={ContinueWithPhone}
+                    options={() => ({ headerShown: true, headerTitle: "Continue with phone number" })}
+                />
+                <Stack.Screen
+                    name="withemailpassword"
+                    component={ContinueWithEmailAndPassword}
+                    options={() => ({ headerShown: true, headerTitle: "Sign up with email & password" })}
+                />
+                <Stack.Screen
+                    name="signinforcreate"
+                    component={SignInForCreate}
+                    options={() => ({ headerShown: true, headerTitle: "New user Sign in" })}
+                />
             </Stack.Navigator>
         </>
     )

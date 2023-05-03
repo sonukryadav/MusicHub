@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
 	},
 	viewStart: {
 		justifyContent: "center",
-		width: "70%",
+		width: width*0.92,
 	},
 	text1: {
 		fontSize: 25,
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 		marginVertical: 25,
 	},
 	input1: {
-		width:width *0.7,
+		width:width *0.92,
 		height: 45,
 		borderWidth: 1.5,
 		borderRadius: 20,
@@ -32,10 +32,10 @@ const styles = StyleSheet.create({
 		color: "black",
 	},
 	inpV2: {
-		width: width * 0.7,
+		width: width * 0.92,
 	},
 	input2: {
-		width: width * 0.7,
+		width: width * 0.92,
 		height: 45,
 		borderWidth: 1.5,
 		borderRadius: 20,
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
 		backgroundColor: "#5FACFA",
 		color: "#0D0D0D",
 		elevation: 10,
-		width: width * 0.7,
+		width: width * 0.92,
 	},
 	v1: {
 		flexDirection:"row",
