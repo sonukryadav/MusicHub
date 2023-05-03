@@ -6,11 +6,9 @@ import styles from '../Styles/ContinueWithPhone';
 import { useNavigation } from "@react-navigation/native";
 import { createdUserData } from "../ReduxKit/CreateUserFirebaseAtSignIn";
 import { useDispatch } from "react-redux";
-import { USERDETAILFORMSTATE } from "../../ENV";
-import { userDetailFormState } from "../ReduxKit/UserDetailFormStateSlice.js"
-import { AsyncSet } from "../AsyncStorage/AsyncStorage";
 import Toast from 'react-native-toast-message';
 import { Toast1 } from "../Views";
+import { Loading1 } from "../Views"
 
 
 const ContinueWithPhone = () => {
@@ -23,11 +21,12 @@ const ContinueWithPhone = () => {
 	const navigation = useNavigation();
 	const dispatch = useDispatch();
 	const [show, setShow] = useState(false);
+	const [load, setLoad] = useState(false);
 
 
 	useEffect(() => {
 		setWarn("");
-	},[phoneNumber, otp])
+	}, [phoneNumber, otp]);
 
 	const handleSendOtp = async () => {
 		try {
@@ -39,8 +38,10 @@ const ContinueWithPhone = () => {
 				});
 				return;
 			}
+			setLoad(true);
 			const confirmation = await auth().signInWithPhoneNumber(`${countryCodeDigit}${phoneNumber}`);
 			setConfirm(confirmation);
+			setLoad(false);
 			setWarn("OTP has been sent, please verify.");
 			Toast.show({
 				type: 'success',
@@ -48,6 +49,7 @@ const ContinueWithPhone = () => {
 			});
 		} catch (error) {
 			console.log(error);
+			setLoad(false);
 			if (error.code === "auth/too-many-requests") {
 				setWarn(error.message);
 				Toast.show({
@@ -92,8 +94,6 @@ const ContinueWithPhone = () => {
 					uid: result.user.uid,
 				}
 				dispatch(createdUserData(userDetails));
-				dispatch(userDetailFormState(false));
-				await AsyncSet(`${USERDETAILFORMSTATE.UDFS}`, false);
 				setWarn("Congratulations your number is now verified.");
 				Toast.show({
 					type: 'success',
@@ -159,7 +159,11 @@ const ContinueWithPhone = () => {
 		const onSelectCountry = (item) => {
 			setCountryCodeDigit(item.dial_code);
 			setShow(false);
-		};
+	};
+
+	if (load) {
+		return (<View style={styles.loadingA}><Loading1 text={"verifying..."} /></View>)
+	}
 
 	return (
 		<SafeAreaView style={styles.sav}>

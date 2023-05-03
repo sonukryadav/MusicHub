@@ -15,6 +15,8 @@ import { useSelector } from "react-redux";
 import { requestStoragePermission, trackFormattedAudioFiles, setUpPlayer } from "../HelperFunctions";
 import { sendAudio } from "../ReduxKit/LocalAudioSlice";
 import { useDispatch } from "react-redux";
+import Toast from 'react-native-toast-message';
+import { Toast1 } from "../Views";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,7 +29,7 @@ const NativeStack2 = () => {
         (async () => {
             await requestStoragePermission(grantedPerms, deniedPerms);
         })();
-    });
+    },[]);
 
     const grantedPerms = async () => {
         try {
@@ -41,7 +43,10 @@ const NativeStack2 = () => {
 
     const deniedPerms = async () => {
         dispatch(sendAudio("Permissions denied"));
-        Alert.alert("Permission denied");
+        Toast.show({
+            type: 'info',
+            text1: 'Permission denied'
+        });
     }
 
     return (
@@ -55,14 +60,13 @@ const NativeStack2 = () => {
                 }}
             >
                 <Stack.Screen name="stackHome" component={DrawerNavigation} options={{ headerShown: false, }} />
-                <Stack.Screen name="account" component={Account} options={{ title: 'Account' }} />
-                <Stack.Screen name="singleaudio" component={SingleAudio} />
-                <Stack.Screen name="onlinesonglist" component={OnlineSongList} />
+                <Stack.Screen name="account" component={Account} options={{ title: 'User info' }} />
+                <Stack.Screen name="singleaudio" component={SingleAudio} options={() => ({ headerShown: true, headerTitle: "Offline audio" })} />
+                <Stack.Screen name="onlinesonglist" component={OnlineSongList} options={() => ({ headerShown: true, headerTitle: "Songs" })} />
                 <Stack.Screen name="onlinesinglesongplayer" component={OnlineSingleSongPlayer} />
-                <Stack.Screen name="search" component={Search} />
-                <Stack.Screen name="userdetailform" component={UserDetailForm} options={() => ({ headerShown: true, headerTitle: "User Detail Form" })}
+                <Stack.Screen name="search" component={Search} options={() => ({ headerShown: true, headerTitle: "Search" })} />
+                <Stack.Screen name="userdetailform" component={UserDetailForm} options={() => ({ headerShown: true, headerTitle: "User detail form" })}
                 />
-
 
                 <Stack.Screen
                     name="signup"
@@ -72,7 +76,7 @@ const NativeStack2 = () => {
                 <Stack.Screen
                     name="signin"
                     component={SignIn}
-                    options={() => ({ headerShown: true, headerTitle: "Sign In" })}
+                    options={() => ({ headerShown: true, headerTitle: "Sign in" })}
                 />
                 <Stack.Screen
                     name="withgoogle"
@@ -95,6 +99,7 @@ const NativeStack2 = () => {
                     options={() => ({ headerShown: true, headerTitle: "New user Sign in" })}
                 />
             </Stack.Navigator>
+            <Toast1/>
         </>
     )
 }

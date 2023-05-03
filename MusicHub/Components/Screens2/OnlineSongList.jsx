@@ -1,14 +1,19 @@
 import { View, Text, FlatList, TouchableOpacity, SafeAreaView, Image } from 'react-native'
 import React, { useState, useEffect } from 'react';
-import styles from '../Styles/OnlineSongList';
+import stylesT from '../Styles/OnlineSongList';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Loading1 } from '../Views';
+import { useSelector } from "react-redux";
+
+
 
 export default function OnlineSongList() {
     const [songs, setSongs] = useState([]);
     const navigation = useNavigation();
     const route = useRoute();
     const { songListUrl } = route.params;
+    const { theme } = useSelector(state => state.theme);
+    const styles = stylesT(theme);
 
     useEffect(() => {
         (() => {

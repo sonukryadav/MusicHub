@@ -1,10 +1,11 @@
 import { View, Text, SafeAreaView, ScrollView, TouchableOpacity, Image, Alert } from 'react-native';
 import React, { useEffect, useState} from 'react';
-import styles from '../Styles/OnlineSingleSongPlayer';
+import stylesT from '../Styles/OnlineSingleSongPlayer';
 import { useRoute } from "@react-navigation/native";
 import Slider from '@react-native-community/slider';
 import TrackPlayer, { RepeatMode, State, usePlaybackState, useProgress } from 'react-native-track-player';
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { useSelector } from "react-redux";
 
 
 
@@ -14,6 +15,8 @@ export default function OnlineSingleSongPlayer() {
     const route = useRoute();
     const playBackState = usePlaybackState();
     const { songDetail } = route.params;
+    const { theme } = useSelector(state => state.theme);
+    const styles = stylesT(theme);
 
     useEffect(() => {
         (async() => {
@@ -89,8 +92,8 @@ export default function OnlineSingleSongPlayer() {
                 </View>
                 <View style={styles.v4}>
                     <TouchableOpacity onPress={() => playPause(playBackState)}>
-                        <Ionicons name={playBackState === State.Playing || playBackState === State.Buffering ? "md-pause-circle" : "md-play-circle"} size={90} color={"black"} />
-                        <Text style={styles.t4}>{playBackState === State.Playing || playBackState === State.Buffering ? "Tap to pause" : "Tap to play"}</Text>
+                        <Ionicons name={playBackState === State.Playing || playBackState === State.Buffering ? "md-pause-circle" : "md-play-circle"} size={90} color={theme ? "black": "white"} />
+                        <Text style={styles.t4}> Tap to {playBackState === State.Playing || playBackState === State.Buffering ? "pause" : "play"}</Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>

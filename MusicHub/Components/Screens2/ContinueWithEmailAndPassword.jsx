@@ -5,7 +5,6 @@ import {
 	ScrollView,
 	SafeAreaView,
 	TextInput,
-	Alert,
 	TouchableOpacity,
 } from "react-native";
 import styles from "../Styles/ContinueWithEmailAndPassword";
@@ -14,9 +13,6 @@ import auth from '@react-native-firebase/auth';
 import { useNavigation } from "@react-navigation/native";
 import { useDispatch } from "react-redux";
 import { createdUserData } from "../ReduxKit/CreateUserFirebaseAtSignIn";
-import { USERDETAILFORMSTATE } from "../../ENV";
-import { userDetailFormState } from "../ReduxKit/UserDetailFormStateSlice.js"
-import { AsyncSet } from "../AsyncStorage/AsyncStorage";
 import Toast from 'react-native-toast-message';
 import { Toast1 } from "../Views";
 
@@ -91,8 +87,6 @@ const ContinueWithEmailAndPassword = () => {
 
 	const signOutAndVerify = async (result) => {
 		try {
-			// dispatch(userDetailFormState(false));
-			// await AsyncSet(`${USERDETAILFORMSTATE.UDFS}`, false);
 			await auth().currentUser.sendEmailVerification();
 			await auth().signOut();
 			Toast.show({
@@ -105,7 +99,7 @@ const ContinueWithEmailAndPassword = () => {
 			});
 			setTimeout(() => {
 				navigation.navigate("signinforcreate");
-			},3500)
+			},3000)
 		} catch (error) {
 			console.log(error);
 			Toast.show({
@@ -239,9 +233,3 @@ const ContinueWithEmailAndPassword = () => {
 
 export default ContinueWithEmailAndPassword;
 
-// password should be of 8 characters length
-//     - password should contain
-//         - uppercase letter
-//         - lowercase letter
-//         - number
-//         - special character

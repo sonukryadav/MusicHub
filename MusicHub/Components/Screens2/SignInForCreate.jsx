@@ -210,9 +210,3 @@ const SignInForCreate = () => {
 
 export default SignInForCreate;
 
-// password should be of 8 characters length
-//     - password should contain
-//         - uppercase letter
-//         - lowercase letter
-//         - number
-//         - special character

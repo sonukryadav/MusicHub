@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { SearchBar } from '@rneui/themed';
 import { View, Text, SafeAreaView, ScrollView, Image, TouchableOpacity, FlatList} from 'react-native';
-import styles from "../Styles/Search";
+import stylesT from "../Styles/Search";
 import { Loading1 } from "../Views";
 import { useNavigation } from "@react-navigation/native";
+import { useSelector } from "react-redux";
 
 
 const Search = () => {
@@ -12,6 +13,8 @@ const Search = () => {
   const [itemSearch, setItemSearch] = useState(false);
   const [itemSearchText, setItemSearchText] = useState("");
   const navigation = useNavigation();
+  const { theme } = useSelector(state => state.theme);
+  const styles = stylesT(theme);
 
 
   useEffect(() => {
@@ -74,7 +77,7 @@ const Search = () => {
 
 
         <View style={styles.v2}>
-          <Text style={styles.t1}>Trending</Text>
+          <Text style={styles.t1}>Trending songs</Text>
         </View>
 
         {songs.length === 0 ? <Loading1 text={"Loading trending songs..."} /> :

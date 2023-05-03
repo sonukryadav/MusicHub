@@ -16,8 +16,6 @@ import  FontAwesome5  from "react-native-vector-icons/FontAwesome5";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import firestore from '@react-native-firebase/firestore';
-import { AsyncSet, AsyncGet, AsyncDelete } from "../AsyncStorage/AsyncStorage";
-import { USERDETAILFORMSTATE } from "../../ENV";
 import { userDetailFormState } from "../ReduxKit/UserDetailFormStateSlice";
 import Toast from 'react-native-toast-message';
 import { Toast1 } from "../Views";
@@ -125,7 +123,6 @@ const UserDetailForm = () => {
                                 dob: new Date(),
                             });
                             dispatch(userDetailFormState(true));
-                            await AsyncSet(`${USERDETAILFORMSTATE.UDFS}`, true);
                             navigation.navigate("stackHome");
                             return;
                         } else {

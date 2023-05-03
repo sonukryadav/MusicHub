@@ -18,7 +18,7 @@ import { Toast1} from "../Views";
 
 const Drawer = createDrawerNavigator();
 
-var On;
+let On;
 
 const DItem = ({ IconG, IconN, labelT, navigateTo }) => {
     const navigation = useNavigation();
@@ -45,7 +45,6 @@ function CustomDrawerContent(props) {
     const { theme } = useSelector((state) => state.theme);
     const dispatch = useDispatch();
 
-
     React.useEffect(() => {
         (async () => {
             const user = auth().currentUser;
@@ -59,13 +58,19 @@ function CustomDrawerContent(props) {
     const styles = On ? lightTheme : darkTheme;
 
     const onToggle = async () => {
-        dispatch(toggle1());
-        await AsyncSet("theme", !theme);
+        if (theme) {
+            dispatch(toggle1(false));
+            await AsyncSet("theme", false);
+        } else if(!theme) {
+            dispatch(toggle1(true));
+            await AsyncSet("theme", true);
+        }else{
+            dispatch(toggle1(false));
+            await AsyncSet("theme", false);
+        }
     };
 
     const signOutUser = async () => {
-        // dispatch(userDetailFormState(false))
-        // await AsyncSet(`${USERDETAILFORMSTATE.UDFS}`, false);
         auth()
             .signOut()
             .then(() => {
@@ -86,7 +91,7 @@ function CustomDrawerContent(props) {
             <View style={styles.view1}>
                 <View>
                     {detail ?
-                        <TouchableOpacity onPress={() => navigation.navigate("settings")}>
+                        <TouchableOpacity onPress={() => navigation.navigate("account")}>
                             <Image
                                 source={{ uri: detail.photoURL || `https://firebasestorage.googleapis.com/v0/b/musichub2.appspot.com/o/MusicHub%2FMusicHub-logo.png?alt=media&token=c259d378-41f1-4618-b1da-4d56b498c02a` }}
                                 style={styles.profileImage}
@@ -125,8 +130,15 @@ function CustomDrawerContent(props) {
                 onPress={() => {
                     try {
                         signOutUser();
+                        Toast.show({
+                            type: 'success',
+                            text1: 'logged out successfully.'
+                        });
                     } catch (error) {
-                        Alert.alert("Something went wrong!");
+                        Toast.show({
+                            type: 'error',
+                            text1: 'Something went wrong!'
+                        });
                         console.log(error);
                     }
                 }}
@@ -162,12 +174,13 @@ const DrawerNavigation = ({ navigation }) => {
                     headerTitle: "MusicHub",
                     headerRight: () => (
                         <TouchableOpacity onPress={() => navigation.navigate("search")}>
-                            <FontAwesome5 name="search" size={22} color={On ? "black" : "white"} marginRight={15} />
+                            <FontAwesome5 name="search" size={22} color={theme ? "black" : "white"} marginRight={15} />
                         </TouchableOpacity>
                     ),
                     headerStyle: {
                         elevation: 20,
                         shadowColor: "black",
+                        backgroundColor: theme ? "white" : "black",
                     }
                 }} />
             </Drawer.Navigator>

@@ -5,6 +5,11 @@ const windowHeight = Dimensions.get('window').height;
 
 
 const styles = StyleSheet.create({
+	loadingA: {
+		flex: 1,
+		justifyContent: "center",
+		alignItems:"center",
+	},
 	sav: {
 		flex:1
 	},

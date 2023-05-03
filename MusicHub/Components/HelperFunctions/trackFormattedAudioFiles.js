@@ -5,7 +5,7 @@ const trackFormattedAudioFiles = async () => {
     try {
         const audioFiles = await searchAllAudioFiles(RNFS.ExternalStorageDirectoryPath);
         let newArray = [];
-        audioFiles.forEach(async(element, index) => {
+        audioFiles.forEach(async (element, index) => {
             newArray.push(
                 {
                     "id": index,
@@ -13,7 +13,7 @@ const trackFormattedAudioFiles = async () => {
                     "title": element.name,
                     "artist": "",
                     "artwork": "artwork",
-                    "duration": element.size,
+                    "duration": element.size / 1048576,
                 }
             );
         });

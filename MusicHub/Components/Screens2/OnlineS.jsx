@@ -1,25 +1,23 @@
 import { View, Text, SafeAreaView, ScrollView, Image, TouchableOpacity, FlatList} from 'react-native'
 import React,{ useEffect, useState } from 'react';
-import styles from '../Styles/OnlineS';
+import stylesT from '../Styles/OnlineS';
 import { Loading1 } from '../Views';
 import { useNavigation } from '@react-navigation/native';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import { useSelector } from "react-redux";
 
 export default function OnlineS() {
     const [poster, setPoster] = useState([]);
     const navigation = useNavigation();
+    const { theme } = useSelector(state=>state.theme);
+    const styles = stylesT(theme);
+
 
     useEffect(() => {
         (async() => {
             const user = auth().currentUser;
             const user1 = await firestore().collection('users').doc(user?.uid).get();
-
-            // if (user) {
-            //     navigation.navigate("stackHome");
-            // } else {
-            //     navigation.navigate("signup");
-            // }
 
             if (user && user1._data) {
                 navigation.navigate("stackHome");
@@ -30,9 +28,10 @@ export default function OnlineS() {
             } else if (!user && !user1._data) {
                 navigation.navigate("signup");
                 return;
+            } else {
+                navigation.navigate("signup");
+                return;
             }
-
-            console.log(user);
         })();
     })
 

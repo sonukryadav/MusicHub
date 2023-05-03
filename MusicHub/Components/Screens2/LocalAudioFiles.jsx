@@ -1,6 +1,6 @@
 import { Alert, View, Text, SafeAreaView, TouchableOpacity, FlatList } from 'react-native';
 import React, { useEffect, useState } from 'react';
-import styles from '../Styles/LocalAudioFiles';
+import stylesT from '../Styles/LocalAudioFiles';
 import Fontisto from "react-native-vector-icons/Fontisto";
 import { Loading1, SlideUpView } from '../Views';
 import { useNavigation, useIsFocused } from '@react-navigation/native';
@@ -12,10 +12,12 @@ import TrackPlayer, { RepeatMode, State, usePlaybackState, useProgress } from 'r
 export default function LocalAudioFiles() {
     const [files, setFiles] = useState([]);
     const [visible, setVisible] = useState(false);
+    const [more, setMore] = useState("");
     const isFocused = useIsFocused();
     const navigation = useNavigation();
     const { localAudios } = useSelector((state) => state.localAudio);
-
+    const { theme } = useSelector(state => state.theme);
+    const styles = stylesT(theme);
 
     useEffect(() => {
         (() => {
@@ -39,11 +41,10 @@ export default function LocalAudioFiles() {
         );
     }
 
-    const showSlideUp = () => {
+    const showSlideUp = (item) => {
         setVisible((pre) => !pre);
+        setMore(item);
     }
-
-    // console.log(files[0]);
 
     const singleBlock = (item, index) => {
         navigation.navigate("singleaudio", {title : item.title, url : item.url, index1 : index});
@@ -51,33 +52,35 @@ export default function LocalAudioFiles() {
 
 
 
-    const SongBlock = ({item, index}) => (
-        <>
-            <View style={styles.v2}>
-                <View style={styles.v3}>
-                    <TouchableOpacity onPress={() => singleBlock(item, index)}>
-                        <View style={styles.v3i}>
-                            <View style={styles.v4}>
-                                <Fontisto name={"applemusic"} size={60} color={"black"} />
+    const SongBlock = ({ item, index }) => {
+        return (
+            <>
+                <View style={styles.v2}>
+                    <View style={styles.v3}>
+                        <TouchableOpacity onPress={() => singleBlock(item, index)}>
+                            <View style={styles.v3i}>
+                                <View style={styles.v4}>
+                                    <Fontisto name={"applemusic"} size={60} color={"black"} />
+                                </View>
+                                <View style={styles.v5}>
+                                    <Text style={styles.t1}>{item.title.length > 35 ? item.title.substring(0, 35) + "..." : item.title}</Text>
+                                    <Text style={styles.t2}>{""}</Text>
+                                    <Text style={styles.t3}>{(item.duration).toFixed(3)} MB</Text>
+                                </View>
                             </View>
-                            <View style={styles.v5}>
-                                <Text style={styles.t1}>{item.title.length > 35 ? item.title.substring(0, 35) + "..." : item.title}</Text>
-                                <Text style={styles.t2}>{"Artist name"}</Text>
-                                <Text style={styles.t3}>{"2:15"}</Text>
+                        </TouchableOpacity>
+                    </View>
+                    <View style={styles.v6}>
+                        <TouchableOpacity onPress={() => showSlideUp(item)}>
+                            <View style={styles.v6i}>
+                                <Fontisto name={"more-v-a"} size={18} color={"black"} />
                             </View>
-                        </View>
-                    </TouchableOpacity>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-                <View style={styles.v6}>
-                    <TouchableOpacity onPress={() => showSlideUp(item)}>
-                        <View style={styles.v6i}>
-                            <Fontisto name={"more-v-a"} size={18} color={"black"} />
-                        </View>
-                    </TouchableOpacity>
-                </View>
-            </View>
-        </>
-    );
+            </>
+        )
+    };
 
     return (
         <SafeAreaView style={styles.sav}>
@@ -90,7 +93,8 @@ export default function LocalAudioFiles() {
             </View>
             <SlideUpView visible={visible} setVisible={setVisible} slideHeight={250}>
                 <View style={{ padding: 20 }}>
-                    <Text style={{ color: "red", fontSize: 15, textAlign: "center" }}>This is the sliding view content.</Text>
+                    <Text style={{ color: "red", fontSize: 25, textAlign: "center" }}>{more.title}</Text>
+                    <Loading1 text={"Trying to restore other data"} />
                 </View>
             </SlideUpView>
         </SafeAreaView>

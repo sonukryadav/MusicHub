@@ -1,7 +1,7 @@
 import { View, Text, SafeAreaView, Image, Animated, Alert, TouchableOpacity, FlatList, ScrollView, Dimensions } from 'react-native';
 import React, { useState, useEffect, useRef } from 'react';
 import TrackPlayer, { RepeatMode, State, usePlaybackState, useProgress } from 'react-native-track-player';
-import styles from '../Styles/SingleAudio';
+import stylesT from '../Styles/SingleAudio';
 import RollingText from "react-native-rolling-text";
 import Slider from '@react-native-community/slider';
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -22,14 +22,14 @@ export default function SingleAudio({route}) {
     const [isPlaying, setIsPlaying] = useState(false);
     const [trackID, setTrackID] = useState(route.params.index1);
     const [shuffleI, setShuffleI] = useState(false);
+    const { theme } = useSelector(state => state.theme);
+    const styles = stylesT(theme);
 
     const { localAudios } = useSelector((state) => state.localAudio);
-    const { title, url, index1 } = route.params;
-
-    console.log(title, url, index1);
+    const { title, url, index1=0 } = route.params;
 
     const iconSize = 50;
-    const iconColor = "black";
+    const iconColor = theme? "black" : "white";
 
     const setAudioFiles = async () => {
         setFiles(pre=>localAudios);
@@ -43,7 +43,7 @@ export default function SingleAudio({route}) {
                     animated: true,
                     index: index1,
                 });
-            }, 1000)
+            }, 2500)
         })();
     }, []);
 
@@ -131,7 +131,6 @@ export default function SingleAudio({route}) {
         }
     }
 
-    console.log(playBackState);
 
     const formatTime = (secs) => {
         const minutes = Math.floor(secs / 60);
@@ -178,8 +177,8 @@ export default function SingleAudio({route}) {
                                         value={progress.position}
                                         minimumValue={0}
                                         maximumValue={progress.duration}
-                                        minimumTrackTintColor="black"
-                                        maximumTrackTintColor="#000000"
+                                        minimumTrackTintColor={theme ? "black" : "white"}
+                                        maximumTrackTintColor={theme ? "black" : "white"}
                                         thumbTintColor="#135763"
                                         tapToSeek={true}
                                         onValueChange={async value => {
