@@ -23,7 +23,7 @@ export default function LocalAudioFiles() {
         (() => {
             setFiles(localAudios);
         })();
-    }, []);
+    }, [files]);
 
     if (isFocused) {
         (async () => {
@@ -49,7 +49,6 @@ export default function LocalAudioFiles() {
     const singleBlock = (item, index) => {
         navigation.navigate("singleaudio", {title : item.title, url : item.url, index1 : index});
     }
-
 
 
     const SongBlock = ({ item, index }) => {

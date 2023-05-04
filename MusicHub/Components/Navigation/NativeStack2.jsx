@@ -69,7 +69,7 @@ const NativeStack2 = () => {
                 <Stack.Screen name="account" component={Account} options={{ title: 'User info' }} />
                 <Stack.Screen name="singleaudio" component={SingleAudio} options={() => ({ headerShown: true, headerTitle: "Offline audio" })} />
                 <Stack.Screen name="onlinesonglist" component={OnlineSongList} options={() => ({ headerShown: true, headerTitle: "Songs" })} />
-                <Stack.Screen name="onlinesinglesongplayer" component={OnlineSingleSongPlayer} />
+                <Stack.Screen name="onlinesinglesongplayer" component={OnlineSingleSongPlayer} options={() => ({ headerShown: true, headerTitle: "Online Song" })} />
                 <Stack.Screen name="search" component={Search} options={() => ({ headerShown: true, headerTitle: "Search" })} />
                 <Stack.Screen name="userdetailform" component={UserDetailForm} options={() => ({ headerShown: true, headerTitle: "User detail form" })}
                 />

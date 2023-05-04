@@ -25,6 +25,11 @@ const styles = (theme) => {
                 borderRadius: 10,
                 backgroundColor:"#5996f7"
             },
+            load1: {
+                margin: 15,
+                textAlign: "center",
+                alignItems:"center",
+            }
         })
     )
 }
