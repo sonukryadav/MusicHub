@@ -28,16 +28,19 @@ const Search = () => {
   }, [search]);
 
   const updateSearch = (search) => {
-    let foundAr = [];
-    songs.forEach(element => {
-      if (element.songName.toLowerCase().indexOf(search.toLowerCase()) === -1) {
-        return;
-      } else {
-        foundAr.push(element);
-      }
-    });
-    setFilter(foundAr);
-    setSearch(search);
+    setTimeout(() => {
+      let foundAr = [];
+      songs.forEach(element => {
+        if (element.songName.toLowerCase().indexOf(search.toLowerCase()) === -1) {
+          return;
+        } else {
+          foundAr.push(element);
+        }
+      });
+      setFilter(foundAr);
+      setSearch(search);
+    },[3000])
+
   };
 
   const sendTo = (item) => {

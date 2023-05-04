@@ -12,7 +12,7 @@ const styles = (theme) => {
                 alignItems: "center",
             },
             sav: {
-                // flex: 1,
+                flex: 1,
                 padding: 5,
                 backgroundColor: theme ? "white" : "rgb(51, 51, 51)",
             },
@@ -29,11 +29,12 @@ const styles = (theme) => {
             },
             v2: {
                 flex: 1,
+                padding: 5,
+                borderWidth: 1,
                 borderColor: theme ? "#7A7A7A" : "white",
-                marginBottom:10
             },
             posterImage: {
-                width: width*0.5,
+                width: "100%",
                 height: 200,
             },
             flatList1: {
@@ -41,7 +42,7 @@ const styles = (theme) => {
                 // borderColor:"green",
             },
             flatListRow: {
-                justifyContent: 'space-around',
+                justifyContent: 'space-between',
             },
             flatListHeader: {
             },
