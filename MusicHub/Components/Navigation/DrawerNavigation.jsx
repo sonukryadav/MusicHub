@@ -79,7 +79,10 @@ function CustomDrawerContent(props) {
                     text1: 'User signed out successfully.'
                 });
                 setDetail({})
-                navigation.navigate("signup");
+                navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'signup' }],
+                });
                 return;
             }
             );

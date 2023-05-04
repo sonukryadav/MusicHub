@@ -13,7 +13,6 @@ const styles = (theme) => {
                 flex: 1,
                 alignItems: 'center',
                 justifyContent: 'center',
-                padding: 20,
             },
             profileImg: {
             },
@@ -24,13 +23,16 @@ const styles = (theme) => {
                 marginBottom: 20,
             },
             fieldsContainer: {
-                width: '100%',
+                width: width * 0.9,
             },
             fieldContainer: {
                 marginBottom: 20,
                 borderWidth: 1,
                 padding: 10,
-                borderColor: theme ? "black" : "#fff",
+                borderColor: theme ? "grey" : "grey",
+                elevation:5,
+                shadowColor: theme ? "#6eb1f5" : "#6eb1f5",
+                borderRadius: 15,
             },
             label: {
                 fontSize: 18,
@@ -46,7 +48,7 @@ const styles = (theme) => {
             input: {
                 height: 40,
                 borderWidth: 2,
-                borderColor: theme ? "#000000" : "#fff",
+                borderColor: theme ? "#9b9d9e" : "#9b9d9e",
                 borderRadius: 5,
                 paddingHorizontal: 10,
                 fontSize: 16,

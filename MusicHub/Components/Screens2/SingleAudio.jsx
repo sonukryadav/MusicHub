@@ -43,9 +43,9 @@ export default function SingleAudio({route}) {
                     animated: true,
                     index: index1,
                 });
-            }, 2500)
+            }, 3000)
         })();
-    }, []);
+    }, [index1]);
 
 
     useEffect(() => {

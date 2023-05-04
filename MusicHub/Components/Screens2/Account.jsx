@@ -70,7 +70,11 @@ export default function Account() {
               style={styles.image}
             />
             :
-            <Ionicons name="ios-person-circle-outline" size={100} color={"black"} />
+            <Image
+              source={{ uri: "https://firebasestorage.googleapis.com/v0/b/musichub2.appspot.com/o/MusicHub%2FMusicHub-logo.png?alt=media&token=c259d378-41f1-4618-b1da-4d56b498c02a" }}
+              resizeMode="contain"
+              style={styles.image}
+            />
           }
         </View>
 

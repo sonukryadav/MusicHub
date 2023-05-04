@@ -17,10 +17,12 @@ import { sendAudio } from "../ReduxKit/LocalAudioSlice";
 import { useDispatch } from "react-redux";
 import Toast from 'react-native-toast-message';
 import { Toast1 } from "../Views";
+import { useNavigation} from "@react-navigation/native";
 
 const Stack = createNativeStackNavigator();
 
 const NativeStack2 = () => {
+    const navigation = useNavigation();
     const { theme } = useSelector((state) => state.theme);
     const dispatch = useDispatch();
 
@@ -47,6 +49,10 @@ const NativeStack2 = () => {
             type: 'info',
             text1: 'Permission denied'
         });
+        navigation.reset({
+            index: 0,
+            routes: [{name: "denied"}],
+        })
     }
 
     return (

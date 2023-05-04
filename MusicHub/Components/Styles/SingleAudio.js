@@ -90,7 +90,7 @@ const styles = (theme) => {
                 height: 20,
             },
             time: {
-                color: "#363636",
+                color: theme?"#363636" : "white",
                 fontSize: 12,
                 fontWeight: 700,
             }

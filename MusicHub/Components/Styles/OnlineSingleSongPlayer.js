@@ -41,7 +41,7 @@ const styles = (theme) => {
                 alignItems: "center",
             },
             time: {
-                color: "#363636",
+                color: theme ? "black" : "white",
                 fontSize: 12,
                 fontWeight: 700,
             },

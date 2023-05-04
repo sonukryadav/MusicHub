@@ -9,7 +9,9 @@ const styles = StyleSheet.create({
 		backgroundColor: "#fff",
 	},
 	v0: {
+		flex:1,
 		alignItems: "center",
+		justifyContent: "center",
 	},
 	viewStart: {
 		justifyContent: "center",

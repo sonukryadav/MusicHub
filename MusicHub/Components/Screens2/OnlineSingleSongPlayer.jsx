@@ -47,7 +47,7 @@ export default function OnlineSingleSongPlayer() {
     };
 
 
-    console.log(playBackState);
+    // console.log(playBackState);
 
 
     return (
@@ -93,7 +93,7 @@ export default function OnlineSingleSongPlayer() {
                 <View style={styles.v4}>
                     <TouchableOpacity onPress={() => playPause(playBackState)}>
                         <Ionicons name={playBackState === State.Playing || playBackState === State.Buffering ? "md-pause-circle" : "md-play-circle"} size={90} color={theme ? "black": "white"} />
-                        <Text style={styles.t4}> Tap to {playBackState === State.Playing || playBackState === State.Buffering ? "pause" : "play"}</Text>
+                        <Text style={styles.t4}>{playBackState === State.Playing || playBackState === State.Buffering ? "Pause" : "Play"}</Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>

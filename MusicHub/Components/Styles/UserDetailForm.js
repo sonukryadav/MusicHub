@@ -1,12 +1,15 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
+
+const { width} = Dimensions.get("window");
 
 const styles = StyleSheet.create({
     sav: {
-        flex:1
+        flex: 1,
+        alignItems:"center"
     },
     container: {
         flex: 1,
-        marginHorizontal: 40,
+        width:width *0.9,
         justifyContent: "center",
     },
     text2: {
@@ -56,7 +59,7 @@ const styles = StyleSheet.create({
     },
     createAccount1:{
         textAlign: "center",
-        backgroundColor: "#5FACFA",
+        backgroundColor: "#276db3",
         padding: 15,
         borderRadius: 10,
         fontSize: 20,
@@ -70,7 +73,7 @@ const styles = StyleSheet.create({
     input2: {
         flex: 1,
         borderWidth: 1,
-        borderColor: "gray",
+        borderColor: "grey",
         borderRadius: 5,
         paddingVertical: 10,
         paddingHorizontal: 15,

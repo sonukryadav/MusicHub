@@ -14,6 +14,9 @@ const styles = StyleSheet.create({
         backgroundColor: "#fff",
     },
     container0: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: "center",
     },
     googleButton: {
         width:width*0.8,

@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AsyncGet, AsyncSet } from "./Components/AsyncStorage/AsyncStorage";
 import { useSelector, useDispatch } from "react-redux";
 import { toggle1 } from "./Components/ReduxKit/ThemeSlice";
+import { PermissionDenied } from "./Components/Screens2";
 
 
 const Stack = createNativeStackNavigator();
@@ -35,6 +36,7 @@ const App1 = () => {
 			<Stack.Navigator>
 				<Stack.Group>
 					<Stack.Screen name="home" component={NativeStack2} options={() => ({ headerShown: false })} />
+					<Stack.Screen name="denied" component={PermissionDenied} options={() => ({ headerShown: false })} />
 				</Stack.Group>
 			</Stack.Navigator>
 			</>
