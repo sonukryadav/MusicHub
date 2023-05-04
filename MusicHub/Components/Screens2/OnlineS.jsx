@@ -17,17 +17,21 @@ export default function OnlineS() {
     useEffect(() => {
         (async() => {
             const user = auth().currentUser;
-            const user1 = await firestore().collection('users').doc(user?.uid).get();
-
-            if (user && user1._data) {
-                navigation.navigate("stackHome");
-                return;
-            } else if (user && !user1._data) {
-                navigation.navigate("userdetailform");
-                return;
-            } else if (!user && !user1._data) {
-                navigation.navigate("signup");
-                return;
+            if (user) {
+                const user1 = await firestore().collection('users').doc(user?.uid).get();
+                if (user && user1._data) {
+                    navigation.navigate("stackHome");
+                    return;
+                } else if (user && !user1._data) {
+                    navigation.navigate("userdetailform");
+                    return;
+                } else if (!user && !user1._data) {
+                    navigation.navigate("signup");
+                    return;
+                } else {
+                    navigation.navigate("signup");
+                    return;
+                }
             } else {
                 navigation.navigate("signup");
                 return;

@@ -10,9 +10,8 @@ import { useSelector } from "react-redux";
 const Search = () => {
   const [search, setSearch] = useState("");
   const [songs, setSongs] = useState([]);
-  const [itemSearch, setItemSearch] = useState(false);
-  const [itemSearchText, setItemSearchText] = useState("");
   const navigation = useNavigation();
+  const [filter, setFilter] = useState([]);
   const { theme } = useSelector(state => state.theme);
   const styles = stylesT(theme);
 
@@ -21,13 +20,31 @@ const Search = () => {
     fetch(`https://firebasestorage.googleapis.com/v0/b/musichub2.appspot.com/o/MusicHub%2FAllJsonFile%2FbollywoodMusic.json?alt=media&token=416bb829-797e-40c9-bcfb-e7908482ecfb`).then(data => data.json()).then(data => setSongs(data));
   }, []);
 
+
+  useEffect(() => {
+    if (search === "") {
+      setFilter([]);
+    }
+  }, [search]);
+
   const updateSearch = (search) => {
+    let foundAr = [];
+    songs.forEach(element => {
+      if (element.songName.toLowerCase().indexOf(search.toLowerCase()) === -1) {
+        return;
+      } else {
+        foundAr.push(element);
+      }
+    });
+    setFilter(foundAr);
     setSearch(search);
   };
 
   const sendTo = (item) => {
     navigation.navigate("onlinesinglesongplayer", { songDetail: item })
   }
+
+  // console.log(songs[0]);
 
 
   const SongsTrend = ({ item }) => {
@@ -46,9 +63,9 @@ const Search = () => {
     );
   }
 
-  return (
-    <SafeAreaView style={styles.v0}>
-      <ScrollView>
+  const Header = () => {
+    return (
+      <>
         <View style={styles.v1}>
           <SearchBar
             placeholder="Type Here..."
@@ -61,36 +78,59 @@ const Search = () => {
         </View>
 
 
-        {/* <View style={styles.srV1}>
-          <View style={styles.srV2}>
-            <Text style={styles.srT1}>{ search ? "Search for : " + search : ""}</Text>
+        {filter.length !== 0 &&
+          <View style={styles.srv1}>
+            <Text style={styles.foundFor}>Found result for : {search}</Text>
+            {filter.map((item, index) => {
+              return (
+                <TouchableOpacity key={index} onPress={()=>sendTo(item)}>
+                  <View style={styles.searchedItem}>
+                    <View style={styles.sV1}>
+                      <Image style={styles.searchImage} source={{ uri: item.posterUrl }} />
+                    </View>
+                    <View style={styles.sV2}>
+                      <Text style={styles.st1}>{item.songName}</Text>
+                      <Text style={styles.st2}>{item.artists}</Text>
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
           </View>
-          <View style={styles.srV3}>
-            {itemSearch && search ?
-              <Loading1 text={"searching..."} /> :
-              <View>
-                <Text style={styles.srT2}>{itemSearchText}</Text>
-              </View>
-            }
-          </View>
-        </View> */}
+        }
 
-
+        {/* ----------------------------------------------------------- */}
         <View style={styles.v2}>
           <Text style={styles.t1}>Trending songs</Text>
         </View>
+        {songs.length === 0 && <Loading1 text={"Loading trending songs..."} />}
+      </>
+    );
+  }
 
-        {songs.length === 0 ? <Loading1 text={"Loading trending songs..."} /> :
+  const Main = ({ item}) => {
+    return (
+      <>
+        <SongsTrend item={item} />
+      </>
+    );
+  }
+
+  const Footer = () => {
+    return (
+      <></>
+    );
+  }
+
+  return (
+    <SafeAreaView style={styles.v0}>
           <FlatList
             data={songs}
-            renderItem={(item) => <SongsTrend item={item} />}
-            keyExtractor={(item, key)=>item.id.toString()}
+            renderItem={(item) => <Main item={item} />}
+            keyExtractor={(item, key) => item.id.toString()}
+            ListHeaderComponent={<Header/>}
+            ListFooterComponent={<></>}
           />
-        }
-
-
-
-      </ScrollView>
     </SafeAreaView>
   );
 };

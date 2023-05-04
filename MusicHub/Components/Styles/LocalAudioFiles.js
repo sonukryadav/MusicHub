@@ -30,12 +30,14 @@ const styles = (theme) => {
                 flex: 0.9,
             },
             v3i: {
+                flex:1,
                 flexDirection: "row",
                 alignItems: "center",
             },
             v4: {
             },
             v5: {
+                flex:1,
                 marginLeft: 15,
             },
             v6: {

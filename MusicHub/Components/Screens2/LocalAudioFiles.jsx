@@ -62,7 +62,8 @@ export default function LocalAudioFiles() {
                                     <Fontisto name={"applemusic"} size={60} color={"black"} />
                                 </View>
                                 <View style={styles.v5}>
-                                    <Text style={styles.t1}>{item.title.length > 35 ? item.title.substring(0, 35) + "..." : item.title}</Text>
+                                    {/* <Text style={styles.t1}>{item.title.length > 35 ? item.title.substring(0, 35) + "..." : item.title}</Text> */}
+                                    <Text style={styles.t1}>{item.title}</Text>
                                     <Text style={styles.t2}>{""}</Text>
                                     <Text style={styles.t3}>{(item.duration).toFixed(3)} MB</Text>
                                 </View>

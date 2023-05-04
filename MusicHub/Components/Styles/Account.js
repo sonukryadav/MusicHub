@@ -9,7 +9,7 @@ const styles = (theme) => {
                 flex: 1,
                 backgroundColor: theme ? "#fff" : "rgb(51, 51, 51)",
             },
-            container: {
+            scr: {
                 flex: 1,
                 alignItems: 'center',
                 justifyContent: 'center',
