@@ -25,13 +25,8 @@ const Search = () => {
   useEffect(() => {
     if (search === "") {
       setFilter([]);
-    }
-  }, [search]);
-
-  const updateSearch = (search) => {
-    try {
+    } else {
       setLoadSearch(true);
-      setSearch(search);
       setTimeout(() => {
         let foundAr = [];
         songs.forEach(element => {
@@ -43,11 +38,16 @@ const Search = () => {
         });
         setLoadSearch(false);
         setFilter(foundAr);
-      },3000)
+      },2000)
+    }
+  }, [search]);
+
+  const updateSearch = (search) => {
+    try {
+      setSearch(pre=>search);
     } catch (err) {
       console.log(err);
     }
-
   };
 
   const sendTo = (item) => {

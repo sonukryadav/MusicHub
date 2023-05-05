@@ -34,7 +34,7 @@ export default function SingleAudio({route}) {
     const iconColor = theme? "black" : "white";
 
     const setAudioFiles = async () => {
-        setFiles(pre=>localAudios);
+        setFiles(localAudios);
     }
 
     useEffect(() => {
