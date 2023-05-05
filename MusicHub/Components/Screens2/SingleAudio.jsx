@@ -9,6 +9,7 @@ import { Loading1 } from '../Views';
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import img1 from "../Assets/MusicHub-logo.png";
 import { useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 
 const { width } = Dimensions.get("window");
 
@@ -24,6 +25,7 @@ export default function SingleAudio({route}) {
     const [shuffleI, setShuffleI] = useState(false);
     const { theme } = useSelector(state => state.theme);
     const styles = stylesT(theme);
+    const navigation = useNavigation();
 
     const { localAudios } = useSelector((state) => state.localAudio);
     const { title, url, index1=0 } = route.params;
@@ -36,6 +38,7 @@ export default function SingleAudio({route}) {
     }
 
     useEffect(() => {
+        try {
         (async () => {
             await setAudioFiles();
             setTimeout(() => {
@@ -45,17 +48,30 @@ export default function SingleAudio({route}) {
                 });
             }, 3000)
         })();
-    }, [index1]);
+        } catch (error) {
+            navigation.reset({
+                index: 0,
+                routes: [{name :"stackHome"}]
+            });
+        }
+    }, []);
 
 
     useEffect(() => {
-        (async() => {
+        try {
+            (async() => {
             const trackId = await TrackPlayer.getCurrentTrack();
             if (trackID !== trackId) {
                 setTrackID(pre => trackId);
                 setSongIndex(pre => trackId);
             }
         })();
+        } catch (error) {
+            navigation.reset({
+                index: 0,
+                routes: [{ name: "stackHome" }]
+            });
+        }
     })
 
     if (files.length === 0) {
@@ -79,16 +95,24 @@ export default function SingleAudio({route}) {
     }
 
     const playPause = async (playBackState) => {
-        if (isPlaying) {
+        try {
+            if (isPlaying) {
             await TrackPlayer.pause();
         } else {
             await TrackPlayer.play();
         }
         setIsPlaying(!isPlaying);
+        } catch (error) {
+            navigation.reset({
+                index: 0,
+                routes: [{ name: "stackHome" }]
+            });
+        }
     }
 
     const prev = async (playBackState) => {
-        if (songIndex > 0) {
+        try {
+            if (songIndex > 0) {
             setSongIndex(pre => pre - 1);
             ref.current.scrollToIndex({
                 animated: true,
@@ -97,11 +121,18 @@ export default function SingleAudio({route}) {
             await TrackPlayer.skip(songIndex - 1);
             playPause(playBackState);
         }
+        } catch (error) {
+            navigation.reset({
+                index: 0,
+                routes: [{ name: "stackHome" }]
+            });
+        }
     }
 
 
     const next = async (playBackState) => {
-        if (files.length-1 > songIndex) {
+        try {
+                    if (files.length-1 > songIndex) {
             setSongIndex(pre => pre + 1);
             ref.current.scrollToIndex({
                 animated: true,
@@ -109,6 +140,12 @@ export default function SingleAudio({route}) {
             });
             await TrackPlayer.skip(songIndex + 1);
             playPause(playBackState);
+        }
+        } catch (error) {
+            navigation.reset({
+                index: 0,
+                routes: [{ name: "stackHome" }]
+            });
         }
     }
 
@@ -119,7 +156,8 @@ export default function SingleAudio({route}) {
     }
 
     const repeat = async (playBackState) => {
-        if (repeatMode === "repeat-off") {
+        try {
+                    if (repeatMode === "repeat-off") {
             TrackPlayer.setRepeatMode(RepeatMode.Track);
             setRepeatMode("repeat-once");
         } else if (repeatMode === "repeat-once") {
@@ -128,6 +166,12 @@ export default function SingleAudio({route}) {
         } else if (repeatMode === "repeat") {
             TrackPlayer.setRepeatMode(RepeatMode.Off);
             setRepeatMode("repeat-off");
+        }
+        } catch (error) {
+            navigation.reset({
+                index: 0,
+                routes: [{ name: "stackHome" }]
+            });
         }
     }
 

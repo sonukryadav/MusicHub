@@ -12,6 +12,7 @@ const Search = () => {
   const [songs, setSongs] = useState([]);
   const navigation = useNavigation();
   const [filter, setFilter] = useState([]);
+  const [loadSearch, setLoadSearch] = useState(false);
   const { theme } = useSelector(state => state.theme);
   const styles = stylesT(theme);
 
@@ -28,23 +29,34 @@ const Search = () => {
   }, [search]);
 
   const updateSearch = (search) => {
-    setTimeout(() => {
-      let foundAr = [];
-      songs.forEach(element => {
-        if (element.songName.toLowerCase().indexOf(search.toLowerCase()) === -1) {
-          return;
-        } else {
-          foundAr.push(element);
-        }
-      });
-      setFilter(foundAr);
+    try {
+      setLoadSearch(true);
       setSearch(search);
-    },[3000])
+      setTimeout(() => {
+        let foundAr = [];
+        songs.forEach(element => {
+          if (element.songName.toLowerCase().indexOf(search.toLowerCase()) === -1) {
+            return;
+          } else {
+            foundAr.push(element);
+          }
+        });
+        setLoadSearch(false);
+        setFilter(foundAr);
+      },3000)
+    } catch (err) {
+      console.log(err);
+    }
 
   };
 
   const sendTo = (item) => {
     navigation.navigate("onlinesinglesongplayer", { songDetail: item })
+  }
+
+  const empty = () => {
+    setFilter([]);
+    setSearch("");
   }
 
   // console.log(songs[0]);
@@ -77,6 +89,7 @@ const Search = () => {
             containerStyle={styles.containerStyle}
             inputContainerStyle={styles.inputContainerStyle}
             inputStyle={styles.inputStyle}
+            onClear={empty}
           />
         </View>
 
@@ -84,6 +97,7 @@ const Search = () => {
         {filter.length !== 0 &&
           <View style={styles.srv1}>
             <Text style={styles.foundFor}>Found result for : {search}</Text>
+            { loadSearch && <Loading1 />}
             {filter.map((item, index) => {
               return (
                 <TouchableOpacity key={index} onPress={()=>sendTo(item)}>
